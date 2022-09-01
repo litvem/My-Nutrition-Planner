@@ -67,16 +67,16 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 ### Pages
 
 * **Welcome:** The page displays welcome message and has two buttons allowing a new user to register and an already existing user to sign in. In case if the user has forgotten the password, there is a "Forgot password" link at the bottom of the page that allows the user to reset password using their registered email.
-* **Registration:** The page prompts user to fill in three fields (email, user name, password) and the buttons "Add icon" (allowing user to optionally add profile image) and "Register" (to confirm and complete registration).
+* **Registration:** The page prompts the user to fill in three fields (email, user name, password) and the buttons "Add icon" (allowing user to optionally add profile image) and "Register" (to confirm and complete registration).
 * **Forgot password:** This page contains a field for the user email address to be inserted and confirmation button for auto generated email to be sent to the user with a link for password reset.
-* **User home page:** The page contains buttons "Profile", "Recipes", "Weekly calendar", "Shopping list" and "History" that allow users to navigate within the website/application.
-* **Profile:** The page contains information provided by the user upon registration and has button "Edit" (allowing user to change the profile information) and "Save" (to save the changes).
-* **Recipes:** The page has buttons "Add new recipe" (allowing user to add new recipe) and "All recipes" (to review all existing recipes).
-* **Add new recipe:** The page contains the fields that the user can fill in with the contents and quantities of the ingredients and buttons "Add image" (allowing user to add dish image to the recipe) and "Save" (to save new recipe).
+* **User home page:** The page contains buttons "Profile", "Recipes", "Weekly calendar", "Shopping list" and "History" that allow the user to navigate within the website/application.
+* **Profile:** The page contains information provided by the user upon registration and has buttons "Edit" (allowing the user to change the profile information) and "Save" (to save the changes).
+* **Recipes:** The page has buttons "Add new recipe" (allowing the user to add new recipe) and "All recipes" (to review all existing recipes).
+* **Add new recipe:** The page contains the fields that the user can fill in with the contents and quantities of the ingredients and buttons "Add image" (allowing the user to add dish image to the recipe) and "Save" (to save new recipe).
 * **All recipes:** The page contains a list of all saved recipes and allows the user to browse and review them.
 * **Saved recipe:** The page displays the dish image, list of ingredients and their quantities and buttons "Edit" (allowing the user to modify the recipe) and "Delete" (to remove the recipe).
 * **Weekly calendar:** The page displays the number of calendar week and seven small windows for each day with "+" button in each window allowing the user to add saved recipes to each day of the week. Also this page has a "Generate shopping list" button that allows the user to save all scheduled meals for the week and create a preliminary shopping list according to scheduled recipes.
-* **Shopping list:** The page contains a list of items and their quantities according to the last saved weekly calendar along with the buttons "Add another item" (allowing user to add item manually to the list) and "Save changes" (to save modified shopping list).
+* **Shopping list:** The page contains a list of items and their quantities according to the last saved weekly calendar along with the buttons "Add another item" (allowing the user to add item manually to the list) and "Save changes" (to save modified shopping list).
 * **History:** The page has a list with links to all previously saved shopping lists and allows the user to review it by clicking on the link for every list.
 
 ### Entity-Relationship (ER) Diagram
