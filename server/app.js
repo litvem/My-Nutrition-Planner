@@ -6,8 +6,14 @@ var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/animalDevelopmentDB';
+var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myNutritionPlanner';
 var port = process.env.PORT || 3000;
+
+var profilesController = require('./controllers/profiles');
+var recipesController = require('./controllers/recipes');
+var shoppinglistsController = require('./controllers/shoppinglists');
+var weeklycalendersController = require('./controllers/weeklycalenders');
+var daysController = require('./controllers/days');
 
 // Connect to MongoDB
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, function(err) {
@@ -30,10 +36,23 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+
 // Import routes
 app.get('/api', function(req, res) {
-    res.json({'message': 'Welcome to your DIT342 backend ExpressJS project!'});
+    res.json({'message': 'Welcome to MyNutritionPlanner!'});
 });
+
+app.use(profilesController);
+app.use(recipesController);
+app.use(weeklycalendersController);
+app.use(shoppinglistsController);
+app.use(daysController);
+
+/*
+-------------------------------------
+ ADD THE CODE BEFORE THIS METHOD! catch all non-error handler
+-------------------------------------
+*/
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
@@ -64,7 +83,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.json(err_res);
 });
-
+//N: port is now set to 3000. Look at varibles!
 app.listen(port, function(err) {
     if (err) throw err;
     console.log(`Express server listening on port ${port}, in ${env} mode`);
@@ -73,3 +92,5 @@ app.listen(port, function(err) {
 });
 
 module.exports = app;
+
+
