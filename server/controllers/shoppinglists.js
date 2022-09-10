@@ -13,7 +13,7 @@ router.post('/api/shoppinglists',function(req, res,next) {
 
 // get all 
 router.get('/api/shoppinglists', function(req,res,next){
-    Pro.find(function(err,shoppinglists){
+    Shoppinglist.find(function(err,shoppinglists){
       res.json({'shoppinglists:': shoppinglists});
     })
   });
@@ -24,7 +24,7 @@ router.get('/api/shoppinglists', function(req,res,next){
     Shoppinglist.findById(id,function(err,shoppinglist){
         if(err){return next(err);}
         if(shoppinglist == null){
-          return res.status(404).json({ 'message':'ShoppingList not found!'});
+          return res.status(404).json({ 'message':'ShoppingList not found'});
         }
         res.json(shoppinglist)
     });
@@ -33,7 +33,7 @@ router.get('/api/shoppinglists', function(req,res,next){
   // deleting specific 
   router.delete('/api/shoppinglists/:id', function(req, res, next) {
     var id = req.params.id;
-    Camel.findOneAndDelete({_id: id}, function(err, shoppinglist) {
+    Shoppinglist.findOneAndDelete({_id: id}, function(err, shoppinglist) {
         if (err) { return next(err); }
         if (shoppinglist === null) {
             return res.status(404).json({'message':'ShoppingList not found'});

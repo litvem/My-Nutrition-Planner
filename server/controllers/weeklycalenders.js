@@ -32,7 +32,7 @@ router.get('/api/weekcalenders/history', function(req,res,next){
     Weekcalender.findById(id,function(err,weekcalender){
         if(err){return next(err);}
         if(weekcalender == null){
-          return res.status(404).json({ 'message':'The weekcalender not found!'});
+          return res.status(404).json({ 'message':'The weekcalender not found'});
         }
         res.json(weekcalender)
     });

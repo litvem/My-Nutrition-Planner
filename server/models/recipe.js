@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var recipeSchema = new Schema({
   
      name: {type:String}, 
-    category: {type:[String]},
+    category: {type: String,
+               enum: ['Breakfast','Lunch','Dinner','Snack']},
     picture: {type: {
          data: Buffer,
          contectType: String
@@ -19,4 +20,6 @@ var recipeSchema = new Schema({
      }
  });
  module.exports = mongoose.model('recipes', recipeSchema);
+
+ 
  
