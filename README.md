@@ -66,9 +66,9 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Pages
 
-* **Welcome:** The page displays welcome message and has two buttons allowing a new user to register and an already existing user to sign in. In case if the user has forgotten the password, there is a "Forgot password" link at the bottom of the page that allows the user to reset password using their registered email.
-* **Registration:** The page prompts the user to fill in three fields (email, user name, password) and the buttons "Add icon" (allowing user to optionally add profile image) and "Register" (to confirm and complete registration).
-* **Forgot password:** This page contains a field for the user email address to be inserted and confirmation button for auto generated email to be sent to the user with a link for password reset.
+* **Welcome:** The page displays welcome message and has two buttons allowing a new user to register and an already existing user to sign in. In case if the user has forgotten the password, there is a "Forgot password" link at the bottom of the page that allows the user to reset password using their secret question.
+* **Registration:** The page prompts the user to fill in five fields (email, user name, password, secret question, answer) and the buttons "Add icon" (allowing user to optionally add profile image) and "Register" (to confirm and complete registration).
+* **Forgot password:** This page displays the secret question that user set up upon registartion and the field for user to input the answer to the question and "Submit" button.
 * **User home page:** The page contains buttons "Profile", "Recipes", "Weekly calendar", "Shopping list" and "History" that allow the user to navigate within the website/application.
 * **Profile:** The page contains information provided by the user upon registration and has buttons "Edit" (allowing the user to change the profile information) and "Save" (to save the changes).
 * **Recipes:** The page has buttons "Add new recipe" (allowing the user to add new recipe) and "All recipes" (to review all existing recipes).
