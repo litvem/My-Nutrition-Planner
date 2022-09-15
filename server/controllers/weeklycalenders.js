@@ -1,54 +1,66 @@
 var express = require('express');
+const weeklycalenderPath = '/api/profiles/:profileId/weeklycalenders';
+const specificWeeklycalenderPath = '/api/profiles/:profileId/weeklycalenders/:weeklycalenderId';
 var router = express.Router();
 
-var Weekcalender = require('../models/weeklycalender');
+var Weeklycalender = require('../models/weeklycalender');
 
-router.post('/api/weekcalenders',function(req, res,next) {
-    var weekcalender = new Weekcalender(req.body);
-    weekcalender.save(function(err,weekcalender){
-        if(err) {return next(err);}
-    res.status(201).json(weekcalender);    
+//Create weekly calender
+router.post(weeklycalenderPath,function(req, res,next) {
+    var weeklycalender = new Weeklycalender(req.body);
+    weeklycalender.save(function(err, weeklycalender) {
+        if(err) { return next(err); }
+        res.status(201).json(weeklycalender);    
   });
 });
 
-router.post('/api/weekcalenders/history',function(req, res,next) {
-  var weekcalender = new Weekcalender(req.body);
-  weekcalender.save(function(err,weekcalender){
-      if(err) {return next(err);}
-  res.status(201).json(weekcalender);    
-});
-});
-
-// get all 
-router.get('/api/weekcalenders/history', function(req,res,next){
-    Recipe.find(function(err,weekcalenders){
-      res.json({'weekcalenders:': weekcalenders});
-    })
+//Get all weekly calenders
+router.get(weeklycalenderPath, function(req, res, next) {
+    Weeklycalender.find(function(err, weeklycalenders){
+      if(err) { return next(err); }
+      res.json({'weeklycalenders:': weeklycalenders});
+    });
   });
   
-  // getting specific 
-  router.get('/api/weekcalenders/:id', function(req,res,next){
-    var id = req.params.id;
-    Weekcalender.findById(id,function(err,weekcalender){
-        if(err){return next(err);}
-        if(weekcalender == null){
-          return res.status(404).json({ 'message':'The weekcalender not found'});
-        }
-        res.json(weekcalender)
+//Get specific weekly calender
+router.get(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.id;
+  Weeklycalender.findOne(id, function(err, weeklycalender) {
+      if(err) { return next(err); }
+      if(weeklycalender === null) {
+        return res.status(404).json({ 'message' : 'The weekly calender not found' });
+      }
+      res.json(weeklycalender);
     });
   });
 
-  // deleting specific 
-  router.delete('/api/weekcalenders/:id', function(req, res, next) {
-    var id = req.params.id;
-    Weekcalender.findOneAndDelete({_id: id}, function(err, weekcalender) {
-        if (err) { return next(err); }
-        if (weekcalender === null) {
-            return res.status(404).json({'message': 'Weekcalender not found'});
-        }
-        res.json(weekcalender);
-    });
+//Update specific Weekly calender
+router.patch(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.id;
+  Weeklycalender.findById(id, function(err, weeklycalender) {
+     if (err) { return next(err); }
+     if (weeklycalender == null) {
+         return res.status(404).json({ "message" : "Weekly calender not found" });
+     }
+    weeklycalender.week = (req.body.week || weeklycalender.week);
+    weeklycalender.year = (req.body.year || weeklycalender.year);
+    weeklycalender.save();
+    res.json(weeklycalender);
+ });
 });
 
-  
+//Delete specific Weekly calender
+router.delete(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.id;
+  Weeklycalender.findOneAndDelete({_id: id}, function(err, weeklycalender) {
+      if (err) { return next(err); }
+      if (weeklycalender == null) {
+          return res.status(404).json({'message': 'Weekly calender not found'});
+      }
+      res.json(weeklycalender);
+  });
+});
+
+
+
   module.exports = router;
