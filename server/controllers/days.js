@@ -15,4 +15,12 @@ router.post(dayPath, function(req, res, next) {
     })
 });
 
+//Get all days
+router.get(dayPath, function(req, res, next) {
+    Day.find(function(err, days) {
+        if(err) { return next(err); }
+        res.json({ 'days': days });
+    });
+});
+
 module.exports = router; 
