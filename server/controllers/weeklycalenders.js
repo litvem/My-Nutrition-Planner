@@ -23,5 +23,16 @@ router.get(weeklycalenderPath, function(req, res, next) {
   });
 });
 
+//Get specific weekly calender
+router.get(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.id;
+  Weeklycalender.findOne(id, function(err, weeklycalender) {
+      if(err) { return next(err); }
+      if(weeklycalender === null) {
+        return res.status(404).json({ 'message' : 'The weekly calender not found' });
+      }
+      res.json(weeklycalender);
+    });
+  });
 
   module.exports = router;
