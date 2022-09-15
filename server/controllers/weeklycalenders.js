@@ -35,4 +35,21 @@ router.get(specificWeeklycalenderPath, function(req, res, next) {
     });
   });
 
+//Update specific attribute in Weekly calendar
+router.patch(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.weeklycalenderId;
+  Weeklycalender.findById(id, function(err, weeklycalender) {
+      if (err) { return next(err); }
+      if (weeklycalender == null) {
+        return res.status(404).json(
+          { "message" : "Weekly calendar not found" });
+      }
+      weeklycalender.week = (req.body.week || weeklycalender.week);
+      weeklycalender.year = (req.body.year || weeklycalender.year);
+      weeklycalender.days = (req.body.days || weeklycalender.days);
+      weeklycalender.save();
+      res.json(weeklycalender);
+    });
+});
+
   module.exports = router;
