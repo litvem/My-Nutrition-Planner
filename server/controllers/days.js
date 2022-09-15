@@ -23,4 +23,18 @@ router.get(dayPath, function(req, res, next) {
     });
 });
 
+//Get a specific day
+router.get(specificDayPath, function(req, res, next) {
+    var id = req.param.id;
+    Day.findOne(id, function(err, day) {
+        if (err) { return next(err); }
+        if (day == null) {
+            return res.status(404).json(
+                { "message": "Day not found" });
+        }
+        res.json(day);
+    });
+});
+
+
 module.exports = router; 
