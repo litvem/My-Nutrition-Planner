@@ -51,5 +51,17 @@ router.patch(specificDayPath, function(req, res, next) {
     });
 });
 
+//Delete specific day
+router.delete(specificDayPath, function(req, res, next) {
+    var id = req.params.id;
+    Day.findOneAndDelete({ _id: id }, function(err, day) {
+        if (err) { return next(err); }
+        if (day == null) {
+            return res.status(404).json(
+                { 'message': 'Day not found' });
+        }
+        res.json(day);
+    });
+});
 
 module.exports = router; 
