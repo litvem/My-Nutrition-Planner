@@ -29,7 +29,7 @@ router.get(specificWeeklycalenderPath, function(req, res, next) {
   Weeklycalender.findOne(id, function(err, weeklycalender) {
       if(err) { return next(err); }
       if(weeklycalender === null) {
-        return res.status(404).json({ 'message' : 'The weekly calender not found' });
+        return res.status(404).json({ 'message' : 'The weekly calendar not found' });
       }
       res.json(weeklycalender);
     });
@@ -50,6 +50,19 @@ router.patch(specificWeeklycalenderPath, function(req, res, next) {
       weeklycalender.save();
       res.json(weeklycalender);
     });
+});
+
+//Delete specific Weekly calendar
+router.delete(specificWeeklycalenderPath, function(req, res, next) {
+  var id = req.params.weeklycalenderId;
+  Weeklycalender.findOneAndDelete({_id: id}, function(err, weeklycalender) {
+      if (err) { return next(err); }
+      if (weeklycalender == null) {
+          return res.status(404).json(
+            {'message': 'Weekly calendar not found'});
+      }
+      res.json(weeklycalender);
+  });
 });
 
   module.exports = router;
