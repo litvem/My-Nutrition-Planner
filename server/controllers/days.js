@@ -36,5 +36,20 @@ router.get(specificDayPath, function(req, res, next) {
     });
 });
 
+//Update specific day
+router.patch(specificDayPath, function(req, res, next) {
+    var id = req.param.dayId;
+    Day.findById(id, function(err, day) {
+        if(err) { return next(err); }
+        if(day == null) {
+            return res.status(404).json(
+                { "message": "Day not found" });
+        }
+        day.name = (req.body.name || day.name);
+        day.save();
+        res.json(day);
+    });
+});
+
 
 module.exports = router; 
