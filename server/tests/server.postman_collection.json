@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "38aa9302-8d0f-4a12-a46e-b65d67306b97",
+		"_postman_id": "b8e9b2f8-f5b0-4a25-8df0-70464c52bdc2",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15823420"
@@ -17,21 +17,21 @@
 							"script": {
 								"exec": [
 									"var jsonData =  pm.response.json();\r",
-									"var profileId =jsonData._id;\r",
-									"pm.environment.set(\"profileID_1\", profileId);\r",
+									"var profileId = jsonData.userCreated._id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
 									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
 									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
+									"pm.test(\"Correct user response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"harry.potter@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\");\r",
+									"    pm.expect(jsonData.userCreated.question).to.eql(\"Which house?\");\r",
+									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Gryffindor\"); \r",
 									"});\r",
 									"\r",
 									"\r",
@@ -58,7 +58,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"email\":\"harry.potter@hogwarts.com\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles",
@@ -81,8 +81,8 @@
 							"script": {
 								"exec": [
 									"var jsonData =  pm.response.json();\r",
-									"var profileId =jsonData._id;\r",
-									"pm.environment.set(\"profileID_2\", profileId);\r",
+									"var profileId =jsonData.userCreated._id;\r",
+									"pm.environment.set(\"profileID_2\", profileId)\r",
 									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
@@ -91,11 +91,10 @@
 									"\r",
 									"pm.test(\"Correct profile response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.username).to.eql(\"RonWeasley\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"Hogwarts321\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"ron.weasly@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Favorite color?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"Orange\"); \r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
+									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts321\");\r",
+									"    pm.expect(jsonData.userCreated.question).to.eql(\"Favorite color?\");\r",
+									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Orange\"); \r",
 									"});\r",
 									"\r",
 									""
@@ -120,7 +119,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\",\r\n    \"email\":\"ron.weasly@hogwarts.com\",\r\n    \"question\":\"Favorite color?\",\r\n    \"answer\": \"Orange\"\r\n}"
+							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\",\r\n    \"question\":\"Favorite color?\",\r\n    \"answer\": \"Orange\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles",
@@ -136,31 +135,21 @@
 					"response": []
 				},
 				{
-					"name": "Create profile 3",
+					"name": "Expect- Username already",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId =jsonData._id;\r",
-									"pm.environment.set(\"profileID_3\", profileId);\r",
 									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
+									"pm.test(\"Correct status code\",function(){\r",
+									"    pm.response.to.have.status(409);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct profile response\", function () {\r",
-									"    var jsonData = pm.response.json(); \r",
-									"    pm.expect(jsonData.username).to.eql(\"Lord Voldemort\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"you-know-who\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"tom.riddle@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Pet name?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"Nagini\"); \r",
-									"});\r",
-									"\r",
-									""
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"      pm.expect(jsonData.message).to.eql(\"Username already exists\"); \r",
+									"});      "
 								],
 								"type": "text/javascript"
 							}
@@ -182,7 +171,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"Lord Voldemort\",\r\n    \"password\":\"you-know-who\",\r\n    \"email\":\"tom.riddle@hogwarts.com\",\r\n    \"question\":\"Pet name?\",\r\n    \"answer\": \"Nagini\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles",
@@ -198,7 +187,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all profiles",
+					"name": "Get all -  2 profiles",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -213,6 +202,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -242,7 +235,7 @@
 					"response": []
 				},
 				{
-					"name": "Get specific profile",
+					"name": "Get profile 1",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -264,11 +257,10 @@
 									"\r",
 									"pm.test(\"Correct profile response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"harry.potter@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(jsonData.user.username).to.eql(\"HarryPotter\");\r",
+									"    pm.expect(jsonData.user.password).to.eql(\"Hogwarts123\");\r",
+									"    pm.expect(jsonData.user.question).to.eql(\"Which house?\");\r",
+									"    pm.expect(jsonData.user.answer).to.eql(\"Gryffindor\"); \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -279,76 +271,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:id",
+							"raw": "{{host}}/api/profiles/:profileId",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								":id"
+								":profileId"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "profileId",
 									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Change Profile3",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct camel response\", function () {\r",
-									"    var jsonData = pm.response.json(); \r",
-									"    pm.expect(jsonData.username).to.eql(\"HermioneGranger\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"Fluffly123\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"hermione.granger@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Favorite book?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"The Book Thief\"); \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n     \"username\":\"HermioneGranger\",\r\n    \"password\":\"Fluffly123\",\r\n    \"email\":\"hermione.granger@hogwarts.com\",\r\n    \"question\":\"Favorite book?\",\r\n    \"answer\": \"The Book Thief\" \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:id",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "{{profileID_3}}"
 								}
 							]
 						}
@@ -362,18 +297,16 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
+									"pm.test(\"Correct status code\",function(){\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct profile response\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.email).to.eql(\"harry.james.potter@hogwarts.com\");\r",
-									"    pm.expect(jsonData.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(jsonData.updatedUser.username).to.eql(\"HarryPotter\");\r",
+									"    pm.expect(jsonData.updatedUser.password).to.eql(\"Hogwarts123\");\r",
+									"    pm.expect(jsonData.updatedUser.question).to.eql(\"Which house?\");\r",
+									"    pm.expect(jsonData.updatedUser.answer).to.eql(\"Under the stairs\"); \r",
 									"  \r",
 									"  \r",
 									"});"
@@ -387,7 +320,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\":\"harry.james.potter@hogwarts.com\"\r\n}",
+							"raw": "{\r\n  \"answer\":\"Under the stairs\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -395,18 +328,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/:id",
+							"raw": "{{host}}/api/profiles/:profileId",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								":id"
+								":profileId"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "profileId",
 									"value": "{{profileID_1}}"
 								}
 							]
@@ -421,10 +354,14 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(204);\r",
-									"});"
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct delete message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
 								],
 								"type": "text/javascript"
 							}
@@ -443,64 +380,18 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:id",
+							"raw": "{{host}}/api/profiles/:profileId",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								":id"
+								":profileId"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "expect a non-existing profile",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"/*\r",
-									"pm.test(\"Not found message\", function () {\r",
-									"    pm.response.to.have.status(\" Profile not found\");\r",
-									"});\r",
-									" */\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:id",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
+									"key": "profileId",
 									"value": "{{profileID_1}}"
 								}
 							]
@@ -517,7 +408,7 @@
 								"exec": [
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
-									"    pm.response.to.have.status(204);\r",
+									"    pm.response.to.have.status(200);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -537,18 +428,18 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:id",
+							"raw": "{{host}}/api/profiles/:profileId",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								":id"
+								":profileId"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "profileId",
 									"value": "{{profileID_2}}"
 								}
 							]
@@ -557,15 +448,14 @@
 					"response": []
 				},
 				{
-					"name": "Delete specific profile 3",
+					"name": "detele-error message",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(204);\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -585,19 +475,101 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:id",
+							"raw": "{{host}}/api/profiles/:profileId",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								":id"
+								":profileId"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "{{profileID_3}}"
+									"key": "profileId",
+									"value": "6324fc6dfae32c63c85a05b9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All- error message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Profile not found\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get spec- error message",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Profile not found\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "6324ebae2552d448d071cc78"
 								}
 							]
 						}
@@ -605,10 +577,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Recipes",
-			"item": []
 		}
 	],
 	"event": [
