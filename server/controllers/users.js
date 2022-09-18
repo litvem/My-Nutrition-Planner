@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 var router = express.Router();
 
 var User = require('../models/user');
-var Recipe = require('../models/recipe');
 
 const userPath = '/api/profiles';
 const specificUserPath = '/api/profiles/:profileId';

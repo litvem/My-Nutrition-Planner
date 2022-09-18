@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Profiles",
+			"name": "Users Controller Test",
 			"item": [
 				{
 					"name": "Create profile 1",
@@ -89,7 +89,7 @@
 									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
+									"pm.test(\"Correct user response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
 									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
 									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts321\");\r",
@@ -146,7 +146,7 @@
 									"    pm.response.to.have.status(409);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
+									"pm.test(\"Correct  error response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
 									"      pm.expect(jsonData.message).to.eql(\"Username already exists\"); \r",
 									"});      "
@@ -255,7 +255,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
+									"pm.test(\"Correct user response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
 									"    pm.expect(jsonData.user.username).to.eql(\"HarryPotter\");\r",
 									"    pm.expect(jsonData.user.password).to.eql(\"Hogwarts123\");\r",
@@ -291,7 +291,7 @@
 					"response": []
 				},
 				{
-					"name": "Change specific profile1",
+					"name": "Change profile 1",
 					"event": [
 						{
 							"listen": "test",
@@ -348,7 +348,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete specific profile 1",
+					"name": "Delete  profile 2",
 					"event": [
 						{
 							"listen": "test",
@@ -358,7 +358,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Correct delete message\"), function(){\r",
+									"pm.test(\"Correct user message\"), function(){\r",
 									"      var jsonData = pm.response.json(); // parse to json\r",
 									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
 									"}"
@@ -400,55 +400,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete specific profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "detele-error message",
+					"name": "Expected- User not found",
 					"event": [
 						{
 							"listen": "test",
@@ -495,7 +447,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All- error message",
+					"name": "Expected -Get All- User not found",
 					"event": [
 						{
 							"listen": "test",
@@ -505,7 +457,7 @@
 									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Profile not found\", function () {\r",
+									"pm.test(\"Correct error response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
 									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
 									"});\r",
@@ -533,7 +485,7 @@
 					"response": []
 				},
 				{
-					"name": "Get spec- error message",
+					"name": "Expected-Spec- User not found",
 					"event": [
 						{
 							"listen": "test",
@@ -543,7 +495,7 @@
 									"    pm.response.to.have.status(404);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Profile not found\", function () {\r",
+									"pm.test(\"Correct error response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
 									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
 									"});\r",
@@ -570,6 +522,473 @@
 								{
 									"key": "profileId",
 									"value": "6324ebae2552d448d071cc78"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipes Controller Test",
+			"item": [
+				{
+					"name": "Create profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();\r",
+									"var profileId =jsonData.userCreated._id;\r",
+									"pm.environment.set(\"profileID_2\", profileId)\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
+									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts321\");\r",
+									"    pm.expect(jsonData.userCreated.question).to.eql(\"Favorite color?\");\r",
+									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Orange\"); \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\",\r\n    \"question\":\"Favorite color?\",\r\n    \"answer\": \"Orange\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create recipe 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();\r",
+									"var recipeId = jsonData.recipeCreated._id;\r",
+									"pm.environment.set(\"recipeId1\", recipeId);\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									"    pm.expect(jsonData.recipeCreated.category).to.eql(\"Lunch\");\r",
+									"    pm.expect(jsonData.recipeCreated.tag).to.toString.to.eql(\"tag1 tag2\");\r",
+									"    pm.expect(jsonData.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									" \r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Recipe1\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad\",\"fast\"],\r\n    \"recipeItems\": [\"ketchup\", \"pasta\"],\r\n    \"instruction\":\"Cooking instruction\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create recipe 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();\r",
+									"var recipeId =jsonData.recipeCreated._id;\r",
+									"pm.environment.set(\"recipeId2\", recipeId);\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									"    pm.expect(jsonData.recipeCreated.category).to.eql(\"Lunch\");\r",
+									"    pm.expect(jsonData.recipeCreated.tag).to.toString.to.eql(\"tag1 tag2\");\r",
+									"    pm.expect(jsonData.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									" \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Recipe2\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"diet\"],\r\n    \"recipeItems\": [\"sallad\", \"lemon\"],\r\n    \"instruction\":\"Cooking instruction\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all recipes",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete recipe 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message.name).to.eql(\"The recipe has been deleted\");\r",
+									" \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes",
+								":recipeId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "recipeId",
+									"value": "{{recipeId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete recipe 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(202);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.recipeCreated.name).to.eql(\"Not found\");\r",
+									" \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes",
+								":recipeId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "recipeId",
+									"value": "{{recipeId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
 								}
 							]
 						}

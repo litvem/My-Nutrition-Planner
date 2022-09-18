@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Recipe = require('../models/recipe');
+const user = require('../models/user');
 const User = require('../models/user');
 
 var recipesPath = '/api/profiles/:profileId/recipes';
@@ -17,70 +18,44 @@ router.post(recipesPath,function(req, res,next) {
       return res.status(404).json({message:"User not found"});
     }
     var recipe = new Recipe(req.body);
-    console.log( "created" + recipe);
     recipe.save()
-    .then(recipe =>{
-      user.recipes.push(recipe);
-    user.save();
-    console.log("Recipe: " + recipe.name + " has been added to user: " + user.username)
+    
     res.status(201).json({ 
       recipeCreated: recipe,
       links: {
+        rel: "self",
         type: "GET",
         url: recipesPath + recipe._id
-      } });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
-  })
-});
-
-/*
-User.findById(req.params.profileId, function(err,user){
-    if(user ==null){
-      return res.status(404).json({message:"User not found"});
-    }
-
-    var recipe = new Recipe(req.body);
-    console.log( "created" + recipe);
-    recipe.save(function (err){
-      if(err){
-        return res.status(500);
       }
-      console.log("Recipe" + recipe.name + "created");
     });
+
     user.recipes.push(recipe);
     user.save();
-    console.log("Recipe: " + recipe.name + " has been added to user: " + user.username)
-    res.status(201).json({ 
-      recipeCreated: recipe,
-      links: {
-        type: "GET",
-        url: recipesPath + recipe._id
-      } });
+      
+  }) 
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
   });
-*/
-
+});
 
 // get all 
 router.get(recipesPath, function(req,res,next){
   User.findById({_id:req.params.profileId})
-  .select('recipes')
   .populate('recipes')
   .then(user => {
-    if (!user.recipes) {
+    if (!user) {
       return res.status(404).json({
-        message: "Recipe not found"
+        message: "Not found"
       });
     }
     res.status(200).json({
-       recipes: recipes.recipes,
+       recipes: user.recipes,
       request: {
-        type: "GET",
-        url: "http://localhost:3000/recipes"
+        rel: "Recipe",
+        type: "POST",
+        url: recipesPath
       }
     });
   })
@@ -91,25 +66,39 @@ router.get(recipesPath, function(req,res,next){
   });
 });
 
-// getting specific - NOT WORKING YET -gettinf 
-router.get(specificRecipesPath, function(req,res,next){
-  User.find({_id: req.params.profileId})
-  .populate('recipes',{
-    match_:{_id: {$eq: req.params.recipeId}},
+// getting specific 
+/*
+router.get('/api/profiles/:profileId/recipes/:recipeId', function(req,res,next){
+
+  User.findOne({_id:req.params.profileId })
+  .populate({
+    path: "recipies" , match_:{_id: {$eq: req.params.recipeId}},
   })
+  .exec(function(err, user){
+      if(err){
+        return res.status(500).send(err);
+      }
+      if(user === null|| recipes === null){
+        return res.status(404).json({message: 'Not found'}); 
+      }
+
+      return res.status(200).send(user)
+  });  
+});
+*/
+
+
+
+router.get('/api/profiles/:profileId/recipes/:recipeId', function(req,res,next){
+
+  User.findOne({_id:req.params.profileId })
+  .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
   .exec()
   .then(user =>{
-    if(user === null || recipe === null){
-      return res.status(404).json({"message": 'Not found'}); 
+    if(user === null){
+      return res.status(404).json({message: 'Not found'}); 
     }
-    console.log(user.recipe);
-    res.status(200).json({
-      recipes: user.recipes,
-    request: {
-       type: "GET",
-       url: "http://localhost:3000/recipes"
-    }
-   });
+    res.status(200).send(user.recipes)
   })
   .catch(err => {
     res.status(500).json({
@@ -118,16 +107,16 @@ router.get(specificRecipesPath, function(req,res,next){
   });  
 });
 
+
 // patch - partial replacement - NOT DONE YET
 router.patch(specificRecipesPath, function(req, res, next) {
-  User.find({_id: req.params.profileId})
-  .populate('recipes',{
-    match_:{_id: {$eq: req.params.recipeId}},
-  })
+  
+  User.findOne({_id:req.params.profileId })
+  .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
   .exec()
   .then(user =>{
-    if(user === null || recipe === null){
-      return res.status(404).json({"message": 'Not found'}); 
+    if(user === null){
+      return res.status(404).json({message: 'Not found'}); 
     }
     user.recipes.name = (req.body.name ||  user.recipes.name);
     user.recipes.category = (req.body.category ||  user.recipes.category);      recipe.picture = (req.body.picture || recipe.picture);
@@ -135,8 +124,7 @@ router.patch(specificRecipesPath, function(req, res, next) {
     user.recipe.item = (req.body.item ||  user.recipes.item);
     user.recipes.instruction = (req.body.instruction ||  user.recipes.instruction);
     user.recipes.save();
-  
-    res.status(200).json({
+    return res.status(200).json({
       updatedRecipes: user.recipes,
     request: {
       rel: 'self',
@@ -149,28 +137,27 @@ router.patch(specificRecipesPath, function(req, res, next) {
     res.status(500).json({
       error: err
     });
-  });   
+  }); 
 });
 
 
-// deleting specific - NOT DEL 
+// deleting specific
 router.delete(specificRecipesPath, function(req, res, next) {
-  User.findByIdAndUpdate({_id: req.params.profileId})
+  User.findByIdAndUpdate({_id:req.params.profileId })
   .populate('recipes')
   .exec()
   .then(user =>{
-    if(user === null || user.recipes === null ){
+    if(user === null || user.recipes._id === req.params.recipeId ){
       return res.status(404).json({message: "Not found"});
+    }else{
+      user.recipes.pull({_id: req.params.recipeId});
+      user.save();
+      return res.status(200).send({
+        message : "The recipe has been deleted",
+        recipe: user.recipes._id,
+     });
     }
-    user.recipes.pull({_id: req.params.recipeId});
-    user.save();
-    res.status(200).send({
-      recipes : user.recipes,
-      links:{
-       type: "POST",
-       url: recipesPath
-      }
-   });
+    
   })
   .catch(err => {
     res.status(500).json({
