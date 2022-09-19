@@ -11,12 +11,13 @@ var recipeSchema = new Schema({
          contectType: String
     }},
     tag: {type:[String]},
-    item:{ type: {
-     item: String, 
-     amount: Number, // look into how to use doubles
-     lowercase: true // converts to lowercase - only for strings 
-     },
     instruction: {type:String},
+    items:{ type: [{
+     item: {type:String}, 
+     amount: {type: Number},
+     unit:{type: String,
+           enum:["grams","tablespoon","teaspoon","dl", "ml"]}
+     }]
      }
  });
  module.exports = mongoose.model('recipes', recipeSchema);

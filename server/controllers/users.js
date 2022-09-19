@@ -63,7 +63,7 @@ router.get(userPath, function(req,res,next){
     link: {
       rel: "self",
       type: 'POST',
-      hrel: userPath,
+      hrel: 'http://localhost:3000/api/profiles',
     }
     });
   })
@@ -88,7 +88,7 @@ router.get(specificUserPath, function(req,res,next){
       link: {
         rel: "self",
         type: 'DELETE',
-        hrel: userPath + user._id,
+        hrel: 'http://localhost:3000/api/profiles/' + user._id,
       }
     });
   })
@@ -119,7 +119,7 @@ router.patch(specificUserPath, function(req, res, next) {
       link: {
         rel: "self",
         type: 'GET',
-        hrel: userPath + user._id,
+        hrel: 'http://localhost:3000/api/profiles/' + user._id,
       }
     });
 
@@ -147,7 +147,7 @@ router.delete(specificUserPath, function(req, res, next) {
       link: {
         rel: "self",
         type: 'POST',
-        hrel: userPath,
+        hrel: 'http://localhost:3000/api/profiles/',
       }
     });
   })
