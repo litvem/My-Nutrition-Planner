@@ -9,7 +9,7 @@ var history = require('connect-history-api-fallback');
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myNutritionPlanner';
 var port = process.env.PORT || 3000;
 
-var profilesController = require('./controllers/profiles');
+var usersController = require('./controllers/users');
 var recipesController = require('./controllers/recipes');
 var shoppinglistsController = require('./controllers/shoppinglists');
 var weeklycalendersController = require('./controllers/weeklycalenders');
@@ -42,7 +42,7 @@ app.get('/api', function(req, res) {
     res.json({'message': 'Welcome to MyNutritionPlanner!'});
 });
 
-app.use(profilesController);
+app.use(usersController);
 app.use(recipesController);
 app.use(weeklycalendersController);
 app.use(shoppinglistsController);
