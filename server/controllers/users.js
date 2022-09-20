@@ -9,7 +9,7 @@ const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
 router.post(userPath,function(req, res,next) {
-  User.find({ username: req.body.username })
+  User.find({ _id: req.body.username })
     .exec()
     .then(username => {
       if (username.length >= 1) {
@@ -17,7 +17,12 @@ router.post(userPath,function(req, res,next) {
           message: "Username already exists"
         });
       } else {
-        const user = new User(req.body);
+        const user = new User({
+          _id: req.body.username,
+          password: req.body.password,
+          question: req.body.question,
+          answer: req.body.answer
+        });
         user
         .save()
         .then(result => {
