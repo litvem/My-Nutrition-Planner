@@ -16,13 +16,7 @@ router.post(daysPath, function(req, res, next) {
             return res.status(404).json({ message: "User not found" });
         }
 
-        var dayId = user.days.length + 1;
-        var day = new Day({
-            name: req.body.name,
-            week: req.body.week,
-            year: req.body.year,
-            recipes: req.body.recipes
-        });
+        var day = new Day(req.body);
 
         day.save()
 
@@ -53,7 +47,7 @@ router.get(daysPath, function(req, res, next) {
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         } else if(user.days.length === 0) {
-            return res.status(404).json({ message: "Day not found"});
+            return res.status(404).json({ message: "Day not found" });
         } else {
             return res.status(200).json({
                 days: user.days,
