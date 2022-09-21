@@ -5,7 +5,7 @@ var Day = require('../models/day');
 const User = require('../models/user');
 
 var daysPath = '/api/profiles/:profileId/days';
-var specificDayPath = '/api/profiles/:profileId/days';
+var specificDayPath = '/api/profiles/:profileId/days/:dayId';
 
 //Create day
 router.post(daysPath, function(req, res, next) {
@@ -80,7 +80,7 @@ router.get(specificDayPath, function(req, res, next) {
         }
 
         res.status(200).json({
-            days: user.days,
+            day: user.days,
             links: {
                 rel: "self",
                 type: "PATCH",
@@ -137,7 +137,7 @@ router.put(specificDayPath, function(res, req, next) {
 //Delete specific day
 router.delete(specificDayPath, function(req, res, next) {
     User.findOne({ _id: req.params.profileId })
-    .populate({ path: 'days', match: { $eq: req.params.dayId }})
+    .populate({ path: 'days', match: { _id: {$eq: req.params.dayId }}})
     .exec()
     .then(user => {
             if(user == null) {
