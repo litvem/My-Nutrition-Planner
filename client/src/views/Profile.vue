@@ -1,7 +1,8 @@
 <template>
     <div>
         <h1>Profile</h1>
-        <button class="btn" v-on:click="goToEditProfile">Edot profile</button>
+        <button class="btn" v-on:click="goToEditProfile">Edit profile</button>
+        <button class="btn" v-on:click="goToRecipes">Recipes</button>
     </div>
 </template>
 
@@ -11,6 +12,9 @@ export default {
   methods: {
     goToEditProfile() {
       this.$router.push('/editProfile')
+    },
+    goToRecipes() {
+      this.$router.push('/recipes')
     }
   }
 }
@@ -22,5 +26,7 @@ export default {
     }
     .btn {
         background-color: turquoise;
+        margin-bottom: 1em;
+        margin-right: 1em;
     }
 </style>

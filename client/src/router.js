@@ -7,6 +7,7 @@ import ForgotPassword from './views/ForgotPassword.vue'
 import UserHome from './views/UserHome.vue'
 import Profile from './views/Profile.vue'
 import EditProfile from './views/EditProfile.vue'
+import Recipes from './views/Recipes.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/editProfile',
       name: 'editProfile',
       component: EditProfile
+    },
+    {
+      path: '/recipes',
+      name: 'recipes',
+      component: Recipes
     }
   ]
 })
