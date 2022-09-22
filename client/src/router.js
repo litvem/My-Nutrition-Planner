@@ -5,6 +5,7 @@ import Register from './views/Register.vue'
 import Login from './views/Login.vue'
 import ForgotPassword from './views/ForgotPassword.vue'
 import UserHome from './views/UserHome.vue'
+import Profile from './views/Profile.vue'
 
 Vue.use(Router)
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/userHome',
       name: 'userHome',
       component: UserHome
+    },
+    {
+      path: '/pfofile',
+      name: 'profile',
+      component: Profile
     }
   ]
 })
