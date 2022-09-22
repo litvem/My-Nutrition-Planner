@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Edit Profile</h1>
-        <button class="btn" v-on:click="goToUserHome">Save</button>
+        <button class="btn" v-on:click="goToProfile">Save</button>
     </div>
 </template>
 
@@ -9,8 +9,8 @@
 export default {
   name: 'profile',
   methods: {
-    goToUserHome() {
-      this.$router.push('/userHome')
+    goToProfile() {
+      this.$router.push('/profile')
     }
   }
 }
