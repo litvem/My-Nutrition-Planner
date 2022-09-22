@@ -1,9 +1,8 @@
 <template>
   <div>
     <b-jumbotron header="Welcome to MyNutritionPlanner">
-      <b-button class="btn_message" variant="primary" v-on:click="getMessage()">Get Message from Server</b-button>
-      <p>Message from the server:<br/>
-      {{ message }}</p>
+      <b-button class="btn" variant="primary" v-on:click="goToRegister">Register</b-button>
+      <b-button class="btn" variant="primary" v-on:click="goToLogin">Log in</b-button>
     </b-jumbotron>
     <app-footer/>
   </div>
@@ -11,7 +10,6 @@
 
 <script>
 // @ is an alias to /src
-import { Api } from '@/Api'
 import AppFooter from '@/components/AppFooter.vue'
 
 export default {
@@ -25,21 +23,19 @@ export default {
     }
   },
   methods: {
-    getMessage() {
-      Api.get('/')
-        .then(response => {
-          this.message = response.data.message
-        })
-        .catch(error => {
-          this.message = error
-        })
+    goToRegister() {
+      this.$router.push('/register')
+    },
+    goToLogin() {
+      this.$router.push('/login')
     }
   }
 }
 </script>
 
 <style>
-.btn_message {
+.btn {
   margin-bottom: 1em;
+  margin-right: 1em;
 }
 </style>
