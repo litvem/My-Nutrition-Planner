@@ -4,6 +4,7 @@
         <button class="btn" v-on:click="goToProfile">Profile</button>
         <button class="btn" v-on:click="goToRecipes">Recipes</button>
         <button class="btn" v-on:click="goToWeeklyCalendar">Weekly calendar</button>
+        <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
     </div>
 </template>
 
@@ -19,6 +20,9 @@ export default {
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
+    },
+    goToShoppingList() {
+      this.$router.push('/shoppingList')
     }
   }
 }
