@@ -6,6 +6,7 @@ import Login from './views/Login.vue'
 import ForgotPassword from './views/ForgotPassword.vue'
 import UserHome from './views/UserHome.vue'
 import Profile from './views/Profile.vue'
+import EditProfile from './views/EditProfile.vue'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/pfofile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/editProfile',
+      name: 'editProfile',
+      component: EditProfile
     }
   ]
 })

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <h1>Profile</h1>
-        <button class="btn" v-on:click="goToEditProfile">Edot profile</button>
+        <h1>Edit Profile</h1>
+        <button class="btn" v-on:click="goToUserHome">Save</button>
     </div>
 </template>
 
@@ -9,8 +9,8 @@
 export default {
   name: 'profile',
   methods: {
-    goToEditProfile() {
-      this.$router.push('/editProfile')
+    goToUserHome() {
+      this.$router.push('/userHome')
     }
   }
 }
