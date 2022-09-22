@@ -2,6 +2,8 @@
     <div>
         <h1>User Home Page</h1>
         <button class="btn" v-on:click="goToProfile">Profile</button>
+        <button class="btn" v-on:click="goToRecipes">Recipes</button>
+        <button class="btn" v-on:click="goToWeeklyCalendar">Weekly calendar</button>
     </div>
 </template>
 
@@ -11,6 +13,12 @@ export default {
   methods: {
     goToProfile() {
       this.$router.push('/profile')
+    },
+    goToRecipes() {
+      this.$router.push('/recipes')
+    },
+    goToWeeklyCalendar() {
+      this.$router.push('/weeklyCalendar')
     }
   }
 }
