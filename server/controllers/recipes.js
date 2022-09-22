@@ -6,46 +6,6 @@ const User = require('../models/user');
 
 var recipesPath = '/api/profiles/:profileId/recipes';
 var specificRecipesPath = '/api/profiles/:profileId/recipes/:recipeId';
-/*
-router.post(recipesPath,function(req, res,next) {
-  User.findById(req.params.profileId)
-  .exec()
-  .then(user =>{
-    if(user ==null){
-      return res.status(404).json({message:"User not found"});
-    }
-    var recipe = new Recipe({
-     // _id: recipeID,
-      name: req.body.name,
-      category: req.body.category,
-      picture:req.body.picture,
-      tag: req.body.tag,
-      instruction: req.body.instruction,
-      items:req.body.items
-    });
-
-    recipe.save()
-    .then(recipe =>{
-        res.status(201).json({ 
-        recipeCreated: recipe,
-        links: {
-         ref:'self', 
-         type: "GET",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes/' + recipes._id 
-        } 
-      });
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-    });
-
-    user.recipes.push(recipe);
-    user.save();
-  });
-});
-*/
 
 router.post(recipesPath,function(req, res,next) {
   User.findById(req.params.profileId)
@@ -54,8 +14,13 @@ router.post(recipesPath,function(req, res,next) {
     if(user ==null){
       return res.status(404).json({message:"User not found"});
     }
-    
-    var recipeID = user.recipes.length + 1;
+    /*
+    const recipeIndex = user.recipes.filter(recipeName,index,recipeArray => 
+      recipeArray.indexOf(recipeID)==index);
+      if(recipeIndex === -1){
+        return res.status(404).json({message:"Recipe name already exist"});
+      }
+      */
     var recipe = new Recipe({
      // _id: recipeID,
       name: req.body.name,
@@ -150,6 +115,30 @@ router.get(specificRecipesPath, function(req,res,next){
   });  
 });
 
+//PATCH
+router.patch(specificRecipesPath, function (req, res, next) {
+  User.findById(req.params.profileId)
+  .then(user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.recipes.length === 0){
+      return res.status(404).json({message: 'Recipe not found'})
+    }
+
+    Recipe.findByIdAndUpdate(req.params.recipeId, req.body, { new: true })
+    .then(recipe =>{
+      return res.status(200).json(recipe);
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+  }) 
+});
+
+
 
 // put 
 router.put(specificRecipesPath, function(req, res, next) {
@@ -211,11 +200,10 @@ router.delete(specificRecipesPath, function(req, res, next) {
 
     Recipe.findOneAndDelete({_id: req.params.recipeId})
     .then(recipe =>{
-      var recipeName = recipe.name;
-
+     
       return res.status(200).send({
         message : "The recipe has been deleted",
-        recipeName: recipeName,
+        deletedRecipe: recipe.name,
         link:{
           rel:'recipes',
           type:'POST',
@@ -230,6 +218,40 @@ router.delete(specificRecipesPath, function(req, res, next) {
     });
   }) 
 });
+
+// filter
+// get all 
+router.get('/api/profiles/:profileId/recipes', function(req,res,next){
+  var type = req.query.params.type;
+  var filter = req.query.params.filter;
+
+  User.findById({_id:req.params.profileId})
+  .populate('recipes')
+  .then(user => {
+      if (!user) {
+          return res.status(404).json({
+          message: "Not found"
+          });
+      }
+      if(user.recipes.length === 0){
+          return res.status(404).json({
+          message: "Recipe not found"
+          });
+      }
+      
+      Recipe.find({type: filter})
+      .then(recipes =>{
+          return res.status(200).json(recipes);
+      })   
+              
+  })
+  .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+  });
+});
+
 
 
 
