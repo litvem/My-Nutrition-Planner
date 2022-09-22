@@ -8,6 +8,7 @@ const userPath = '/api/profiles';
 const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
+
 router.post(userPath,function(req, res,next) {
   User.find({ _id: req.body.username })
     .exec()
@@ -26,7 +27,6 @@ router.post(userPath,function(req, res,next) {
         user
         .save()
         .then(result => {
-          console.log(result);
           res.status(201).json({
             userCreated: result,
             links: [{
@@ -112,7 +112,6 @@ router.patch(specificUserPath, function(req, res, next) {
     if (user == null) {
       return res.status(404).json({"message": userNotFound});
     }
-    user.username = (req.body.username || user.username);
     user.password = (req.body.password || user.password);
     user.question = (req.body.question || user.question);
     user.answer = (req.body.answer || user.answer);
@@ -148,7 +147,7 @@ router.delete(specificUserPath, function(req, res, next) {
     }
     res.status(200 ).json({
       message:'The user has been deleted',
-      deleteRecipe: user,
+      deletedUSer: user,
       link: {
         rel: "self",
         type: 'POST',

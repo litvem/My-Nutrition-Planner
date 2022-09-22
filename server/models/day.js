@@ -6,8 +6,8 @@ var daySchema = new Schema({
         enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']},
     week: { type: Number },
     year: { type: Number },
-    recipes: { type: [Schema.Types.ObjectId], ref: 'recipes' }
+    recipes:{ type: [Schema.Types.ObjectId], ref:'recipes'}
     // restriction 5 recipes in the front end.
 });
 
-module.exports = mongoose.model('days', daySchema);
+module.exports = mongoose.model('days',daySchema);
