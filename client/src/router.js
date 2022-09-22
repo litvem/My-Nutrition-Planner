@@ -8,6 +8,7 @@ import UserHome from './views/UserHome.vue'
 import Profile from './views/Profile.vue'
 import EditProfile from './views/EditProfile.vue'
 import Recipes from './views/Recipes.vue'
+import AddRecipe from './views/AddRecipe.vue'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/recipes',
       name: 'recipes',
       component: Recipes
+    },
+    {
+      path: '/addRecipe',
+      name: 'addRecipe',
+      component: AddRecipe
     }
   ]
 })
