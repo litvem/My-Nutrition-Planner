@@ -3,6 +3,7 @@
     <b-jumbotron header="Welcome to MyNutritionPlanner">
       <b-button class="btn" variant="primary" v-on:click="goToRegister">Register</b-button>
       <b-button class="btn" variant="primary" v-on:click="goToLogin">Log in</b-button>
+      <a href="./ForgotPassword.vue">Forgot password</a>
     </b-jumbotron>
     <app-footer/>
   </div>
@@ -28,6 +29,9 @@ export default {
     },
     goToLogin() {
       this.$router.push('/login')
+    },
+    goToForgoPassword() {
+      this.$router.push('/forgotPassword')
     }
   }
 }
