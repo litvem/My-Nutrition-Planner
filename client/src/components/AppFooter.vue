@@ -1,5 +1,5 @@
 <template>
-    <h1>MyNutritionPlanner 2022</h1>
+    <footer>MyNutritionPlanner 2022</footer>
 </template>
 
 <script>
@@ -11,5 +11,8 @@ export default {
 <style scoped>
     h1 {
         color:turquoise;
+    }
+    footer {
+        margin-top: auto;
     }
 </style>

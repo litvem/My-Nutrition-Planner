@@ -5,18 +5,16 @@
       <b-button class="btn" variant="primary" v-on:click="goToLogin">Log in</b-button>
       <a href="./ForgotPassword.vue">Forgot password</a>
     </b-jumbotron>
-    <app-footer/>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import AppFooter from '@/components/AppFooter.vue'
+// import AppFooter from '@/components/AppFooter.vue'
 
 export default {
   name: 'home',
   components: {
-    AppFooter
   },
   data() {
     return {

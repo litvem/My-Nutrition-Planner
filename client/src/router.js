@@ -44,7 +44,7 @@ export default new Router({
       component: UserHome
     },
     {
-      path: '/pfofile',
+      path: '/profile', // fixed typo
       name: 'profile',
       component: Profile
     },
