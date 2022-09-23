@@ -5,6 +5,7 @@ var shoppingListSchema = new Schema({
     week:{type: Number},
     year:{type: Number},
     items:{ type: [{
+      itemId:{type: Number },
         item: {type:String,
               required: true}, 
         amount: {type: Number},

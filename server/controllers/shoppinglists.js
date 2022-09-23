@@ -115,7 +115,7 @@ router.patch(specificShoppinglistsPath, function (req, res, next) {
     Shoppinglist.findByIdAndUpdate(req.params.shoplistId, req.body, { new: true })
     .then(shoppinglists =>{
       return res.status(200).json({
-        UpdatedShoppinglist: shoppinglists
+        updatedShoppinglist: shoppinglists
       });  
     })
     .catch(err => {

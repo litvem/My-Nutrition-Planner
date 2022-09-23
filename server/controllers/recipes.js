@@ -56,7 +56,7 @@ router.post(recipesPath,function(req, res,next) {
 
 // get all 
 router.get(recipesPath, function(req,res,next){
-  User.findById({_id:req.params.profileId})
+  User.findOne({_id:req.params.profileId})
   .populate('recipes')
   .then(user => {
     if (!user) {
@@ -128,7 +128,8 @@ router.patch(specificRecipesPath, function (req, res, next) {
 
     Recipe.findByIdAndUpdate(req.params.recipeId, req.body, { new: true })
     .then(recipe =>{
-      return res.status(200).json(recipe);
+      return res.status(200).json({
+        updatedRecipe: recipe});
     })
     .catch(err => {
       res.status(500).json({

@@ -116,7 +116,7 @@ router.patch(specificDaysPath, function (req, res, next) {
     Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
     .then(day =>{
       return res.status(200).json({
-        UpdatedDay: day
+        updatedDay: day
       });  
     })
     .catch(err => {
