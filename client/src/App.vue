@@ -62,7 +62,10 @@ export default {
   color: #2c3e50;
 }
 body {
-  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: auto 0;
 }
 </style>
