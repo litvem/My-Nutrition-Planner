@@ -10,7 +10,6 @@ var userSchema = new Schema({
     answer:{type: String,
         required: true},
     recipes: {type: [Schema.Types.ObjectId], ref: 'recipes'},
-    weeklycalenders:{type: [Schema.Types.ObjectId], ref:'weeklycalenders'},
     days:{type: [Schema.Types.ObjectId], ref:'days'},
     shoppinglists:{type:[Schema.Types.ObjectId], ref:'shoppinglists'} 
 });

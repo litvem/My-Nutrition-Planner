@@ -61,7 +61,7 @@ router.get(recipesPath, function(req,res,next){
   .then(user => {
     if (!user) {
       return res.status(404).json({
-        message: "Not found"
+        message: "User not found"
       });
     }else if(user.recipes.length === 0){
       return res.status(404).json({
@@ -219,42 +219,5 @@ router.delete(specificRecipesPath, function(req, res, next) {
     });
   }) 
 });
-
-// filter
-// get all 
-router.get('/api/profiles/:profileId/recipes', function(req,res,next){
-  var type = req.query.params.type;
-  var filter = req.query.params.filter;
-
-  User.findById({_id:req.params.profileId})
-  .populate('recipes')
-  .then(user => {
-      if (!user) {
-          return res.status(404).json({
-          message: "Not found"
-          });
-      }
-      if(user.recipes.length === 0){
-          return res.status(404).json({
-          message: "Recipe not found"
-          });
-      }
-      
-      Recipe.find({type: filter})
-      .then(recipes =>{
-          return res.status(200).json(recipes);
-      })   
-              
-  })
-  .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-  });
-});
-
-
-
-
 
 module.exports = router;

@@ -1,8 +1,12 @@
 var express = require('express');
 const mongoose = require("mongoose");
+const recipe = require('../models/recipe');
 var router = express.Router();
 
 var User = require('../models/user');
+var Recipe = require('../models/recipe');
+var Day = require('../models/day');
+var Shoppinglist = require('../models/shoppinglist');
 
 const userPath = '/api/profiles';
 const specificUserPath = '/api/profiles/:profileId';
@@ -145,6 +149,33 @@ router.delete(specificUserPath, function(req, res, next) {
     if (user === null) {
       return res.status(404).json({'message': userNotFound});
     }
+    
+    Recipe.deleteMany({
+      "_id":{
+        $in: user.recipes
+      }
+    }, function(err){
+      if(err) return next(err);
+    });
+
+    Day.deleteMany({
+      "_id":{
+        $in: user.days
+      }
+    }, function(err){
+      if(err) return next(err);
+    });
+
+    Shoppinglist.deleteMany({
+      "_id":{
+        $in: user.Shoppinglist
+      }
+    }, function(err){
+      if(err) return next(err);
+    });
+
+
+  
     res.status(200 ).json({
       message:'The user has been deleted',
       deletedUSer: user,
