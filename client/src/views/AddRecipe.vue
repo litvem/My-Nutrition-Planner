@@ -1,14 +1,11 @@
 <template>
-    <div>
-        <h1>Add recipe</h1>
-        <button class="btn" v-on:click="goToRecipes">Save</button>
-    </div>
+<div></div>
 </template>
 
 <script>
 
 export default {
-  name: 'forgotPassword',
+  name: 'addRecipe',
 
   methods: {
     goToRecipes() {
@@ -20,7 +17,7 @@ export default {
 
 <style scoped>
     h1 {
-        color:blue
+        color:black
     }
     .btn {
         background-color: turquoise;
