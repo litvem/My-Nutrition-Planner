@@ -3,11 +3,12 @@ var router = express.Router();
 
 var Shoppinglist = require('../models/shoppinglist');
 const User = require('../models/user');
+const checkAuth = require('../middleware/check-auth');
 
 var shoppinglistsPath = '/api/profiles/:profileId/shoppinglists';
 var specificShoppinglistsPath = '/api/profiles/:profileId/shoppinglists/:shoplistId';
 
-router.post(shoppinglistsPath,function(req, res,next) {
+router.post(shoppinglistsPath, checkAuth, function(req, res,next) {
   User.findById(req.params.profileId)
   .exec()
   .then(user =>{
@@ -39,7 +40,7 @@ router.post(shoppinglistsPath,function(req, res,next) {
 
 
 // get all 
-router.get(shoppinglistsPath, function(req,res,next){
+router.get(shoppinglistsPath, checkAuth, function(req,res,next){
   User.findById({_id:req.params.profileId})
   .populate('shoppinglists')
   .then(user => {
@@ -70,7 +71,7 @@ router.get(shoppinglistsPath, function(req,res,next){
 });
 
 // Get specific - for patch copy and add. 
-router.get(specificShoppinglistsPath, function(req,res,next){
+router.get(specificShoppinglistsPath, checkAuth, function(req,res,next){
 
   User.findOne({_id:req.params.profileId })
   .populate({path: 'shoppinglists' , match:{_id: {$eq: req.params.shoplistId}},})
@@ -102,7 +103,7 @@ router.get(specificShoppinglistsPath, function(req,res,next){
 
 
 // patch
-router.patch(specificShoppinglistsPath, function (req, res, next) {
+router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)
   .then(user =>{
     if(user === null){
@@ -128,7 +129,7 @@ router.patch(specificShoppinglistsPath, function (req, res, next) {
 
 
 // deleting specific
-router.delete(specificShoppinglistsPath, function(req, res, next) {
+router.delete(specificShoppinglistsPath, checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
   .populate({path: 'shoppinglists' , match:{_id: {$eq: req.params.shoplistId}},})
   .exec()
