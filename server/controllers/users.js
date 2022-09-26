@@ -77,13 +77,13 @@ router.post("/api/profiles/login", (req, res, next) => {
           message: "Authentication failed"
         });
       }
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
+      bcrypt.compare(req.body.password, user.password, (err, loginUser) => {
         if (err) {
           return res.status(401).json({
             message: "Authentication failed"
           });
         }
-        if (result) {
+        if (loginUser) {
           const token = jwt.sign(
             {
               username: user.username,
@@ -174,11 +174,21 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
           message: "Username already exists"
         });
       } else {
-      user.username = (req.body.username || user.username);
-   
+        user.username = req.body.username;
         user.save();
+        const token = jwt.sign(
+          {
+            username: req.body.username,
+            userId: user._id
+          },
+          process.env.JWT_KEY,
+          {
+              expiresIn: "1h"
+          }
+        );
+        
         res.status(200).json({
-        // nrOfUsers:users.length, 
+          token: token, 
           updatedUser: user,
           link: {
             rel: "self",
@@ -194,6 +204,7 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
       });
     });
   });
+  
 });
 
 // deleting specific 
@@ -231,9 +242,7 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
       if(err) return next(err);
     });
 
-
-  
-    res.status(200 ).json({
+    return res.status(200 ).json({
       message:'The user has been deleted',
       deletedUSer: user,
       link: {
