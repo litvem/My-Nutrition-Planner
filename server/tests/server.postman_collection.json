@@ -10,14 +10,14 @@
 			"name": "Users Controller Test",
 			"item": [
 				{
-					"name": "Create profile 1",
+					"name": "Sign up  profile 1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
 									"pm.environment.set(\"profileID_1\", profileId)\r",
 									"\r",
 									"\r",
@@ -27,11 +27,8 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -58,44 +55,113 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create profile 2",
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up  profile 2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var jsonData =  pm.response.json();\r",
-									"var profileId =jsonData.userCreated._id;\r",
+									"var profileId = jsonData.userCreated._id;\r",
 									"pm.environment.set(\"profileID_2\", profileId)\r",
+									"\r",
 									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
 									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
+									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"RonWeasley\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts321\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Favorite color?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Orange\"); \r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
+									"\r",
 									"});\r",
+									"\r",
+									"\r",
 									"\r",
 									""
 								],
@@ -119,16 +185,83 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\",\r\n    \"question\":\"Favorite color?\",\r\n    \"answer\": \"Orange\"\r\n}"
+							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p2\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
 							]
 						}
 					},
@@ -171,16 +304,147 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Toppen1\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login- Wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login- Wrong username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotterA\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
 							]
 						}
 					},
@@ -202,8 +466,15 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"var response = pm.response.json(); \r",
+									"var users = response.users;\r",
+									"\r",
 									"pm.test(\"Correct status code\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Number of user = ' + users.length, function () {\r",
+									"    pm.expect(users.length).to.eql(2);\r",
 									"});\r",
 									"\r",
 									""
@@ -250,24 +521,39 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.user._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.user.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.user.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.user.answer).to.eql(\"Gryffindor\"); \r",
-									"});"
+									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
 								],
 								"type": "text/javascript"
 							}
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -297,18 +583,17 @@
 							"listen": "test",
 							"script": {
 								"exec": [
+									"var response = pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
 									"pm.test(\"Correct status code\",function(){\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct profile response\", function () {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.updatedUser._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.updatedUser.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.updatedUser.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.updatedUser.answer).to.eql(\"Under the stairs\"); \r",
-									"  \r",
-									"  \r",
+									"     pm.expect(response.updatedUser.username).to.eql(\"HarryPotter1\");\r",
+									"    \r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -316,11 +601,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"answer\":\"Under the stairs\"\r\n}",
+							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -348,20 +643,249 @@
 					"response": []
 				},
 				{
-					"name": "Delete profile 1",
+					"name": "check update profile 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct updated user response\", function () {\r",
+									"    pm.expect(response.user.username).to.eql(\"HarryPotter1\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile 1- auth failed",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all -  2 profiles Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"var users = response.users;\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Number of user = ' + users.length, function () {\r",
+									"    pm.expect(users.length).to.eql(2);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Username already exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Correct status code\",function(){\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct profile response\", function () {\r",
+									"    pm.expect(response.message).to.eql(\"Username already exists\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1- auth failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct delete message\"), function(){\r",
 									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"    pm.expect(jsonData.deletedUSer._id).to.eql(\"HarryPotter\");\r",
+									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
+									"\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -378,6 +902,9 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "noauth"
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -401,20 +928,22 @@
 					"response": []
 				},
 				{
-					"name": "Delete  profile 2",
+					"name": "Delete profile 1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
 									"pm.test(\"Correct status code\", function(){\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
 									"pm.test(\"Correct delete message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"    pm.expect(jsonData.deletedUSer._id).to.eql(\"RonWeasley\");\r",
+									"\r",
+									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
+									"    pm.expect(response.deletedUSer.username).to.eql(\"HarryPotter1\");\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -431,6 +960,81 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct delete message\"), function(){\r",
+									"\r",
+									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
+									"    pm.expect(response.deletedUSer.username).to.eql(\"RonWeasley\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p2}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -452,135 +1056,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Expected- User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "6324fc6dfae32c63c85a05b9"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expected -Get All- User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expected-Spec- User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "6324ebae2552d448d071cc78"
-								}
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -588,14 +1063,14 @@
 			"name": "Recipes Controller Test",
 			"item": [
 				{
-					"name": "Create profile 1",
+					"name": "Sign up  profile 1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
 									"pm.environment.set(\"profileID_1\", profileId)\r",
 									"\r",
 									"\r",
@@ -605,11 +1080,8 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Gryffindor\");\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -636,44 +1108,113 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create profile 2",
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up  profile 2",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"var jsonData =  pm.response.json();\r",
-									"var profileId =jsonData.userCreated._id;\r",
+									"var profileId = jsonData.userCreated._id;\r",
 									"pm.environment.set(\"profileID_2\", profileId)\r",
+									"\r",
 									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
 									"    pm.response.to.have.status(201);\r",
 									"});\r",
 									"\r",
+									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"RonWeasley\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts321\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Favorite color?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Orange\"); \r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
+									"\r",
 									"});\r",
+									"\r",
+									"\r",
 									"\r",
 									""
 								],
@@ -697,16 +1238,83 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\",\r\n    \"question\":\"Favorite color?\",\r\n    \"answer\": \"Orange\"\r\n}"
+							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p2\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
 							]
 						}
 					},
@@ -772,6 +1380,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -827,8 +1445,9 @@
 							"script": {
 								"exec": [
 									"var recipeId1 = pm.environment.get('recipeId1');\r",
-									"var response = pm.response.json(); // parse to json\r",
+									"var response = pm.response.json(); \r",
 									"var recipes = response.user.recipes;\r",
+									"\r",
 									"\r",
 									"pm.test(\"Correct status code\",\r",
 									"    function(){\r",
@@ -836,16 +1455,14 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.user._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(response.user.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(response.user.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(response.user.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
 									"    pm.expect(response.user.recipes).to.include(recipeId1);\r",
 									"});\r",
 									"\r",
-									"pm.test('Number of friends = ' + recipes.length, function () {\r",
+									"pm.test('Number of recipes = ' + recipes.length, function () {\r",
 									"    pm.expect(recipes.length).to.eql(1);\r",
 									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -853,6 +1470,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -934,6 +1561,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -1031,6 +1668,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p2}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -1092,7 +1739,7 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test('Number of friends = ' + recipes.length, function () {\r",
+									"pm.test('Number of recipes = ' + recipes.length, function () {\r",
 									"    pm.expect(recipes.length).to.eql(2);\r",
 									"});"
 								],
@@ -1101,6 +1748,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1190,6 +1847,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1264,6 +1931,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -1350,6 +2027,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1420,6 +2107,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -1504,6 +2201,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1533,7 +2240,7 @@
 					"response": []
 				},
 				{
-					"name": "Expect-User not found",
+					"name": "Expect- correct token but wrong profileID - User not found",
 					"event": [
 						{
 							"listen": "test",
@@ -1562,6 +2269,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -1612,6 +2329,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -1662,6 +2389,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -1691,7 +2428,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete profile 2",
+					"name": "Delete profile 2- cascade dletes recipe 2",
 					"event": [
 						{
 							"listen": "test",
@@ -1720,6 +2457,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p2}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -1772,6 +2519,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1831,6 +2588,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -1887,6 +2654,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -1945,6 +2722,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -1973,14 +2760,14 @@
 			"name": "Days Controller Test",
 			"item": [
 				{
-					"name": "Create profile 1",
+					"name": "Sign up  profile 1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
 									"pm.environment.set(\"profileID_1\", profileId)\r",
 									"\r",
 									"\r",
@@ -1990,11 +2777,8 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -2021,16 +2805,83 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
 							]
 						}
 					},
@@ -2096,6 +2947,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -2173,6 +3034,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -2241,10 +3112,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.user._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(response.user.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(response.user.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(response.user.answer).to.eql(\"Gryffindor\"); \r",
+									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
 									"    pm.expect(response.user.days).to.include(dayID_1);\r",
 									"});"
 								],
@@ -2253,6 +3121,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2291,6 +3169,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2340,6 +3228,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2427,6 +3325,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -2499,6 +3407,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -2563,6 +3481,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2621,6 +3549,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2670,6 +3608,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -2758,6 +3706,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -2808,6 +3766,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -2858,6 +3826,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -2916,6 +3894,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -2980,6 +3968,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -3031,6 +4029,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -3089,6 +4097,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -3117,14 +4135,14 @@
 			"name": "Shoppinglist Controller Test",
 			"item": [
 				{
-					"name": "Create profile 1",
+					"name": "Sign up  profile 1",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
 									"pm.environment.set(\"profileID_1\", profileId)\r",
 									"\r",
 									"\r",
@@ -3134,11 +4152,8 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated._id).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\");\r",
-									"    pm.expect(jsonData.userCreated.question).to.eql(\"Which house?\");\r",
-									"    pm.expect(jsonData.userCreated.answer).to.eql(\"Gryffindor\");\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -3165,16 +4180,83 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\",\r\n    \"question\":\"Which house?\",\r\n    \"answer\": \"Gryffindor\"\r\n}"
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles",
+							"raw": "{{host}}/api/profiles/singup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"profiles"
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
 							]
 						}
 					},
@@ -3245,6 +4327,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -3338,6 +4430,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -3403,6 +4505,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -3500,6 +4612,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -3579,6 +4701,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -3679,6 +4811,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -3752,6 +4894,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PATCH",
 						"header": [],
 						"body": {
@@ -3848,6 +5000,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -3906,6 +5068,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
@@ -3958,6 +5130,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -4007,6 +5189,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -4065,6 +5257,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -4129,6 +5331,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
@@ -4180,6 +5392,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -4238,6 +5460,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {

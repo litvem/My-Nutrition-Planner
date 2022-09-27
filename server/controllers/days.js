@@ -4,12 +4,13 @@ var router = express.Router();
 
 var Day = require('../models/day');
 const User = require('../models/user');
+const checkAuth = require('../middleware/check-auth');
 
 var daysPath = '/api/profiles/:profileId/days';
 var specificDaysPath = '/api/profiles/:profileId/days/:dayId';
 
 
-router.post(daysPath,function(req, res,next) {
+router.post(daysPath, checkAuth, function(req, res,next) {
   User.findById(req.params.profileId)
   .exec()
   .then(user =>{
@@ -42,7 +43,7 @@ router.post(daysPath,function(req, res,next) {
 
 
 // get all 
-router.get(daysPath, function(req,res,next){
+router.get(daysPath, checkAuth,function(req,res,next){
   User.findById({_id:req.params.profileId})
   .populate('days')
   .then(user => {
@@ -74,7 +75,7 @@ router.get(daysPath, function(req,res,next){
 
 
 // get specific
-router.get(specificDaysPath, function(req,res,next){
+router.get(specificDaysPath, checkAuth,function(req,res,next){
 
   User.findOne({_id:req.params.profileId})
   .populate({path: 'days' , match:{_id: {$eq: req.params.dayId}}, populate:{path: 'recipes'}})
@@ -103,7 +104,7 @@ router.get(specificDaysPath, function(req,res,next){
 });
 
 // patch
-router.patch(specificDaysPath, function (req, res, next) {
+router.patch(specificDaysPath,checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)
   .then(user =>{
     if(user === null){
@@ -128,7 +129,7 @@ router.patch(specificDaysPath, function (req, res, next) {
 });
 
 // deleting specific
-router.delete(specificDaysPath, function(req, res, next) {
+router.delete(specificDaysPath,checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
   .populate({path: 'days' , match:{_id: {$eq: req.params.dayId}},})
   .exec()

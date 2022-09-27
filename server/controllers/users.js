@@ -7,14 +7,17 @@ var User = require('../models/user');
 var Recipe = require('../models/recipe');
 var Day = require('../models/day');
 var Shoppinglist = require('../models/shoppinglist');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const checkAuth = require('../middleware/check-auth');
 
 const userPath = '/api/profiles';
 const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
 
-router.post(userPath,function(req, res,next) {
-  User.find({ _id: req.body.username })
+router.post('/api/profiles/singup',function(req, res,next) {
+  User.find({ username: req.body.username })
     .exec()
     .then(username => {
       if (username.length >= 1) {
@@ -22,43 +25,95 @@ router.post(userPath,function(req, res,next) {
           message: "Username already exists"
         });
       } else {
-        const user = new User({
-          _id: req.body.username,
-          password: req.body.password,
-          question: req.body.question,
-          answer: req.body.answer
+
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
+          if (err) {
+            return res.status(500).json({
+              error: err
+            });
+          } else {
+          const user = new User({
+          username: req.body.username,
+          password: hash
         });
-        user
-        .save()
-        .then(result => {
-          res.status(201).json({
-            userCreated: result,
-            links: [{
-              rel: "self",
-              type: 'PATCH',
-              hrel: "http://localhost:3000/users/" + result._id,
-            },{
-              rel: "self",
-              type: 'GET',
-              hrel: "http://localhost:3000/users/" + result._id,
-            },{
-              rel: "self",
-              type:'DELETE',
-              hrel: "http://localhost:3000/users/" + result._id,
-            }]
+
+          user.save()
+          .then(newUser => {
+            res.status(201).json({
+              userCreated: newUser,
+              links: [{
+                rel: "self",
+                type: 'PATCH',
+                hrel: "http://localhost:3000/users/" + newUser._id,
+              },{
+                rel: "self",
+                type: 'GET',
+                hrel: "http://localhost:3000/users/" + newUser._id,
+              },{
+                rel: "self",
+                type:'DELETE',
+                hrel: "http://localhost:3000/users/" + newUser._id,
+              }]
+            });
+          })
+          .catch(err => {
+            console.log(err);
+            res.status(500).json({
+              error: err
+            });
           });
-        })
-        .catch(err => {
-          console.log(err);
-          res.status(500).json({
-            error: err
-          });
+        }
+      });
+    }
+  });
+});
+
+router.post("/api/profiles/login", (req, res, next) => {
+  User.findOne({ username: req.body.username })
+    .exec()
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({
+          message: "Authentication failed"
         });
-      } 
+      }
+      bcrypt.compare(req.body.password, user.password, (err, loginUser) => {
+        if (err) {
+          return res.status(401).json({
+            message: "Authentication failed"
+          });
+        }
+        if (loginUser) {
+          const token = jwt.sign(
+            {
+              username: user.username,
+              userId: user._id
+            },
+            process.env.JWT_KEY,
+            {
+                expiresIn: "1h"
+            }
+          );
+          return res.status(200).json({
+            message: "Authentication successful",
+            token: token
+          });
+        }
+        res.status(401).json({
+          message: "Authentication failed"
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({
+        error: err
+      });
     });
 });
 
-// get all 
+
+// get all -- not needed but for testing purpose
 router.get(userPath, function(req,res,next){
   User.find()
   .exec()
@@ -67,7 +122,6 @@ router.get(userPath, function(req,res,next){
       return res.status(404).json({ message: userNotFound});
     }
     res.status(200).json({
-    // nrOfUsers:users.length, 
      users: users,
     link: {
       rel: "self",
@@ -84,13 +138,11 @@ router.get(userPath, function(req,res,next){
 });
  
 // getting specific 
-router.get(specificUserPath, function(req,res,next){
+router.get(specificUserPath, checkAuth, function(req,res,next){
   User.findById({_id: req.params.profileId})
   .exec()
   .then(user =>{
-    if(user == null){
-      return res.status(404).json({ 'message':userNotFound});
-    }
+    
     res.status(200).json({
       // nrOfUsers:users.length, 
       user: user,
@@ -109,45 +161,61 @@ router.get(specificUserPath, function(req,res,next){
 });
 
 // patch - partial replacement - specific attribute
-router.patch(specificUserPath, function(req, res, next) {
+router.patch(specificUserPath, checkAuth, function(req, res, next) {
+ 
   User.findById({_id: req.params.profileId})
   .exec()
   .then(user =>{
-    if (user == null) {
-      return res.status(404).json({"message": userNotFound});
-    }
-    user.password = (req.body.password || user.password);
-    user.question = (req.body.question || user.question);
-    user.answer = (req.body.answer || user.answer);
-    
-    user.save();
-    res.status(200).json({
-      // nrOfUsers:users.length, 
-      updatedUser: user,
-      link: {
-        rel: "self",
-        type: 'GET',
-        hrel: 'http://localhost:3000/api/profiles/' + user._id,
+     User.find({ username: req.body.username })
+    .exec()
+    .then(username => {
+      if (username.length >= 1) {
+        return res.status(409).json({
+          message: "Username already exists"
+        });
+      } else {
+        user.username = req.body.username;
+        user.save();
+        const token = jwt.sign(
+          {
+            username: req.body.username,
+            userId: user._id
+          },
+          process.env.JWT_KEY,
+          {
+              expiresIn: "1h"
+          }
+        );
+        
+        res.status(200).json({
+          token: token, 
+          updatedUser: user,
+          link: {
+            rel: "self",
+            type: 'GET',
+            hrel: 'http://localhost:3000/api/profiles/' + user._id,
+          }
+        });
       }
-    });
-
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
+    })  
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
     });
   });
+  
 });
 
 // deleting specific 
 
-router.delete(specificUserPath, function(req, res, next) {
+router.delete(specificUserPath,checkAuth, function(req, res, next) {
  // test what happens when we use remove instead of findOneAndDelete
   User.findOneAndDelete({_id: req.params.profileId})
   .exec()
   .then(user =>{
     if (user === null) {
-      return res.status(404).json({'message': userNotFound});
+      return res.status(401).json({'message': userNotFound});
     }
     
     Recipe.deleteMany({
@@ -174,9 +242,7 @@ router.delete(specificUserPath, function(req, res, next) {
       if(err) return next(err);
     });
 
-
-  
-    res.status(200 ).json({
+    return res.status(200 ).json({
       message:'The user has been deleted',
       deletedUSer: user,
       link: {

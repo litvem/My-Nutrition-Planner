@@ -3,11 +3,12 @@ var router = express.Router();
 
 var Recipe = require('../models/recipe');
 const User = require('../models/user');
+const checkAuth = require('../middleware/check-auth');
 
 var recipesPath = '/api/profiles/:profileId/recipes';
 var specificRecipesPath = '/api/profiles/:profileId/recipes/:recipeId';
 
-router.post(recipesPath,function(req, res,next) {
+router.post(recipesPath, checkAuth ,function(req, res,next) {
   User.findById(req.params.profileId)
   .exec()
   .then(user =>{
@@ -55,7 +56,7 @@ router.post(recipesPath,function(req, res,next) {
 
 
 // get all 
-router.get(recipesPath, function(req,res,next){
+router.get(recipesPath, checkAuth, function(req,res,next){
   User.findOne({_id:req.params.profileId})
   .populate('recipes')
   .then(user => {
@@ -86,7 +87,7 @@ router.get(recipesPath, function(req,res,next){
 });
 
 // Get specific - for patch copy and add. 
-router.get(specificRecipesPath, function(req,res,next){
+router.get(specificRecipesPath, checkAuth, function(req,res,next){
 
   User.findOne({_id:req.params.profileId })
   .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
@@ -116,8 +117,9 @@ router.get(specificRecipesPath, function(req,res,next){
 });
 
 //PATCH
-router.patch(specificRecipesPath, function (req, res, next) {
+router.patch(specificRecipesPath, checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)
+  .exec()
   .then(user =>{
     if(user === null){
       return res.status(404).json({message: 'User not found'}); 
@@ -142,7 +144,7 @@ router.patch(specificRecipesPath, function (req, res, next) {
 
 
 // put 
-router.put(specificRecipesPath, function(req, res, next) {
+router.put(specificRecipesPath,checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
   .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
   .exec()
