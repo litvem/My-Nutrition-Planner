@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <form action="#">
-            <div>
-            <h1>Forgot password</h1>
+  <div>
+    <b-form>
+      <div class="container">
+          <h1>Forgot password</h1>
             <div class="input-box">
-                <input type="text" placeholder="Enter your username" required>
+              <input type="text" placeholder="Enter your username" required>
             </div>
-
+<!--
             <select class="form-select form-select-sm" aria-label=".form-select-sm example" required>
                 <option selected>Select your secret question</option>
                 <option value="1">What is the name of your first pet?</option>
@@ -17,21 +17,21 @@
             <div class="input-box">
                 <input type="text" placeholder="Answer secret question" required>
             </div>
-
+-->
             <div class="input-box">
-                <input type="password" placeholder="Enter new password" required>
+              <input type="password" placeholder="Enter new password" required>
             </div>
 
             <div class="input-box">
-                <input type="password" placeholder="Confirm new password" required>
+              <input type="password" placeholder="Confirm new password" required>
             </div>
 
             <div class="input-box">
               <input type="submit" class="submit" v-on:click="goToUserHome" value="Reset password">
             </div>
-            </div>
-        </form>
-    </div>
+        </div>
+    </b-form>
+  </div>
 </template>
 
 <script>
@@ -48,6 +48,7 @@ export default {
 </script>
 
 <style scoped>
+
     h1 {
         color:black
     }
