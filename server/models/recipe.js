@@ -6,7 +6,8 @@ var recipeSchema = new Schema({
       category: {type: String,
             enum: ['Breakfast','Lunch','Dinner','Snack']
       },
-      recipeImage: {type: String},
+      image:{type: String},
+      imagePath: {type: String},
       tag: {type:[String]}, // CHANGE TO TAGS
       instruction: {type:String},
       items:{ type: 
