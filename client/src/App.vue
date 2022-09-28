@@ -14,6 +14,7 @@
              <b-nav-item href="#" v-on:click="goToShoppingList">Shopping List</b-nav-item>
           </b-navbar-nav>
           <b-nav-item-dropdown text="Profile" right>
+              <b-dropdown-item v-on:click="goToEdit()">Edit Profile</b-dropdown-item>
              <b-dropdown-item href="#">Log Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-collapse>
@@ -48,6 +49,9 @@ export default {
     },
     goToShoppingList() {
       this.$router.push('/shoppinglist')
+    },
+    goToEdit() {
+      this.$router.push('/editProfile')
     }
   }
 }

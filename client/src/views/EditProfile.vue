@@ -13,7 +13,7 @@
         <label>Password:</label>
         <input class="form-control" type="password" ref="password" :disabled="!isEditing" :class="{view: !isEditing}" :value="user.password">
       </div>
-
+<!--
       <div class="d-flex flex-row mt-2 mb-2 align-items-center gap-2">
         <label>Secret question:</label>
         <input class="form-control" type="text" ref="question" :disabled="!isEditing" :class="{view: !isEditing}" :value="user.question">
@@ -23,7 +23,7 @@
         <label>Answer:</label>
         <input class="form-control" type="text" ref="answer" :disabled="!isEditing" :class="{view: !isEditing}" :value="user.answer">
       </div>
-
+-->
       <div class="mt-3 mb-3">
         <button class="btn btn-sm btn-success" @click="isEditing = !isEditing" v-if="!isEditing">Edit</button>
         <button class="btn btn-sm btn-success me-1" @click="save" v-else-if="isEditing">Save</button>
@@ -41,9 +41,7 @@ export default {
       isEditing: false,
       user: {
         _id: 'demo@gmail.com',
-        password: 'password',
-        question: 'What is my favourite berry?',
-        answer: 'raspberry'
+        password: 'password'
       }
     }
   },
