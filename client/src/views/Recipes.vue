@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="row">
-    <section class="container-fluid" id="recipes">
+    <section class="container-fluid" id="recipes" v-on:click="goToRecipePage()">
         <recipe-preview
         v-for="recipe in recipes"
         :key="recipe.name"
@@ -91,6 +91,9 @@ export default {
   methods: {
     goToAddRecipe() {
       this.$router.push('/addRecipe')
+    },
+    goToRecipePage() {
+      this.$router.push('/recipePage')
     }
   }
 }

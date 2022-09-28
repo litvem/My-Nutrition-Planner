@@ -10,6 +10,7 @@ import Recipes from './views/Recipes.vue'
 import AddRecipe from './views/AddRecipe.vue'
 import WeeklyCalendar from './views/WeeklyCalendar.vue'
 import ShoppingList from './views/ShoppingList.vue'
+import RecipePage from './views/RecipePage.vue'
 
 Vue.use(Router)
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/addRecipe',
       name: 'addRecipe',
       component: AddRecipe
+    },
+    {
+      path: '/recipePage',
+      name: 'recipe-page',
+      component: RecipePage
     },
     {
       path: '/weeklyCalendar',
