@@ -23,8 +23,7 @@
       </b-row>
       <b-row>
         <div v-for="recipe in recipes" v-bind:key="recipe._id">
-          <p>{{recipe}}</p>
-          <recipe-item v-bind:recipe="recipe" v-on:del-recipe="deleteRecipe"/>
+          <p>{{recipe.name}}</p>
         </div>
       </b-row>
     </b-container>
@@ -32,13 +31,11 @@
 </template>
 
 <script>
-import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 
 export default {
   name: 'userHome',
   components: {
-    RecipeItem
   },
   mounted() {
     console.log('Page is loaded')
