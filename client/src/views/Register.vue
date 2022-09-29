@@ -28,7 +28,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <button class="btn register-btn" >Register</button>
+                                <button class="btn register-btn">Register</button>
+                            </div>
+                            <br>
+                            <div class="container signin">
+                              <p>Already have an account? <a href="#" v-on:click="goToLogin()">Sign in</a>.</p>
                             </div>
                         </form>
                     </div>
@@ -72,6 +76,9 @@ export default {
           this.message = error
         })
       alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.user))
+    },
+    goToLogin() {
+      this.$router.push('/')
     }
   }
 }
