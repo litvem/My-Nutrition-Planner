@@ -7,4131 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "Users Controller Test",
-			"item": [
-				{
-					"name": "Sign up  profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var profileId = response.userCreated._id;\r",
-									"pm.environment.set(\"profileID_1\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Sign up  profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
-									"pm.environment.set(\"profileID_2\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p2\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect- Username already",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"pm.test(\"Correct status code\",function(){\r",
-									"    pm.response.to.have.status(409);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"      pm.expect(jsonData.message).to.eql(\"Username already exists\"); \r",
-									"});      "
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Toppen1\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login- Wrong password",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts1234\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login- Wrong username",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotterA\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all -  2 profiles",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"var users = response.users;\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Number of user = ' + users.length, function () {\r",
-									"    pm.expect(users.length).to.eql(2);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get profile 1",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Change profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"pm.test(\"Correct status code\",function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
-									"     pm.expect(response.updatedUser.username).to.eql(\"HarryPotter1\");\r",
-									"    \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "check update profile 1",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct updated user response\", function () {\r",
-									"    pm.expect(response.user.username).to.eql(\"HarryPotter1\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get profile 1- auth failed",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all -  2 profiles Copy",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"var users = response.users;\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Number of user = ' + users.length, function () {\r",
-									"    pm.expect(users.length).to.eql(2);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Username already exist",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Correct status code\",function(){\r",
-									"    pm.response.to.have.status(409);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct profile response\", function () {\r",
-									"    pm.expect(response.message).to.eql(\"Username already exists\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 1- auth failed",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(401);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct delete message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
-									"\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "noauth"
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct delete message\"), function(){\r",
-									"\r",
-									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
-									"    pm.expect(response.deletedUSer.username).to.eql(\"HarryPotter1\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct delete message\"), function(){\r",
-									"\r",
-									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
-									"    pm.expect(response.deletedUSer.username).to.eql(\"RonWeasley\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p2}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Recipes Controller Test",
-			"item": [
-				{
-					"name": "Sign up  profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var profileId = response.userCreated._id;\r",
-									"pm.environment.set(\"profileID_1\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Sign up  profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData =  pm.response.json();\r",
-									"var profileId = jsonData.userCreated._id;\r",
-									"pm.environment.set(\"profileID_2\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p2\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipeId = response.recipeCreated._id;\r",
-									"pm.environment.set(\"recipeId1\", recipeId);\r",
-									"\r",
-									"const potatoObject = response.recipeCreated.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.recipeCreated.items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe1\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(ketchupObject);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(potatoObject);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe1\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction\",\r\n    \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":\"10\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":\"100\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get profile1 recipes length",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var recipeId1 = pm.environment.get('recipeId1');\r",
-									"var response = pm.response.json(); \r",
-									"var recipes = response.user.recipes;\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(response.user.recipes).to.include(recipeId1);\r",
-									"});\r",
-									"\r",
-									"pm.test('Number of recipes = ' + recipes.length, function () {\r",
-									"    pm.expect(recipes.length).to.eql(1);\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create recipe 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipeId = response.recipeCreated._id;\r",
-									"pm.environment.set(\"recipeId2\", recipeId);\r",
-									"\r",
-									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"chili sauce\");\r",
-									"\r",
-									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe2\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction2\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct first items array object response\", function () {\r",
-									"    console.log(obj1);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj1.itemId).to.eql(1);\r",
-									"    pm.expect(obj1.item).to.eql(\"chili sauce\");\r",
-									"    pm.expect(obj1.amount).to.eql(5);\r",
-									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(obj2);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj2.itemId).to.eql(2);\r",
-									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
-									"    pm.expect(obj2.amount).to.eql(200);\r",
-									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe2\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction2\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create recipe 2 in Profile 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipeId = response.recipeCreated._id;\r",
-									"pm.environment.set(\"recipeId2Profile2\", recipeId);\r",
-									"\r",
-									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"chili sauce\");\r",
-									"\r",
-									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe2\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction2\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct first items array object response\", function () {\r",
-									"    console.log(obj1);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj1.itemId).to.eql(1);\r",
-									"    pm.expect(obj1.item).to.eql(\"chili sauce\");\r",
-									"    pm.expect(obj1.amount).to.eql(5);\r",
-									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(obj2);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj2.itemId).to.eql(2);\r",
-									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
-									"    pm.expect(obj2.amount).to.eql(200);\r",
-									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p2}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe2\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction2\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all recipes",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"var response = pm.response.json(); \r",
-									"var recipes = response.recipes;\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test('Number of recipes = ' + recipes.length, function () {\r",
-									"    pm.expect(recipes.length).to.eql(2);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"const potatoObject = response.recipe[0].items.find(obj => obj.item ===\"potato\");\r",
-									"console.log(potatoObject);\r",
-									"const ketchupObject = response.recipe[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipe[0].name).to.eql(\"Recipe1\");\r",
-									"    pm.expect(response.recipe[0].category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipe[0].tag[0]).to.eql(\"bad\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"// testing the array of object response\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "change name and update item amount",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"const potatoObject = response.updatedRecipe.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.updatedRecipe.items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct updated attributes\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.updatedRecipe.name).to.eql(\"Recipe1Updated\");   // UPDATED THE NAME\r",
-									"      pm.expect(potatoObject.amount).to.eql(200);  // UPDATED FROM 100 to 200\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct not updated attributes\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.updatedRecipe.name).to.eql(\"Recipe1Updated\");   // UPDATED THE NAME\r",
-									"    pm.expect(response.updatedRecipe.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.updatedRecipe.tag).to.include(\"bad\"); \r",
-									"    pm.expect(response.updatedRecipe.tag).to.include(\"fast\"); //\r",
-									"    pm.expect(response.updatedRecipe.instruction).to.eql(\"Cooking instruction\"); \r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									" "
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe1Updated\",\r\n    \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":\"10\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get uppdated recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"const potatoObject = response.recipe[0].items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.recipe[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct updated recipe response\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipe[0].name).to.eql(\"Recipe1Updated\");   // UPDATED THE NAME\r",
-									"    pm.expect(potatoObject.amount).to.eql(200);  // UPDATED FROM 100 to 200\r",
-									"    pm.expect(response.recipe[0].name).to.eql(\"Recipe1Updated\");   // UPDATED THE NAME\r",
-									"    pm.expect(response.recipe[0].category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipe[0].tag[0]).to.eql(\"bad\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].instruction).to.eql(\"Cooking instruction\"); \r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "remove recipe item",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const potatoObject = response.updatedRecipe.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  item list\", function () {\r",
-									"    console.log(potatoObject);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(potatoObject.itemId).to.eql(1);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(200);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe responde for the non updated attributes\", function () {\r",
-									"    pm.expect(response.updatedRecipe.name).to.eql(\"Recipe1Updated\");\r",
-									"    pm.expect(response.updatedRecipe.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.updatedRecipe.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.updatedRecipe.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.updatedRecipe.instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"items\": [\r\n      {\r\n        \"itemId\": 1,\r\n        \"item\":\"potato\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get updated item list",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const potatoObject = response.recipe[0].items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  item list\", function () {\r",
-									"\r",
-									"// testing the array of object response\r",
-									"    pm.expect(potatoObject.itemId).to.eql(1);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(200);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"\r",
-									"    pm.expect(response.recipe[0].name).to.eql(\"Recipe1Updated\");\r",
-									"    pm.expect(response.recipe[0].category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipe[0].tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipe[0].tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipe[0].instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect- correct token but wrong profileID - User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "6328bab1c3ca1162dcb1342e"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
-									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe1Updated');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete recipe 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
-									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe2');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 2- cascade dletes recipe 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p2}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get all - Recipe not found",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Recipe not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get spec error message Copy",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Recipe not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "6328bb84c3ca1162dcb1343d"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect - Recipe not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Recipe not found\");\r",
-									" \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "63233097a06d3469e415e0ef"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Days Controller Test",
-			"item": [
-				{
-					"name": "Sign up  profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var profileId = response.userCreated._id;\r",
-									"pm.environment.set(\"profileID_1\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipeId = response.recipeCreated._id;\r",
-									"pm.environment.set(\"recipeId1\", recipeId);\r",
-									"\r",
-									"const potatoObject = response.recipeCreated.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.recipeCreated.items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe1\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); \r",
-									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(ketchupObject);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(potatoObject);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe1\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction\",\r\n    \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":\"10\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":\"100\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Day 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var jsonData =  pm.response.json();",
-									"var dayId = jsonData.dayCreated._id;",
-									"pm.environment.set(\"dayID_1\", dayId);",
-									"",
-									"pm.test(\"Correct status code\",",
-									"    function(){",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"pm.test(\"Correct day response\", function () {",
-									"    var jsonData = pm.response.json(); // parse to json",
-									"    pm.expect(jsonData.dayCreated.name).to.eql(\"Monday\");",
-									"    pm.expect(jsonData.dayCreated.week).to.eql(1);",
-									"    pm.expect(jsonData.dayCreated.year).to.eql(2022);",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Acccept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 1,\n    \"year\": 2022,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get profile with one day",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json();\r",
-									"var dayID_1 = pm.environment.get('dayID_1');\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.user.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(response.user.days).to.include(dayID_1);\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all days",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function() {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get day 1 - including the recipe",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function() {",
-									"    pm.response.to.have.status(200);",
-									"})",
-									"",
-									"pm.test(\"Correct day response\", function() {",
-									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.day[0].name).to.eql(\"Monday\");",
-									"    pm.expect(jsonData.day[0].week).to.eql(1);",
-									"    pm.expect(jsonData.day[0].year).to.eql(2022);",
-									"    pm.expect(jsonData.day[0].recipes[0].name).to.eql(\"Recipe1\");",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days",
-								":dayId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "dayId",
-									"value": "{{dayID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create recipe 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipeId = response.recipeCreated._id;\r",
-									"pm.environment.set(\"recipeId2\", recipeId);\r",
-									"\r",
-									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"chili sauce\");\r",
-									"\r",
-									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe2\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction2\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct first items array object response\", function () {\r",
-									"    console.log(obj1);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj1.itemId).to.eql(1);\r",
-									"    pm.expect(obj1.item).to.eql(\"chili sauce\");\r",
-									"    pm.expect(obj1.amount).to.eql(5);\r",
-									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    console.log(obj2);\r",
-									"// testing the array of object response\r",
-									"    pm.expect(obj2.itemId).to.eql(2);\r",
-									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
-									"    pm.expect(obj2.amount).to.eql(200);\r",
-									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe2\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction2\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Updated day 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var recipe1 = pm.environment.get('recipeId1');\r",
-									"var recipe2 = pm.environment.get('recipeId2');\r",
-									"\r",
-									"pm.test(\"Correct status code\", function() {\r",
-									"    pm.response.to.have.status(200);\r",
-									"})\r",
-									"\r",
-									"pm.test(\"Correct day response\", function() {\r",
-									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(response.updatedDay.name).to.eql(\"Monday\");\r",
-									"    pm.expect(response.updatedDay.week).to.eql(1);\r",
-									"    pm.expect(response.updatedDay.year).to.eql(2022);\r",
-									"    pm.expect(response.updatedDay.recipes).to.include(recipe1);\r",
-									"    pm.expect(response.updatedDay.recipes).to.include(recipe1);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									" "
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Monday\",\r\n    \"week\": 1,\r\n    \"year\": 2022,\r\n    \"recipes\":[\"{{recipeId1}}\",\"{{recipeId2}}\"]\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days",
-								":dayId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "dayId",
-									"value": "{{dayID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get updated day 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"    var response = pm.response.json();",
-									"pm.test(\"Correct status code\", function() {",
-									"    pm.response.to.have.status(200);",
-									"})",
-									"",
-									"pm.test(\"Correct day response\", function() {",
-									"",
-									"    pm.expect(response.day[0].name).to.eql(\"Monday\");",
-									"    pm.expect(response.day[0].week).to.eql(1);",
-									"    pm.expect(response.day[0].year).to.eql(2022);",
-									"    pm.expect(response.day[0].recipes[0].name).to.eql(\"Recipe1\");",
-									"});",
-									"",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days",
-								":dayId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "dayId",
-									"value": "{{dayID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect-User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days",
-								":dayId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "6328bab1c3ca1162dcb1342e"
-								},
-								{
-									"key": "dayId",
-									"value": "{{dayID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete day 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){",
-									"    pm.response.to.have.status(200);",
-									"});",
-									"",
-									"pm.test(\"Correct delete message\"), function(){",
-									"      var jsonData = pm.response.json(); // parse to json",
-									"    pm.expect(jsonData.message).to.eql(\"The day has been deleted\");",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"days",
-								":dayId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "dayId",
-									"value": "{{dayID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Check that recipe 1 has not been deleted",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"const potatoObject = response.recipe[0].items.find(obj => obj.item ===\"potato\");\r",
-									"console.log(potatoObject);\r",
-									"const ketchupObject = response.recipe[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"    pm.expect(response.recipe[0].name).to.eql(\"Recipe1\");\r",
-									"    pm.expect(response.recipe[0].category).to.eql(\"Lunch\");\r",
-									"    pm.expect(response.recipe[0].tag[0]).to.eql(\"bad\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].tag).to.include(\"fast\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipe[0].instruction).to.eql(\"Cooking instruction\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"// testing the array of object response\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(10);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									" \r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete recipe 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
-									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe1');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete recipe 2 Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
-									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe2');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"recipes",
-								":recipeId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "recipeId",
-									"value": "{{recipeId2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get spec error message Copy",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "632b5baf9f411542cc95e666"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get all error message Copy",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect - day not found Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									" \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "632b5baf9f411542cc95e666"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 1 Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
 			"name": "Shoppinglist Controller Test",
 			"item": [
 				{
@@ -5432,6 +1307,2317 @@
 				},
 				{
 					"name": "Delete profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users Controller Test",
+			"item": [
+				{
+					"name": "Sign up  profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/singup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up  profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();\r",
+									"var profileId = jsonData.userCreated._id;\r",
+									"pm.environment.set(\"profileID_2\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.userCreated.username).to.eql(\"RonWeasley\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/singup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p2\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect- Username already",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Correct status code\",function(){\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"      pm.expect(jsonData.message).to.eql(\"Username already exists\"); \r",
+									"});      "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Toppen1\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/singup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login- Wrong password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login- Wrong username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication failed\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotterA\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all -  2 profiles",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"var users = response.users;\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Number of user = ' + users.length, function () {\r",
+									"    pm.expect(users.length).to.eql(2);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"pm.test(\"Correct status code\",function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct profile response\", function () {\r",
+									"     pm.expect(response.updatedUser.username).to.eql(\"HarryPotter1\");\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check update profile 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct updated user response\", function () {\r",
+									"    pm.expect(response.username).to.eql(\"HarryPotter1\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile 1- auth failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all -  2 profiles Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"var users = response.users;\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Number of user = ' + users.length, function () {\r",
+									"    pm.expect(users.length).to.eql(2);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Username already exist",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Correct status code\",function(){\r",
+									"    pm.response.to.have.status(409);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct profile response\", function () {\r",
+									"    pm.expect(response.message).to.eql(\"Username already exists\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1- auth failed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct delete message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Authentication failed\");\r",
+									"\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct delete message\"), function(){\r",
+									"\r",
+									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
+									"    pm.expect(response.deletedUSer.username).to.eql(\"HarryPotter1\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct delete message\"), function(){\r",
+									"\r",
+									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
+									"    pm.expect(response.deletedUSer.username).to.eql(\"RonWeasley\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p2}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Days Controller Test",
+			"item": [
+				{
+					"name": "Sign up  profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/singup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NoImage recipe 1- no image Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var recipeId = response.recipeCreated._id;\r",
+									"pm.environment.set(\"recipeId1\", recipeId);\r",
+									"\r",
+									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
+									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction4\"); \r",
+									"    pm.expect(response.recipeCreated.image).to.contain(\"http://localhost:3000/uploads/defaultRecipeImage.png-\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct first items array object response\", function () {\r",
+									"    console.log(obj1);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj1.itemId).to.eql(1);\r",
+									"    pm.expect(obj1.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(obj1.amount).to.eql(5);\r",
+									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"    console.log(obj2);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj2.itemId).to.eql(2);\r",
+									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
+									"    pm.expect(obj2.amount).to.eql(200);\r",
+									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									" \r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"name\":\"Recipe1\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Day 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();",
+									"var dayId = jsonData.dayCreated._id;",
+									"pm.environment.set(\"dayID_1\", dayId);",
+									"",
+									"pm.test(\"Correct status code\",",
+									"    function(){",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Correct day response\", function () {",
+									"    var jsonData = pm.response.json(); // parse to json",
+									"    pm.expect(jsonData.dayCreated.name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.dayCreated.week).to.eql(1);",
+									"    pm.expect(jsonData.dayCreated.year).to.eql(2022);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Acccept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 1,\n    \"year\": 2022,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile with one day",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"var dayID_1 = pm.environment.get('dayID_1');\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
+									"    pm.expect(response.days).to.include(dayID_1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all days",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get day 1 - including the recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Correct day response\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.day[0].name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.day[0].week).to.eql(1);",
+									"    pm.expect(jsonData.day[0].year).to.eql(2022);",
+									"    pm.expect(jsonData.day[0].recipes[0].name).to.eql(\"Recipe1\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NoImage recipe 2- no image Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var recipeId = response.recipeCreated._id;\r",
+									"pm.environment.set(\"recipeId2\", recipeId);\r",
+									"\r",
+									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"chili sauce\");\r",
+									"\r",
+									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"     pm.expect(response.recipeCreated.name).to.eql(\"Recipe2\");\r",
+									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
+									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction2\"); \r",
+									"    pm.expect(response.recipeCreated.image).to.contain(\"http://localhost:3000/uploads/defaultRecipeImage.png-\"); \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct first items array object response\", function () {\r",
+									"    console.log(obj1);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj1.itemId).to.eql(1);\r",
+									"    pm.expect(obj1.item).to.eql(\"chili sauce\");\r",
+									"    pm.expect(obj1.amount).to.eql(5);\r",
+									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"    console.log(obj2);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj2.itemId).to.eql(2);\r",
+									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
+									"    pm.expect(obj2.amount).to.eql(200);\r",
+									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									" \r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n   \"name\":\"Recipe2\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction2\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Updated day 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var recipe1 = pm.environment.get('recipeId1');\r",
+									"var recipe2 = pm.environment.get('recipeId2');\r",
+									"\r",
+									"pm.test(\"Correct status code\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Correct day response\", function() {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(response.updatedDay.name).to.eql(\"Monday\");\r",
+									"    pm.expect(response.updatedDay.week).to.eql(1);\r",
+									"    pm.expect(response.updatedDay.year).to.eql(2022);\r",
+									"    pm.expect(response.updatedDay.recipes).to.include(recipe1);\r",
+									"    pm.expect(response.updatedDay.recipes).to.include(recipe1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Monday\",\r\n    \"week\": 1,\r\n    \"year\": 2022,\r\n    \"recipes\":[\"{{recipeId1}}\",\"{{recipeId2}}\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated day 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    var response = pm.response.json();",
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Correct day response\", function() {",
+									"",
+									"    pm.expect(response.day[0].name).to.eql(\"Monday\");",
+									"    pm.expect(response.day[0].week).to.eql(1);",
+									"    pm.expect(response.day[0].year).to.eql(2022);",
+									"    pm.expect(response.day[0].recipes[0].name).to.eql(\"Recipe1\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect-User not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "6328bab1c3ca1162dcb1342e"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete day 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct delete message\"), function(){",
+									"      var jsonData = pm.response.json(); // parse to json",
+									"    pm.expect(jsonData.message).to.eql(\"The day has been deleted\");",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete recipe 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
+									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe1');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes",
+								":recipeId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "recipeId",
+									"value": "{{recipeId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete recipe 2 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
+									"    pm.expect(jsonData.deletedRecipe).to.eql('Recipe2');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes",
+								":recipeId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "recipeId",
+									"value": "{{recipeId2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect Get spec error message Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "632b5baf9f411542cc95e666"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect Get all error message Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect - day not found Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									" \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "632b5baf9f411542cc95e666"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1 Copy",
 					"event": [
 						{
 							"listen": "test",

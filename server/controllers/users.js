@@ -145,7 +145,12 @@ router.get(specificUserPath, checkAuth, function(req,res,next){
     
     res.status(200).json({
       // nrOfUsers:users.length, 
-      user: user,
+      username: user.username,
+      userId: user._id,
+      recipes:user.recipes,
+      shoppinglists: user.shoppinglists,
+      days: user.days,
+
       link: {
         rel: "self",
         type: 'DELETE',
@@ -207,8 +212,18 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
   
 });
 
-// deleting specific 
-
+// deleting specific - IMPORTANT delete on cascade picture need to be added
+/*
+    var defaultImagePath = "uploads\\defaultRecipeImage.png-1664301312162.png";
+      if(user.recipes.imagePath !== defaultImagePath){
+        fs.unlink(user.recipes.imagePath,(err =>{
+          if(err) res.json(err);
+          else{
+           console.log('Image: ' + recipe.imagePath + ' has been deleted.')
+          }
+        }))
+      }  
+*/
 router.delete(specificUserPath,checkAuth, function(req, res, next) {
  // test what happens when we use remove instead of findOneAndDelete
   User.findOneAndDelete({_id: req.params.profileId})
@@ -217,7 +232,7 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
     if (user === null) {
       return res.status(401).json({'message': userNotFound});
     }
-    
+   
     Recipe.deleteMany({
       "_id":{
         $in: user.recipes
@@ -225,6 +240,7 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
     }, function(err){
       if(err) return next(err);
     });
+    
 
     Day.deleteMany({
       "_id":{
