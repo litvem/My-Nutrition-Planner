@@ -1,98 +1,121 @@
 <template>
-  <div class="background">
-    <div class="box-form">
-      <div class="center">
-        <div class="overlay">
-          <h2>Home</h2>
-          <div class="firstrow">
-            <button class="btn" v-on:click="goToProfile">Profile</button>
-            <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
-          </div>
-          <div class="secondrow">
-            <button class="btn" v-on:click="goToRecipes">Recipes</button>
-            <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
-          </div>
+  <div class="container-fluid">
+    <b-container class="top">
+      <b-row>
+        <h2>Home</h2>
+      </b-row>
+      <b-row>
+        <b-col>
+          <button class="btn" v-on:click="goToProfile">Profile</button>
+        </b-col>
+        <b-col>
+          <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
+        </b-col>
+        <b-col>
+          <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
+        </b-col>
+        <b-col>
+          <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <h3>My favourite recipes</h3>
+      </b-row>
+      <b-row>
+        <div v-for="recipe in recipes" v-bind:key="recipe._id">
+          <p>{{recipe}}</p>
+          <recipe-item v-bind:recipe="recipe" v-on:del-recipe="deleteRecipe"/>
         </div>
-      </div>
-    </div>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script>
+import RecipeItem from '@/components/RecipeItem.vue'
+import { Api } from '@/Api'
+
 export default {
   name: 'userHome',
+  components: {
+    RecipeItem
+  },
+  mounted() {
+    console.log('Page is loaded')
+    // Load the real recipes form the server
+    Api.get('/profiles/:profileId/recipes')
+      .then(response => {
+        // console.log(response.data)
+        this.recipes = response.data.recipes
+      })
+      .cath(error => {
+        console.error(error)
+        // In case of error we could delete all the recipes.
+        // this.recipes = []
+      })
+      .then(() => {
+        // This code is always executed at the end. After success os failure.
+      })
+  },
+  data() {
+    return {
+      recipes: []
+    }
+  },
   methods: {
     goToProfile() {
       this.$router.push('/profile')
     },
-    goToRecipes() {
-      this.$router.push('/recipes')
+    goToAddRecipe() {
+      this.$router.push('/addRecipe')
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
     },
     goToShoppingList() {
       this.$router.push('/shoppingList')
+    },
+    deleteRecipe(id) {
+      Api.delete(`/profiles/:profileId/recipes/${id}`)
+        .then(response => {
+          const index = this.recipes.findIndex(recipe => recipe._id === id)
+          this.recipes.splice(index, 1)
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   }
 }
 </script>
 
 <style scoped>
-  .btn {
-    margin-bottom: 2em;
-    margin-right: 2em;
-  }
-  .box-form {
-    margin: 0 auto;
-    width: 100%;
-    height: 100%;
-    background: #FFFFFF;
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex: 1;
-    align-items: normal;
-    justify-content: space-between;
-    box-shadow: 0 0 20px 6px #090b6f85;
-  }
-  @media (max-width: 900px) {
-  .box-form {
-    flex-flow: wrap;
-    text-align: center;
-    align-content: center;
-    align-items: center;
-    }
-  }
-  .box-form div {
-    height: auto;
-  }
-  .box-form .center {
-    color: #FFFFFF;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url("https://images.unsplash.com/photo-1521986329282-0436c1f1e212?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80");
-    overflow: hidden;
-  }
-  .box-form .center .overlay {
-    padding: 30px;
-    width: 100%;
-    height: 100%;
-    background: #9697fcad;
-    overflow: hidden;
-    box-sizing: border-box;
-  }
-  .box-form .center .overlay h2 {
-  font-size: 5vmax;
-  line-height: 1;
-  font-weight: 700;
-  margin-top: 20px;
-  margin-bottom: 40px;
-  text-align: center;
+
+  .container-fluid {
+    margin-top: 3%;
+    margin-bottom: 3%;
+    margin-right: 10%;
+    margin-left: 10%;
   }
 
-  .box-form .btn {
+  h2 {
+    color: #210b85;
+    font-size: 5vmax;
+    line-height: 1;
+    font-weight: 700;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-right: 20%;
+    margin-left: 20%;
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-right: 0.1em;
+    margin-left: 0.1em;
     float: center;
     color: #fff;
     font-size: 16px;
@@ -103,6 +126,19 @@ export default {
     outline: 0;
     box-shadow: 0px 4px 20px 0px #285fc6a6;
     background-image: linear-gradient(135deg, #7b70f5 10%, #285fc6a6 100%);
+  }
+
+  h3 {
+    color: #210b85;
+    font-size: 3vmax;
+    line-height: 1;
+    font-weight: 500;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-right: 20%;
+    margin-left: 20%;
+    width: 100%;
+    text-align: center;
   }
 
 </style>
