@@ -7,6 +7,1369 @@
 	},
 	"item": [
 		{
+			"name": "Shoppinglist Controller Test",
+			"item": [
+				{
+					"name": "Sign up  profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/singup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"singup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shoppingList 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var shopList = response.shoppinglistCreated._id;\r",
+									"pm.environment.set(\"shopList_1\", shopList)\r",
+									"\r",
+									"const potatoObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"potato\");\r",
+									"\r",
+									"const ketchupObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"const milkObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"milk\");\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct shoppinglist response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"      pm.expect(response.shoppinglistCreated.week).to.eql(20);\r",
+									"    pm.expect(response.shoppinglistCreated.year).to.eql(2022);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  first item response\", function () {\r",
+									"\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct second item response\", function () {\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct third item response\", function () {\r",
+									"\r",
+									"    pm.expect(milkObject.itemId).to.eql(3);\r",
+									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
+									"    pm.expect(milkObject.amount).to.eql(1);\r",
+									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"week\": 20,\r\n    \"year\":2022,\r\n    \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        },{\r\n        \"itemId\": 3,\r\n        \"item\":\"milk\",\r\n        \"amount\":1,\r\n        \"unit\":\"l\"\r\n        }\r\n    ]\r\n}\r\n"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shoppingList 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var shopList = response.shoppinglistCreated._id;\r",
+									"pm.environment.set(\"shopList_2\", shopList)\r",
+									"\r",
+									"const potatoObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"potato\");\r",
+									"\r",
+									"const ketchupObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct shoppinglist response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"      pm.expect(response.shoppinglistCreated.week).to.eql(50);\r",
+									"    pm.expect(response.shoppinglistCreated.year).to.eql(2022);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  first item response\", function () {\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(1);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second item response\", function () {\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(200);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"week\": 50,\r\n    \"year\":2022,\r\n \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":1,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":200,\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]  \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								""
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all shoppinglist",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								""
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get shoppinglist 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
+									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
+									"const milkObject = response.shoppinglist[0].items.find(obj => obj.item ===\"milk\");\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
+									"    pm.expect(response.shoppinglist[0].week).to.eql(20);\r",
+									"    pm.expect(response.shoppinglist[0].year).to.eql(2022);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  first item response\", function () {\r",
+									"\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct second item response\", function () {\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct third item response\", function () {\r",
+									"\r",
+									"    pm.expect(milkObject.itemId).to.eql(3);\r",
+									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
+									"    pm.expect(milkObject.amount).to.eql(1);\r",
+									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add items and change week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"const ketchupObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"ketchup\");\r",
+									"const potatoObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"potato\");\r",
+									"const milkObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"milk\");\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct updated shoppinglist element\", function () {\r",
+									"\r",
+									"    pm.expect(response.updatedShoppinglist.week).to.eql(51);\r",
+									"    pm.expect(milkObject.itemId).to.eql(3);\r",
+									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
+									"    pm.expect(milkObject.amount).to.eql(1);\r",
+									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct non updated elements\", function () {\r",
+									"    pm.expect(response.updatedShoppinglist.year).to.eql(2022);\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n  \"week\":51,\r\n   \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        },{\r\n        \"itemId\": 3,\r\n        \"item\":\"milk\",\r\n        \"amount\":1,\r\n        \"unit\":\"l\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  add updated shopList2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
+									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
+									"const milkObject = response.shoppinglist[0].items.find(obj => obj.item ===\"milk\");\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct shoppinglist response- non item attributes\", function () {\r",
+									"    pm.expect(response.shoppinglist[0].week).to.eql(51);\r",
+									"     pm.expect(response.shoppinglist[0].year).to.eql(2022);  \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  first items array object response\", function () {\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  third items array object response\", function () {\r",
+									"\r",
+									"    pm.expect(milkObject.itemId).to.eql(3);\r",
+									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
+									"    pm.expect(milkObject.amount).to.eql(1);\r",
+									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove  one item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"const ketchupObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"ketchup\");\r",
+									"const potatoObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"potato\");\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct non items element\", function () {\r",
+									"   pm.expect(response.updatedShoppinglist.year).to.eql(2022);\r",
+									"   pm.expect(response.updatedShoppinglist.week).to.eql(51);\r",
+									" \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct updated item list\", function () {\r",
+									"\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n   \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated shopList2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
+									"\r",
+									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
+									"    pm.expect(response.shoppinglist[0].week).to.eql(51);\r",
+									"    pm.expect(response.shoppinglist[0].year).to.eql(2022);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"\r",
+									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
+									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
+									"    pm.expect(potatoObject.amount).to.eql(100);\r",
+									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect-User not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "6328bab1c3ca1162dcb1342e"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete shoppinglist 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 20 has been deleted');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete shoppinglist 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 51 has been deleted');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect Get spec error message",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "632b5baf9f411542cc95e666"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect Get all error message",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expect - shoppinglist not found",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
+									" \r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "632b5baf9f411542cc95e666"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Users Controller Test",
 			"item": [
 				{
@@ -2255,1369 +3618,6 @@
 				},
 				{
 					"name": "Delete profile 1 Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user message\"), function(){\r",
-									"      var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
-									"}"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Shoppinglist Controller Test",
-			"item": [
-				{
-					"name": "Sign up  profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var profileId = response.userCreated._id;\r",
-									"pm.environment.set(\"profileID_1\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/singup",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"singup"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login profile 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "shoppingList 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var shopList = response.shoppinglistCreated._id;\r",
-									"pm.environment.set(\"shopList_1\", shopList)\r",
-									"\r",
-									"const potatoObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"const milkObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"milk\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct shoppinglist response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"      pm.expect(response.shoppinglistCreated.week).to.eql(20);\r",
-									"    pm.expect(response.shoppinglistCreated.year).to.eql(2022);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  first item response\", function () {\r",
-									"\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct second item response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct third item response\", function () {\r",
-									"\r",
-									"    pm.expect(milkObject.itemId).to.eql(3);\r",
-									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
-									"    pm.expect(milkObject.amount).to.eql(1);\r",
-									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "\r\n{\r\n    \"week\": 20,\r\n    \"year\":2022,\r\n    \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        },{\r\n        \"itemId\": 3,\r\n        \"item\":\"milk\",\r\n        \"amount\":1,\r\n        \"unit\":\"l\"\r\n        }\r\n    ]\r\n}\r\n"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "shoppingList 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var shopList = response.shoppinglistCreated._id;\r",
-									"pm.environment.set(\"shopList_2\", shopList)\r",
-									"\r",
-									"const potatoObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.shoppinglistCreated.items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(201);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct shoppinglist response - excluding array of object\", function () {\r",
-									"    var response =  pm.response.json();\r",
-									"      pm.expect(response.shoppinglistCreated.week).to.eql(50);\r",
-									"    pm.expect(response.shoppinglistCreated.year).to.eql(2022);\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  first item response\", function () {\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(1);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second item response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(200);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"week\": 50,\r\n    \"year\":2022,\r\n \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":1,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":200,\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]  \r\n}"
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								""
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get all shoppinglist",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								""
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get shoppinglist 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
-									"const milkObject = response.shoppinglist[0].items.find(obj => obj.item ===\"milk\");\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    pm.expect(response.shoppinglist[0].week).to.eql(20);\r",
-									"    pm.expect(response.shoppinglist[0].year).to.eql(2022);\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  first item response\", function () {\r",
-									"\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct second item response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct third item response\", function () {\r",
-									"\r",
-									"    pm.expect(milkObject.itemId).to.eql(3);\r",
-									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
-									"    pm.expect(milkObject.amount).to.eql(1);\r",
-									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add items and change week",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const ketchupObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"ketchup\");\r",
-									"const potatoObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"potato\");\r",
-									"const milkObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"milk\");\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct updated shoppinglist element\", function () {\r",
-									"\r",
-									"    pm.expect(response.updatedShoppinglist.week).to.eql(51);\r",
-									"    pm.expect(milkObject.itemId).to.eql(3);\r",
-									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
-									"    pm.expect(milkObject.amount).to.eql(1);\r",
-									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct non updated elements\", function () {\r",
-									"    pm.expect(response.updatedShoppinglist.year).to.eql(2022);\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n  \"week\":51,\r\n   \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        },{\r\n        \"itemId\": 3,\r\n        \"item\":\"milk\",\r\n        \"amount\":1,\r\n        \"unit\":\"l\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get  add updated shopList2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
-									"const milkObject = response.shoppinglist[0].items.find(obj => obj.item ===\"milk\");\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct shoppinglist response- non item attributes\", function () {\r",
-									"    pm.expect(response.shoppinglist[0].week).to.eql(51);\r",
-									"     pm.expect(response.shoppinglist[0].year).to.eql(2022);  \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  first items array object response\", function () {\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  third items array object response\", function () {\r",
-									"\r",
-									"    pm.expect(milkObject.itemId).to.eql(3);\r",
-									"    pm.expect(milkObject.item).to.eql(\"milk\");\r",
-									"    pm.expect(milkObject.amount).to.eql(1);\r",
-									"    pm.expect(milkObject.unit).to.eql(\"l\");\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Remove  one item",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const ketchupObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"ketchup\");\r",
-									"const potatoObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct non items element\", function () {\r",
-									"   pm.expect(response.updatedShoppinglist.year).to.eql(2022);\r",
-									"   pm.expect(response.updatedShoppinglist.week).to.eql(51);\r",
-									" \r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct updated item list\", function () {\r",
-									"\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{   \r\n   \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":5,\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"potato\",\r\n        \"amount\":100,\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get updated shopList2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"\r",
-									"const potatoObject = response.shoppinglist[0].items.find(obj => obj.item ===\"potato\");\r",
-									"\r",
-									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
-									"    pm.expect(response.shoppinglist[0].week).to.eql(51);\r",
-									"    pm.expect(response.shoppinglist[0].year).to.eql(2022);\r",
-									"\r",
-									"});\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
-									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
-									"    pm.expect(ketchupObject.amount).to.eql(5);\r",
-									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct  second items array object response\", function () {\r",
-									"\r",
-									"    pm.expect(potatoObject.itemId).to.eql(2);\r",
-									"    pm.expect(potatoObject.item).to.eql(\"potato\");\r",
-									"    pm.expect(potatoObject.amount).to.eql(100);\r",
-									"    pm.expect(potatoObject.unit).to.eql(\"grams\");\r",
-									"\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect-User not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"User not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "6328bab1c3ca1162dcb1342e"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete shoppinglist 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 20 has been deleted');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete shoppinglist 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 51 has been deleted');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "{{shopList_2}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get spec error message",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "632b5baf9f411542cc95e666"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect Get all error message",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Expect - shoppinglist not found",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Correct status code\", function(){\r",
-									"  pm.response.to.have.status(404);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct error response\", function () {\r",
-									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql(\"Shoppinglist not found\");\r",
-									" \r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId",
-								"shoppinglists",
-								":shoplistId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								},
-								{
-									"key": "shoplistId",
-									"value": "632b5baf9f411542cc95e666"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete profile 1",
 					"event": [
 						{
 							"listen": "test",

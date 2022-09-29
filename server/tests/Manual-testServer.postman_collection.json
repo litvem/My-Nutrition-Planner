@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "bb273b4a-1c0d-4f14-b323-dd72ec99a611",
-		"name": "Manual-testServer",
+		"_postman_id": "6e87a540-f1c0-44f1-83e3-30521cca171f",
+		"name": "Manual test for Recipies",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "15823420"
 	},
@@ -233,8 +233,7 @@
 							{
 								"key": "Accept",
 								"value": "multipart/form-data",
-								"type": "text",
-								"disabled": true
+								"type": "text"
 							},
 							{
 								"key": "Content-Type",
@@ -614,7 +613,7 @@
 									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
 									"   \r",
 									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe3Image\");\r",
-									"    pm.expect(response.recipeCreated.category).to.eql(\"Snack\");\r",
+									"    pm.expect(response.recipeCreated.category).to.eql(\"Dinner\");\r",
 									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"low carb\"); // both work for identify String in array\r",
 									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
 									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction3\"); \r",
@@ -748,7 +747,7 @@
 								},
 								{
 									"key": "category",
-									"value": "Snack",
+									"value": "Dinner",
 									"type": "text"
 								}
 							]
@@ -799,7 +798,7 @@
 									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe4\");\r",
 									"    pm.expect(response.recipeCreated.category).to.eql(\"Snack\");\r",
 									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.tag).to.include(\"carbs\"); // both work for identify String in array\r",
 									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction4\"); \r",
 									"});\r",
 									"\r",
@@ -852,7 +851,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+							"raw": "{   \r\n    \"name\":\"Recipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"carbs\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles/:profileId/recipes",
@@ -948,6 +947,96 @@
 								"profiles",
 								":profileId",
 								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filter",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"var recipes = response.recipes;\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('Number of user = ' + recipes.length, function () {\r",
+									"    pm.expect(recipes.length).to.eql(4);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes?category=Lunch",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "Lunch"
+								}
 							],
 							"variable": [
 								{
@@ -2217,6 +2306,33 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:3000",
+			"type": "string"
 		}
 	]
 }

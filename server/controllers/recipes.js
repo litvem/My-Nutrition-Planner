@@ -114,6 +114,9 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
 
 // get all 
 router.get(recipesPath, function(req,res,next){
+
+  var filter = req.query.category;
+
   User.findOne({_id:req.params.profileId})
   .populate('recipes')
   .then(user => {
@@ -121,12 +124,19 @@ router.get(recipesPath, function(req,res,next){
       return res.status(404).json({
         message: "Not found"
       });
-    }else if(user.recipes.length === 0){
+    }
+    if(user.recipes.length === 0){
       return res.status(404).json({
         message: "Recipe not found"
       });
+    }
+
+    if(filter){
+       res.json(user.recipes.filter(document =>{
+        return filter === document.category ;
+      }));
     }else{
-      return res.status(200).json({
+       res.status(200).json({
         recipes: user.recipes,
         link: {
          rel: "Recipe",
@@ -135,12 +145,13 @@ router.get(recipesPath, function(req,res,next){
        }
      });
     }
-  })
-  .catch(err => {
-    res.status(500).json({
-      error: err
-    });
+})
+.catch(err => {
+  res.status(500).json({
+    error: err
   });
+});
+
 });
 
 // Get specific - for patch copy and add. 
@@ -275,40 +286,5 @@ router.delete(specificRecipesPath, function(req, res, next) {
     });
   }) 
 });
-
-/*
-// filter
-// get all 
-router.get('/api/profiles/:profileId/recipes', function(req,res,next){
-  var type = req.query.params.type;
-  var filter = req.query.params.filter;
-
-  User.findById({_id:req.params.profileId})
-  .populate('recipes')
-  .then(user => {
-      if (!user) {
-          return res.status(404).json({
-          message: "Not found"
-          });
-      }
-      if(user.recipes.length === 0){
-          return res.status(404).json({
-          message: "Recipe not found"
-          });
-      }
-      
-      Recipe.find({type: filter})
-      .then(recipes =>{
-          return res.status(200).json(recipes);
-      })   
-              
-  })
-  .catch(err => {
-      res.status(500).json({
-        error: err
-      });
-  });
-});
-*/
 
 module.exports = router;
