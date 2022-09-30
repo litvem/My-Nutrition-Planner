@@ -134,7 +134,8 @@ router.get(recipesPath, function(req,res,next){
     if(filter){
        res.json(user.recipes.filter(document =>{
         return filter === document.category ;
-      }));
+    }));
+
     }else{
        res.status(200).json({
         recipes: user.recipes,

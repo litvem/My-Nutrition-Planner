@@ -40,7 +40,7 @@ router.post('/api/profiles/singup',function(req, res,next) {
           user.save()
           .then(newUser => {
             res.status(201).json({
-              userCreated: newUser,
+              userCreated: newUser, // do I really return this ? or just message is ok ?
               links: [{
                 rel: "self",
                 type: 'PATCH',
@@ -96,7 +96,8 @@ router.post("/api/profiles/login", (req, res, next) => {
           );
           return res.status(200).json({
             message: "Authentication successful",
-            token: token
+            token: token,
+            id:user._id
           });
         }
         res.status(401).json({
@@ -234,10 +235,8 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
     }
    
     Recipe.deleteMany({
-      "_id":{
-        $in: user.recipes
-      }
-    }, function(err){
+      $and:[{"_id":{$in: user.recipes}
+    }]}, function(err){
       if(err) return next(err);
     });
     
@@ -246,8 +245,17 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
       "_id":{
         $in: user.days
       }
-    }, function(err){
+    }, function(err, recipe){
       if(err) return next(err);
+
+      if(recipe.imagePath !== defaultImagePath){
+        fs.unlink(recipe.imagePath,(err =>{
+          if(err) res.json(err);
+          else{
+           console.log('Image: ' + recipe.imagePath + ' has been deleted.')
+          }
+        }))
+      } 
     });
 
     Shoppinglist.deleteMany({
