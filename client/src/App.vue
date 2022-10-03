@@ -67,7 +67,7 @@ export default {
 }
 body {
   min-height: 88vh;
-  display: flex;
+  display: grid;
   margin: auto 0;
 }
 </style>
