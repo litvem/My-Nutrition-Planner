@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-  <div class="box-form">
+  <div @submit.prevent="handleSubmit" class="box-form">
     <div class="left">
       <div class="overlay">
         <h2>Welcome to your Nutrition Planner</h2>
@@ -14,35 +14,44 @@
       <br>
       <p>Don't have an account? <a href="" v-on:click="goToRegister">Register here</a>, it takes less than a minute</p>
       <div class="inputs">
-        <input type="text" placeholder="user name">
+        <input type="text" v-model="username" placeholder="username">
         <br>
-        <input type="password" placeholder="password">
+        <input type="password" v-model="password" placeholder="password">
       </div>
       <br><br>
       <div class="forget-password">
 <a href="" v-on:click="goToForgoPassword">Forgot password?</a>
 </div>
 <br>
-<button v-on:click="goToUserHome">Login</button>
+<button v-on:click="handleSubmit()">Login</button>
 </div>
 </div>
 </div>
 </template>
 
 <script>
-
+import { Api } from '@/Api'
 export default {
   name: 'home',
   components: {
   },
   data() {
     return {
-      message: 'none'
+      username: '',
+      password: ''
     }
   },
   methods: {
+
+    handleSubmit() {
+      const response = Api.post('/profiles/login', {
+        username: this.username,
+        password: this.password
+      })
+      console.log(response)
+    },
     goToUserHome() {
-      this.$router.push('/userHome')
+
     },
     goToRegister() {
       this.$router.push('/register')

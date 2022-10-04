@@ -5,6 +5,7 @@ var path = require('path');
 var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
+
 // Variables
 var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myNutritionPlanner';
 var port = process.env.PORT || 3000;
@@ -12,7 +13,6 @@ var port = process.env.PORT || 3000;
 var usersController = require('./controllers/users');
 var recipesController = require('./controllers/recipes');
 var shoppinglistsController = require('./controllers/shoppinglists');
-var weeklycalendersController = require('./controllers/weeklycalenders');
 var daysController = require('./controllers/days');
 
 // Connect to MongoDB
@@ -36,6 +36,8 @@ app.use(morgan('dev'));
 app.options('*', cors());
 app.use(cors());
 
+// To make recipe image public
+app.use('/uploads', express.static('uploads'));
 
 // Import routes
 app.get('/api', function(req, res) {
@@ -44,7 +46,6 @@ app.get('/api', function(req, res) {
 
 app.use(usersController);
 app.use(recipesController);
-app.use(weeklycalendersController);
 app.use(shoppinglistsController);
 app.use(daysController);
 
@@ -56,7 +57,7 @@ app.use(daysController);
 
 // Catch all non-error handler for api (i.e., 404 Not Found)
 app.use('/api/*', function (req, res) {
-    res.status(404).json({ 'message': 'Not Found' });
+    res.status(404).json({ 'message': 'Not Found. (from app)' });
 });
 
 // Configuration for serving frontend in production mode
@@ -92,5 +93,3 @@ app.listen(port, function(err) {
 });
 
 module.exports = app;
-
-

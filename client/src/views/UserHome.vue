@@ -32,30 +32,29 @@
 </template>
 
 <script>
-import RecipeItem from '@/components/RecipeItem.vue'
+// import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 
 export default {
   name: 'userHome',
   components: {
-    RecipeItem
   },
   mounted() {
     console.log('Page is loaded')
     // Load the real recipes form the server
-    Api.get('/profiles/:profileId/recipes')
-      .then(response => {
-        // console.log(response.data)
-        this.recipes = response.data.recipes
-      })
-      .cath(error => {
-        console.error(error)
-        // In case of error we could delete all the recipes.
-        // this.recipes = []
-      })
-      .then(() => {
-        // This code is always executed at the end. After success os failure.
-      })
+    // Api.get('/profiles/:profileId/recipes')
+    //  .then(response => {
+    // console.log(response.data)
+    //    this.recipes = response.data.recipes
+    //  })
+    //  .cath(error => {
+    //    console.error(error)
+    // In case of error we could delete all the recipes.
+    // this.recipes = []
+    //  })
+    //  .then(() => {
+    // This code is always executed at the end. After success os failure.
+    //  })
   },
   data() {
     return {
