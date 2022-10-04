@@ -1,6 +1,6 @@
 <template>
-  <div class="Home">
-    <div class="Welcomeview">
+  <div  @submit.prevent="handleSubmit"  class="Home">
+    <section class="Welcomeview">
     <div class="box-form">
       <div class="wellcome-text container">
         <h1>MyNutrionPlanner</h1>
@@ -17,43 +17,42 @@
         <hr />
         <br>
         <div class="inputs">
-          <input type="text" placeholder="username">
+          <input type="text" v-model="username" placeholder="username">
           <br>
-          <input type="password" placeholder="password">
+          <input type="password" v-model="password" placeholder="password">
         </div>
         <br><br>
         <div class="forget-password">
           <a href="" v-on:click="goToForgoPassword">Forgot password?</a>
         </div>
         <br>
-        <button v-on:click="goToUserHome">Login</button>
+        <button v-on:click="login">Login</button>
         <button v-on:click="goToRegister">Register</button>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
-
+import { Api } from '@/Api'
 export default {
   name: 'home',
-  components: {
-  },
   data() {
     return {
-      message: 'none'
+      username: '',
+      password: ''
     }
   },
   methods: {
-    goToUserHome() {
-      this.$router.push('/userHome')
-    },
-    goToRegister() {
-      this.$router.push('/register')
-    },
-    goToForgoPassword() {
-      this.$router.push('/forgotPassword')
+    async handleSubmit() {
+      const response = await Api.post('/profiles/login', {
+        username: this.username,
+        password: this.password
+      })
+      console.log(this.username)
+      console.log(this.password)
+      console.log(response)
     }
   }
 }
@@ -98,13 +97,8 @@ export default {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  @media(max-width: 500px) {
-    .box-form .right {
-      width: 100%;
-    }
-  }
+
     h1 {
-      color: rgb(253, 250, 250);
       text-transform: uppercase;
       font-size: 40px;
       font-weight: bold;
@@ -117,9 +111,6 @@ export default {
       color: rgb(253, 250, 250);
       font-size: 22px;
       padding-bottom: 4px;
-      @media (min-width: 200px) {
-        font-size: 20px;
-      }
     }
     hr:nth-child(2) {
       height: 3px;
@@ -134,18 +125,12 @@ export default {
   height: 100%;
   padding: 40px;
   overflow: hidden;
-  @media (max-width: 700px) {
-    .box-form .right {
-      width: 100%;
-    }
-  }
+
   h3 {
     text-transform: uppercase;
     color: #ffff;
     font-size: 40px;
-    @media (min-width: 300px) {
-      font-size: 40px;
-    }
+
   }
 
   hr:nth-child(2) {
@@ -206,4 +191,8 @@ label {
   position: relative;
   margin-left: 30px;
 }
+@media screen {
+
+}
+
 </style>

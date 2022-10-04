@@ -67,6 +67,9 @@ export default {
 </script>
 
 <style scoped>
+  .h2 {
+    margin-top: 40%;
+  }
   .btn {
     margin-bottom: 2em;
     margin-right: 2em;

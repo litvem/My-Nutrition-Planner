@@ -1,76 +1,75 @@
 <template>
-  <!-- to add picture see https://www.youtube.com/watch?v=u2AwJAFeaKc  8.30 example LOGO -->
-  <!-- start repo https://github.com/johnkomarnicki/navigation-menu/blob/Starter-Files/package.json-->
-  <header :class="{ 'scrolled-nav': scrollPosition}">
-    <nav>
-      <div class="branding">
-        <img src="@/assets/logo.png"/>
-      </div>
-      <ul v-show="!mobile" class ="navigation">
+  <nav class="navbar">
+    <div class="brand-title">
+      <img src="@/assets/logo.png"/>
+      <h1>MyNutrionPlanner</h1>
+    </div>
+    <a href="#" v-on:click="toggleButton" class="toggle-button">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </a>
+    <div class="navbar-links">
+      <ul>
         <li><router-link class="link" :to="{ name: 'home' }">Login</router-link></li>
         <li><router-link class="link" :to="{ name: 'register' }">Sign up</router-link></li>
       </ul>
-      <div class="icon">
-        <i @click="toggleMobileNav" v-show="mobile" class="far fa-bars" :class="{'icon-active':mobileNav}"></i>
-      </div>
-      <transition name="mobile-nav"></transition>
-        <ul v-show="mobile" class ="dropdown-nav">
-          <li><router-link class="link" :to="{ name: 'home' }">Login</router-link></li>
-        <li><router-link class="link" :to="{ name: 'register' }">Sign up</router-link></li>
-        </ul>
-    </nav>
-  </header>
+    </div>
+  </nav>
 </template>
 
 <script>
 export default {
   name: 'NavBar',
-  data() {
-    return {
-      scrollPosition: null,
-      mobile: false,
-      mobileNav: null,
-      windWdth: null
+  methods: {
+    toggleButton() {
+      document.getElementsByClassName('navbar-links')[0].classList.toggle('active')
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
-header {
-  background-color: rgba(2, 9, 30, 0.926);
-  z-index: 99;
-  width: 100%;
-  position: fixed;
-  transition: .5 ease all;
-  color:#fff;
-
-  nav {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    padding: 12px 0;
+* {
     transition: .5 ease all;
-    width: 90;
-    margin: 0 auto;
-    @media(min-width:1140px){
-      max-width: 1140px;
+    z-index: 99;
+}
+
+.navbar {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(1, 0, 0);
+  padding: 10px 0;
+  transition: .5 ease all;
+}
+
+.brand-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  margin: .5rem;
+    img{
+      width: 45px;
+      transition: 0.5;
+      transition: .5 ease all;
+      border-bottom: 1px solid transparent;// either the picture
+
+      &:hover {
+        color:#0a82ebed;
+        border-color: #589fea;
+      }
     }
-    ul,
-    .link {
-      font-weight: 500;
+    h1 {
       color:rgb(12, 156, 31);
+      font-weight: bold;
+      margin-left: 5%;
       list-style: none;
       text-decoration: none;
-    }
-    li {
-      text-transform: uppercase;
-      padding: 16 px;
-      margin-left: 16px;
-    }
-    .link {
-      font-size: 14px;
-      transition: .5 ease all;
+      font-size: 30px;
+      transition: .5 ease all; // or the text
       border-bottom: 1px solid transparent;// to add a hover effect
 
       &:hover {
@@ -78,37 +77,103 @@ header {
         border-color: #589fea;
       }
     }
+}
 
-    .branding{
+.navbar-links {
+    height: 100%;
+    font-weight: 500;
+    color:rgb(12, 156, 31);
+    list-style: none;
+    text-decoration: none
+
+}
+
+.navbar-links ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    transition: .5 ease all;
+}
+
+.navbar-links li {
+    list-style: none;
+}
+
+.navbar-links li a {
+    display: block;
+    text-decoration: none;
+    color:rgb(12, 156, 31);;
+    padding: 1rem;
+    border-bottom: 1px solid transparent;// to add a hover effect
+
+    &:hover {
+    color:#0a82ebed;
+    border-color: #589fea;
+}
+}
+
+.toggle-button {
+    position: absolute;
+    top: .75rem;
+    right: 1rem;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+}
+
+.toggle-button .bar {
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 800px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+
+    }
+    .brand-title {
       display: flex;
-      align-items: left;
+      align-items: center;
+      font-size: 1.5rem;
       img{
-        width: 45px;
-        transition: 0.5;
+        width: 10%;
+      }
+      h1 {
+        text-align: right;
+        font-size: 1.5rem;
       }
     }
-    .navigation {
-      display: flex;
-      align-items: center;
-      flex:1;
-      justify-content: flex-end;
+    .toggle-button {
+        display: flex;
     }
-    .icon {
-      display:flex;
-      align-items: center;
-      position:absolute;
-      top:0;
-      right: 24px;
-      height: 100%;
-      i{
-        cursor: pointer;
-        font-size: 24px;
-        transition: .8 ease all;
-      }
+
+    .navbar-links {
+      display: none;
+      width: 100%;
+
     }
-    .icon-active{
-      transform: rotate(180deg);
+
+    .navbar-links ul {
+      width: 100%;
+      flex-direction: column
     }
+
+    .navbar-links ul li {
+        text-align: center;
+    }
+
+    .navbar-links ul li a {
+        padding: .5rem 1rem;
+    }
+
+    .navbar-links.active {
+        display: flex;
   }
 }
+
 </style>
