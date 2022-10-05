@@ -2,8 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var shoppingListSchema = new Schema({
-    weekcalender:{type: Schema.Types.ObjectId, ref:'weekcalender'},  
-    shoppingItems:{ type: Schema.Types.ObjectId, ref: 'recipe' }
+    name:{ type: String},
+    items:{ type: [{
+        item: {type:String}, 
+        amount: {type: Number},
+        unit:{type: String}
+        }]}
+    
  });
 
  module.exports = mongoose.model('shoppinglists', shoppingListSchema);

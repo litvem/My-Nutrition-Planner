@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var recipeSchema = new Schema({
-    //_id:{type: String},
+    _id:{type: String},
     name: {type:String}, 
     category: {type: String,
                enum: ['Breakfast','Lunch','Dinner','Snack']},
@@ -10,7 +10,7 @@ var recipeSchema = new Schema({
          data: Buffer,
          contentType: String
     }},
-    tag: {type:[String]},
+    pictureURL: {type:String},
     instruction: {type:String},
     items:{ type: [{
      _id:{type: Number},

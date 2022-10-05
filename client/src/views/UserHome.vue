@@ -35,6 +35,7 @@ import { Api } from '@/Api'
 
 export default {
   name: 'userHome',
+  profileID: 'ellaG',
   components: {
   },
   mounted() {
