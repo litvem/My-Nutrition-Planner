@@ -40,6 +40,7 @@ import RecipePreview from '../components/RecipePreview.vue'
 
 export default {
   name: 'userHome',
+  props: ['user'],
   components: {
     RecipePreview
   },
