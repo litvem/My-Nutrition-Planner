@@ -1,41 +1,42 @@
 <template>
   <div id="app">
-    <div id="nav">
-    <b-navbar toggleable="lg" type="dark" variant="info">
-      <b-navbar-brand href="#" v-on:click="goToHome">MyNutritionPlanner</b-navbar-brand>
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-      <!-- Right aligned nav items -->
-      <b-navbar-nav class="ml-auto">
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav>
-             <b-nav-item href="#" v-on:click="goToRecipes">Recipes</b-nav-item>
-             <b-nav-item href="#" v-on:click="goToWeeklyCalendar">Weekly Plan</b-nav-item>
-             <b-nav-item href="#" v-on:click="goToShoppingList">Shopping List</b-nav-item>
-          </b-navbar-nav>
-          <b-nav-item-dropdown text="Profile" right>
-              <b-dropdown-item v-on:click="goToEdit()">Edit Profile</b-dropdown-item>
-             <b-dropdown-item href="#">Log Out</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-collapse>
-      </b-navbar-nav>
-    </b-navbar>
-  </div>
-    <body>
-      <router-view/>
-    </body>
-    <app-footer/>
+    <div class="auth-wrapper">
+      <div class="auth-inner">
+        <router-view :user="user" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { Api } from '@/Api'
 // import AppHeader from './components/AppHeader.vue'
-import AppFooter from './components/AppFooter.vue'
+// import AppFooter from './components/AppFooter.vue'
 
 export default {
   name: 'default',
-  components: {
+  /* components: {
     AppFooter
+  }, */
+  data() {
+    return {
+      user: null
+    }
+  },
+  created() {
+    const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
+    Api.get('/profiles' + id, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(response => {
+        this.user = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   methods: {
     goToHome() {
