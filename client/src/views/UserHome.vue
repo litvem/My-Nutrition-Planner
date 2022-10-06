@@ -12,16 +12,15 @@
             <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
             <div class="filter">
                 <h2>Choose recipe category:</h2>
-                <div class="categories" aria-label="Default select example">
-                  <b-form-select v-model="selected" :options="options"></b-form-select>
+                <div class="category" aria-label="Default select example">
+                  <b-form-select v-model="category" :options="options"></b-form-select>
                 </div>
                 <button class="search-btn" v-on:click="filterRecipes">Search</button>
-
             </div>
             <b-row>
             <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
               <RecipePreview v-bind:recipe-prev="recipe"
-              :key="recipe.name"
+              :key="recipe._id"
               :name="recipe.name"
               :category="recipe.category"
               :imgURL="recipe.imgURL" />
@@ -46,7 +45,6 @@ export default {
   },
   data() {
     return {
-      selected: null,
       options: [
         { value: null, text: 'Caterogy options' },
         { value: 'breakfast', text: 'Breakfast' },
@@ -54,78 +52,8 @@ export default {
         { value: 'dinner', text: 'Dinner' },
         { value: 'snack', text: 'Snack' }
       ],
-      submitted: false,
-      filteredRecipes: [
-        {
-          tag: [
-            'bad',
-            'fast'
-          ],
-          _id: '633d9c43fc3851a42e329507',
-          name: 'Recipe1',
-          category: 'Lunch',
-          picture: '',
-          instruction: 'Cooking instruction',
-          items: [
-            {
-              _id: 1,
-              item: 'ketchup',
-              amount: 10,
-              unit: 'tablespoon'
-            },
-            {
-              _id: 2,
-              item: 'potato',
-              amount: 100,
-              unit: 'grams'
-            }
-          ],
-          __v: 0
-        },
-        {
-          tag: [
-            'bad2',
-            'fast'
-          ],
-          _id: '633d9c68fc3851a42e32950c',
-          name: 'Recipe2',
-          category: 'Lunch',
-          picture: '',
-          instruction: 'Cooking instruction2',
-          items: [
-            {
-              _id: 3,
-              item: 'chili sauce',
-              amount: 5,
-              unit: 'ml'
-            },
-            {
-              _id: 4,
-              item: 'sallad',
-              amount: 200,
-              unit: 'grams'
-            }
-          ],
-          __v: 0
-        }]
+      filteredRecipes: []
     }
-  },
-  mounted() {
-    console.log('Page is loaded')
-    // Load the real recipes form the server
-    Api.get('/profiles/:profileId/recipes')
-      .then(response => {
-        // console.log(response.data)
-        this.recipes = response.data.recipes
-      })
-      .cath(error => {
-        console.error(error)
-        // In case of error we could delete all the recipes.
-        // this.recipes = []
-      })
-      .then(() => {
-        // This code is always executed at the end. After success os failure.
-      })
   },
   methods: {
     goToProfile() {
@@ -140,23 +68,14 @@ export default {
     goToShoppingList() {
       this.$router.push('/shoppingList')
     },
-    deleteRecipe(id) {
-      Api.delete(`/profiles/:profileId/recipes/${id}`)
-        .then(response => {
-          const index = this.recipes.findIndex(recipe => recipe._id === id)
-          this.recipes.splice(index, 1)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    },
     filterRecipes(e) {
-      this.submitted = true
       const filter = this.category
-      if (filter) {
+      if (filter !== 'Category options') {
         Api.get('/profiles/HarryPotter/recipes?category=' + filter)
           .then(response => {
             console.log(response)
+            this.filteredRecipes = response.data
+            this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
           })
           .catch(error => {
             this.message = error
@@ -284,7 +203,7 @@ export default {
     color: #fff;
   }
 
-  .filter .categories {
+  .filter .category {
     margin-top: 1em;
     margin-bottom: 0.7em;
     margin-left: 1%;
@@ -324,7 +243,7 @@ export default {
       text-align: center;
       width: 100%;
     }
-    .filter .categories {
+    .filter .category {
     width: 100%;
     font-size: 10px;
     }
