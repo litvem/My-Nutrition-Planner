@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div id = "background" class="container">
     <div class="row">
       <h1>Recipe Name</h1>
     </div>
@@ -83,5 +83,9 @@ img {
     max-height: 350px;
     border: 3px solid black;
     box-shadow: inset 0px 0px 10px 20px gray;
+}
+
+#background {
+  background-image: url('https://img.freepik.com/premium-photo/cutting-board-vegetables_1220-2560.jpg?w=996')
 }
 </style>

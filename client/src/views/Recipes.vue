@@ -1,5 +1,5 @@
 <template>
-<div class="container-fluid">
+<div id ="background" class="container-fluid">
   <div class="container-fluid">
     <div class="row">
       <div class="col">
@@ -7,7 +7,7 @@
       </div>
 
       <div class="col">
-        <button class="btn" v-on:click="goToAddRecipe">Add new recipe</button>
+        <button class="btn" v-on:click="goToAddRecipe()">Add new recipe</button>
       </div>
 
       <div class="col">
@@ -42,6 +42,7 @@ export default {
 
   data() {
     return {
+      profileID: 'ellaG',
       recipes: [
         {
           name: 'Chicken soup',
@@ -101,6 +102,9 @@ export default {
 
 <style scoped>
 
+  #background{
+    background-image: url('https://img.freepik.com/free-photo/golden-cutlery-with-textile-plate-dark-background-top-view_1220-6580.jpg?w=996&t=st=1664984396~exp=1664984996~hmac=79c8fc863f63487bb345b48115a001dfef7e250422b4443191829207582e91a7');
+  }
   .btn {
     float:left;
     background-color: rgb(64, 224, 112);

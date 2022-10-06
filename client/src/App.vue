@@ -50,6 +50,9 @@ export default {
     goToShoppingList() {
       this.$router.push('/shoppinglist')
     },
+    goToAddShoppingList() {
+      this.$router.push('/addShoppingList')
+    },
     goToEdit() {
       this.$router.push('/editProfile')
     }
