@@ -15,8 +15,18 @@
                 <div class="categories" aria-label="Default select example">
                   <b-form-select v-model="selected" :options="options"></b-form-select>
                 </div>
-                <button class="search-btn">Search</button>
+                <button class="search-btn" v-on:click="filterRecipes">Search</button>
+
             </div>
+            <b-row>
+            <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
+              <RecipePreview v-bind:recipe-prev="recipe"
+              :key="recipe.name"
+              :name="recipe.name"
+              :category="recipe.category"
+              :imgURL="recipe.imgURL" />
+            </div>
+            </b-row>
           </div>
         </div>
       </div>
@@ -27,9 +37,13 @@
 <script>
 // import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
+import RecipePreview from '../components/RecipePreview.vue'
 
 export default {
   name: 'userHome',
+  components: {
+    RecipePreview
+  },
   data() {
     return {
       selected: null,
@@ -39,8 +53,61 @@ export default {
         { value: 'lunch', text: 'Lunch' },
         { value: 'dinner', text: 'Dinner' },
         { value: 'snack', text: 'Snack' }
-      ] /*,
-      recipes: [] */
+      ],
+      submitted: false,
+      filteredRecipes: [
+        {
+          tag: [
+            'bad',
+            'fast'
+          ],
+          _id: '633d9c43fc3851a42e329507',
+          name: 'Recipe1',
+          category: 'Lunch',
+          picture: '',
+          instruction: 'Cooking instruction',
+          items: [
+            {
+              _id: 1,
+              item: 'ketchup',
+              amount: 10,
+              unit: 'tablespoon'
+            },
+            {
+              _id: 2,
+              item: 'potato',
+              amount: 100,
+              unit: 'grams'
+            }
+          ],
+          __v: 0
+        },
+        {
+          tag: [
+            'bad2',
+            'fast'
+          ],
+          _id: '633d9c68fc3851a42e32950c',
+          name: 'Recipe2',
+          category: 'Lunch',
+          picture: '',
+          instruction: 'Cooking instruction2',
+          items: [
+            {
+              _id: 3,
+              item: 'chili sauce',
+              amount: 5,
+              unit: 'ml'
+            },
+            {
+              _id: 4,
+              item: 'sallad',
+              amount: 200,
+              unit: 'grams'
+            }
+          ],
+          __v: 0
+        }]
     }
   },
   mounted() {
@@ -82,6 +149,27 @@ export default {
         .catch(error => {
           console.error(error)
         })
+    },
+    filterRecipes(e) {
+      this.submitted = true
+      const filter = this.category
+      if (filter) {
+        Api.get('/profiles/HarryPotter/recipes?category=' + filter)
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            this.message = error
+          })
+      } else {
+        Api.get('/profiles/HarryPotter/recipes')
+          .then(response => {
+            console.log(response)
+          })
+          .catch(error => {
+            this.message = error
+          })
+      }
     }
   }
 }
@@ -93,7 +181,7 @@ export default {
     background-size: cover;
     background-attachment: fixed;
     position: relative;
-    height: 110vh;
+    height: 100%;
   }
 
   .box-form .form-container {
@@ -125,11 +213,18 @@ export default {
     text-align: center;
     margin-top: 13%;
     margin-bottom: 1%;
-
     width: 100%;
   }
 
   .filter {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .filter view {
     display: flex;
     position: relative;
     justify-content: space-between;
@@ -194,11 +289,13 @@ export default {
     margin-bottom: 0.7em;
     margin-left: 1%;
     width: 50%;
-    border: 1px solid #522801f5;
     font-size: 25px;
     color: #5d2f00;
     box-shadow: 0px 4px 10px 0px #ff7d038e;
-    background:#fbbc7ea1;
+  }
+
+  p {
+    color: #fff;
   }
 
   @media(max-width: 768px) {

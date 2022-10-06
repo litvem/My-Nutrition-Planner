@@ -91,6 +91,7 @@ router.post(recipesPath,function(req, res,next) {
 
 // get all 
 router.get(recipesPath, function(req,res,next){
+  var filter = req.query.category;
   User.findById({_id:req.params.profileId})
   .populate('recipes')
   .then(user => {
@@ -103,14 +104,20 @@ router.get(recipesPath, function(req,res,next){
         message: "Recipe not found"
       });
     }else{
-      return res.status(200).json({
-        recipes: user.recipes,
-        link: {
-         rel: "Recipe",
-         type: "POST",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
-       }
-     });
+      if(filter){
+        res.json(user.recipes.filter(document =>{
+         return filter === document.category ;
+       }));
+     }else{
+        res.status(200).json({
+         recipes: user.recipes,
+         link: {
+          rel: "Recipe",
+          type: "POST",
+          url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
+        }
+      });
+    }
     }
   })
   .catch(err => {

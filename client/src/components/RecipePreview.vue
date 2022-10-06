@@ -42,6 +42,7 @@ export default {
   height: 190px;
   margin: 1rem;
   height: 20rem;
+  background-color: rgba(255, 255, 255, 0.447);
 }
 
 .content {
