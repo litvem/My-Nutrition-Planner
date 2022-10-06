@@ -1,67 +1,17 @@
 <template>
   <div class="container-fluid">
-    <b-container class="top">
-      <b-row>
-        <h2 v-if="user"> {{user.username}}'s Home</h2>
+    <div class="top">
+        <h2 v-if="user"> Welcome {{user.username}} </h2>
         <h2 v-if="!user">You are not log in!</h2>
-      </b-row>
-      <b-row>
-        <b-col>
-          <button class="btn" v-on:click="goToProfile">Profile</button>
-        </b-col>
-        <b-col>
-          <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
-        </b-col>
-        <b-col>
-          <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
-        </b-col>
-        <b-col>
-          <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
-        </b-col>
-      </b-row>
-      <b-row>
-        <h3>My favourite recipes</h3>
-      </b-row>
-      <b-row>
-        <div v-for="recipe in recipes" v-bind:key="recipe._id">
-          <p>{{recipe}}</p>
-          <recipe-item v-bind:recipe="recipe" v-on:del-recipe="deleteRecipe"/>
-        </div>
-      </b-row>
-    </b-container>
+    </div>
   </div>
 </template>
 
 <script>
-import { Api } from '@/Api'
 export default {
   name: 'userHome',
-  data() {
-    return {
-      user: null
-    }
-  },
-  create() {
-    const response = Api.get('user', {
-      Headers: {
-        Authorization: 'Bearer' + localStorage.getItem('token')
-      }
-    })
-    console.log(response)
-  },
-  methods: {
-    goToProfile() {
-      this.$router.push('/profile')
-    },
-    goToRecipes() {
-      this.$router.push('/recipes')
-    },
-    goToWeeklyCalendar() {
-      this.$router.push('/weeklyCalendar')
-    },
-    goToShoppingList() {
-      this.$router.push('/shoppingList')
-    }
+  props: ['user'],
+  created() {
   }
 }
 </script>
@@ -87,7 +37,7 @@ export default {
     justify-content: space-between;
     box-shadow: 0 0 20px 6px #090b6f85;
   }
-  @media (max-width: 900px) {
+  @media (max-width: 950px) {
   .box-form {
     flex-flow: wrap;
     text-align: center;

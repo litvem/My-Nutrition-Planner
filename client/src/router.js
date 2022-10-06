@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Register from './views/Register.vue'
 import UserHome from './views/UserHome.vue'
-import Login from './views/Login.vue'
+import Uploadimage from './views/Uploadimage.vue'
 
 Vue.use(Router)
 
@@ -27,9 +27,9 @@ export default new Router({
       component: UserHome
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
+      path: '/uploadImage',
+      name: 'image',
+      component: Uploadimage
     }
   ]
 })

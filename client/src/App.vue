@@ -1,37 +1,38 @@
 <template>
   <div class="app">
-    <NavBar/>
-    <router-view />
+    <Navbar :user="user"/>
+    <div class="auth-wrapper">
+      <div class="auth-inner">
+        <router-view :user="user"/>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import NavBar from './components/Nav-bar.vue'
+// import { Api } from '@/Api'
+import Navbar from './components/navbar.vue'
+
 export default {
   name: 'App',
   components: {
-    NavBar
+    Navbar
+  },
+  data() {
+    return {
+      user: null
+    }
   }
 }
 </script>
 
 <style lang="scss">
-;
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: Georgia, serif;
-  font-weight: 400;
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: rgba(255, 254, 254, 0.9);
 }
-.app {
-  min-height: 100vh;
-  position: relative;
-  background-color: #f1f1f1;
-}
-.container {
-  padding: 0 20px;
-  max-width: 1140px;
-  margin: 0 auto;
-}
+
 </style>

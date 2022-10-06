@@ -1,43 +1,50 @@
 <template>
-  <div  @submit.prevent="handleSubmit"  class="Home">
-    <section class="Welcomeview">
-    <div class="box-form">
-      <div class="wellcome-text container">
-        <h1>MyNutrionPlanner</h1>
-        <hr />
-        <h2>Looking for a place to store your favourite recipes? <br />
-            Make weekly shopping easier?<br />
-            Keep track of your meals and stay healthy?<br /><br/>
-            Then this is the right place for you!
-        </h2>
-        <hr />
-      </div>
-      <div class="right">
-        <h3>Login</h3>
-        <hr />
-        <br>
-        <div class="inputs">
-          <input type="text" v-model="username" placeholder="username">
-          <br>
-          <input type="password" v-model="password" placeholder="password">
-        </div>
-        <br><br>
-        <div class="forget-password">
-          <a href="" v-on:click="goToForgoPassword">Forgot password?</a>
-        </div>
-        <br>
-        <button v-on:click="login">Login</button>
-        <button v-on:click="goToRegister">Register</button>
-        </div>
-      </div>
-    </section>
-  </div>
+  <div class = "Welcomeview navbar-expand-md">
+     <div class="animation">
+        <HomeAnimation/>
+     </div>
+     <section>
+        <div class="contentBx navbar-expand-md">
+           <div class="welcome-text">
+               <h2>Looking for a place to store your favourite recipes? <br />
+               Make weekly shopping easier?<br />
+               Keep track of your meals and stay healthy?<br /><br/>
+               Then this is the right place for you!
+               </h2>
+               <hr />
+              </div>
+           </div>
+        <div class="loginBx navbar-expand-md">
+           <div class="login-form">
+              <h3>Login</h3>
+              <hr />
+              <br>
+              <div class="inputs">
+              <input type="text" v-model="username" placeholder="username">
+              <br>
+              <input type="password" v-model="password" placeholder="password">
+              </div>
+              <br>
+              <button @click="handleSubmit">Login</button>
+              <div class="inputBx">
+                   <br>
+                   <p>Don't have an account?</p>
+                   <router-link class="link" :to="{ name: 'register' }">Register now</router-link>
+              </div>
+           </div>
+         </div>
+       </section>
+   </div>
 </template>
 
 <script>
 import { Api } from '@/Api'
+import HomeAnimation from '../components/homeAnimation.vue'
 export default {
   name: 'home',
+  components: {
+    HomeAnimation
+  },
   data() {
     return {
       username: '',
@@ -45,154 +52,160 @@ export default {
     }
   },
   methods: {
-    async handleSubmit() {
-      const response = await Api.post('/profiles/login', {
+    handleSubmit() {
+      Api.post('/profiles/login', {
         username: this.username,
         password: this.password
       })
-      console.log(this.username)
-      console.log(this.password)
-      console.log(response)
+        .then(response => {
+          if (response.data.message === 'Authentication successful') {
+            localStorage.token = response.data.token
+            localStorage.setItem('id', response.data.id)
+            return this.$router.push('/userHome')
+          } else {
+            return this.$router.push('/')
+          }
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   }
 }
 </script>
-
 <style lang="scss" scoped>
+* {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+
 .Welcomeview {
-  background-image: url("../assets/foodbackground.png");
+  background-image: url("../assets/foodbackground.jpg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-  height: 100vh;
-  img {
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-  }
-}
-.box-form {
-  margin: 0 auto;
-  width: 50% auto;
-  background-color: rgba(2, 9, 30, 0.842);
-  border-radius: 15px;
-  overflow: hidden;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px 6px #09345f60;
-  position: absolute;
-  top:50%;
-  left:40%;
-  transform: translate(-50%,-50%);
-}
-.box-form .wellcome-text {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px;
-  display:flex;
   width: 100%;
-  height: 100%;
-  box-sizing: border-box;
-
-    h1 {
-      text-transform: uppercase;
-      font-size: 40px;
-      font-weight: bold;
-      background: linear-gradient(to right, #027030,#37be19,#9bdf12);
-      -webkit-text-fill-color: transparent;
-      -webkit-background-clip: text;
-
-    }
-    h2 {
-      color: rgb(253, 250, 250);
-      font-size: 22px;
-      padding-bottom: 4px;
-    }
-    hr:nth-child(2) {
-      height: 3px;
-      background-color: rgba(6, 245, 90, 0.591);
-      border: none;
-      max-width: 700px;
-      margin-top: 16px;
-    }
+  height: 100vh;
+  margin: auto;
+  position: absolute;
 }
-.box-form .right {
-  width: 60%;
-  height: 100%;
-  padding: 40px;
-  overflow: hidden;
 
-  h3 {
-    text-transform: uppercase;
-    color: #ffff;
-    font-size: 40px;
-
-  }
-
-  hr:nth-child(2) {
-      height: 3px;
-      background-color: rgba(3, 106, 39, 0.74);
-      border: none;
-      max-width: 180px;
-      margin-top: 5px;
-  }
-
-  p {
-    font-size: 14px;
-    color: #ffff;
-  }
-  .inputs {
-    overflow: hidden;
-    }
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 25px;
-    font-size: 16px;
-    border: none;
-    outline: none;
-    border-bottom: 2px solid #B0B3B9;
-  }
-  .forget-password {
-    color:#fff;
+section{
+    position: absolute;
+    width: 60%;
+    height: 60%;
     display: flex;
-    justify-content: space-between;
+    margin-top: 15%;
+    margin-left: 15%;
+    z-index: 1;
+}
+
+section .contentBx{
+    background-color:rgba(30, 30, 31, 0.486);
+    display: flex;
+    justify-content: center;
     align-items: center;
-    input {
-      margin: 0;
-      margin-right: 7px;
-      width: auto;
-    }
-  }
-  button {
-    float: right;
-    color: #fff;
-    font-size: 16px;
-    padding: 12px 35px;
-    border-radius: 50px;
+    width: 50%;
+    height: 100%;
+}
+
+section .contentBx .welcome-text{
+    width: 80%;
+}
+section .contentBx .welcome-text h2{
+    font-size: 100%;
+    margin-bottom: 5px;
     display: inline-block;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 20px 0px #436c38a6;
-    background-image: linear-gradient(135deg, #2f61b2 10%, #27d969a6 100%);
+    color:#ffffff;
+    font-weight: 400;
+    font-size: 30px;
+}
+
+section .loginBx{
+   background-color: rgba(7, 6, 9, 0.457);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   width: 50%;
+   height: 100%;
+}
+
+section .loginBx .login-form{
+   width: 70%;
+}
+
+section .loginBx .login-form h3{
+   color: #ffffff;
+   font-weight: 600;
+   font-size: 30xp;
+   text-transform: uppercase;
+   margin-top: 60px;
+   border-bottom: 4px solid rgba(209, 1, 1, 0.956);
+   display: inline-block;
+   letter-spacing: 2px;
+}
+
+section .loginBx .login-form input{
+   width: 100%;
+   padding: 10px 20px;
+   outline: none;
+   font-weight: 400;
+   border: 1px solid #607d8b;
+   font-size: 16px;
+   letter-spacing: 1px;
+   color: #fbfbfc;
+   background: transparent;
+   border-radius: 30px;
+   margin-top: 10px;
+}
+
+section .loginBx .login-form button {
+   width: 100%;
+   padding: 10px 20px;
+   outline: none;
+   font-weight: 400;
+   border: 1px solid #2e6783;
+   font-size: 16px;
+   letter-spacing: 1px;
+   color: #042333;
+   border-radius: 30px;
+   margin-top: 10px;
+}
+
+section .loginBx .login-form p {
+   color: #ffffff;
+}
+
+.link{
+    color: rgb(12, 156, 31);
+}
+
+@media(max-width: 1200px){
+  section {
+    position: absolute;
+    width: 80%;
+    height: 60%;
+    display: flex;
+    margin-top: 29%;
+    margin-left: 10%;
+    z-index: 1;
+}
+  section .contentBx .welcome-text h2{
+    font-size: 25px;
   }
-}
-.btn {
-  margin-bottom: 10%;
-  margin-left: 10%;
+  section .loginBx .login-form h3{
+   font-size: 1.3em;
+  }
+
 }
 
-label {
-  display: block;
-  position: relative;
-  margin-left: 30px;
-}
-@media screen {
-
+@media(max-width: 768px){
+  .contentBx .welcome-text h2{
+    font-size: 15px;
+    font-weight: 200;
+  }
 }
 
 </style>

@@ -143,7 +143,7 @@ router.get(specificUserPath, checkAuth, function(req,res,next){
   User.findById({_id: req.params.profileId})
   .exec()
   .then(user =>{
-    
+    console.log(user);
     res.status(200).json({
       // nrOfUsers:users.length, 
       username: user.username,
@@ -151,7 +151,6 @@ router.get(specificUserPath, checkAuth, function(req,res,next){
       recipes:user.recipes,
       shoppinglists: user.shoppinglists,
       days: user.days,
-
       link: {
         rel: "self",
         type: 'DELETE',
@@ -233,7 +232,20 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
     if (user === null) {
       return res.status(401).json({'message': userNotFound});
     }
-   
+/*
+    user.recipes.forEach( (recipe) => {
+        if (recipe.imagePath !== defaultImagePath){
+          fs.unlink(recipe.imagePath,(err =>{
+            if(err) res.json(err);
+            else{
+            console.log('Image: ' + recipe.imagePath + ' has been deleted.')
+            }
+          }))
+        }
+
+      }
+    );
+*/
     Recipe.deleteMany({
       $and:[{"_id":{$in: user.recipes}
     }]}, function(err){

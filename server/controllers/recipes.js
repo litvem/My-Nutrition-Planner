@@ -61,7 +61,8 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
       imagePath: req.file.path, 
       tag: req.body.tag,
       instruction: req.body.instruction,
-      items:req.body.items
+      items:req.body.items,
+      userID: req.params.profileId
     });
 
     recipe.save()
@@ -85,7 +86,8 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
         imagePath: defaultImagePath,
         tag: req.body.tag,
         instruction: req.body.instruction,
-        items:req.body.items
+        items:req.body.items,
+        userID: req.params.profileId
       });
   
       recipe.save()
@@ -114,45 +116,47 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
 
 // get all 
 router.get(recipesPath, function(req,res,next){
+  try {
+    /*
+		const page = parseInt(req.query.page) - 1 || 0;
+		const limit = parseInt(req.query.limit) || 2;
+		const search = req.query.search || "";
+    const sortquery = req.query.sort
+		let sortBy = "{" + sortquery + ": 1}" || "{name: 1}";
+    */  
+		let category = req.query.category || "All";
+    const user = req.params.profileId;
+/*
+		const categoryOptions = ["Dinner","Lunch","Snack","Breakfast"];
 
-  var filter = req.query.category;
-
-  User.findOne({_id:req.params.profileId})
-  .populate('recipes')
-  .then(user => {
-    if (!user) {
-      return res.status(404).json({
-        message: "Not found"
-      });
+		genre === "All"
+			? (category = [...categoryOptions])
+			: (category = req.query.category.split(","));
+		req.query.sort ? (sort = req.query.sort.split(",")) : (sort = [sort]);
+*/
+		const recipes = Recipe.find({$and: [{userID: user},{name: { $regex: search, $options: "i"}}]  })
+		/*	.where("category")
+			.in([...category])
+			.sort(sortBy)
+			.skip(page * limit)
+			.limit(limit);
+*/
+    if(recipes.length === 0 ){
+      return res.status(404).json({message: 'Recipe not found'})
     }
-    if(user.recipes.length === 0){
-      return res.status(404).json({
-        message: "Recipe not found"
-      });
-    }
 
-    if(filter){
-       res.json(user.recipes.filter(document =>{
-        return filter === document.category ;
-    }));
+		res.status(200).json({
+			total,
+			page: page + 1,
+			limit,
+			category: categoryOptions,
+			movies,
+		})
 
-    }else{
-       res.status(200).json({
-        recipes: user.recipes,
-        link: {
-         rel: "Recipe",
-         type: "POST",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
-       }
-     });
-    }
-})
-.catch(err => {
-  res.status(500).json({
-    error: err
-  });
-});
-
+	} catch (err) {
+		console.log(err);
+		res.status(500).json({ error: true, message: "Internal Server Error" });
+	}
 });
 
 // Get specific - for patch copy and add. 
@@ -199,7 +203,7 @@ router.patch(specificRecipesPath, upload.single('recipeImage'), function (req, r
       Recipe.findByIdAndUpdate(req.params.recipeId, req.body, { new: true })
       .then(recipeResult =>{
         if(req.file){
-          if(recipeResult.image !== defaultImage){
+          if(recipeResult.imagePath !== defaultImage){
             fs.unlink(recipeResult.imagePath,(err =>{
               if(err) res.json(err);
               else{
