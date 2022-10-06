@@ -1,10 +1,11 @@
 <template>
    <section>
-   <!--
+<!--
    <video autoplay muted class="smokeVideo">
-      <source src="./assets/smoke.mp4" type="video/mp4"/>
+      <source src="@/assets/smoke.mp4" type="video/mp4"/>
    </video>
    -->
+
     <h1>
        <span>M</span>
        <span>Y</span>
@@ -35,11 +36,12 @@ export default {
 <style scoped>
 section{
  height: 100vh;
+ background: #000;
 }
 /*
+https://www.youtube.com/watch?v=lx3UtGiRcYA
 video{
-top:1px;
-left: 30%;
+object-fit: cover;
 height: 100vh;
 width: 100%;
 object-fit: contain;
@@ -49,20 +51,17 @@ h1{
  margin: 0;
  padding:0;
  position:absolute;
- top:-17%;
- left: 40%;
- font-weight: 600;
+ top:-50%;
  transform: translate(-50%);
  width:100%;
  text-align: center;
- color: rgb(67, 153, 14);
- border-bottom: 1px solid rgba(17, 209, 26, 0.793);
- font-size: 3em;
- letter-spacing: 0.15em;
+ color: #ddd;
+ font-size: 5em;
+ font-family: sans-serif;
+ letter-spacing: 0.2em;
 
 }
 h1 span {
- opacity: 0;
  display: inline-block;
  animation: animate 1s linear forwards;
 }

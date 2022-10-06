@@ -1,5 +1,5 @@
 <template>
-  <div id="mbpbar">
+  <div id="mnpbar">
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -19,10 +19,10 @@
           </div>
           <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="user">
               <ul class="navbar-links">
-              <li><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
-              <li><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
-              <li><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
-              <li><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
+              <li><b-link class="link" :to="{ name: 'recipes' }">Recipes</b-link></li>
+              <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
+              <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
+              <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
               <a  href="javascript:void(0)" @click="handleLogout" class="link" :to="{ name: 'home' }">Logout</a>
             </ul>
           </div>
@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
   .mnpbar {
-    background-color: rgba(47, 46, 46, 0.866);
+    background-color: rgba(9, 2, 2, 0.9);
     z-index: 99;
     width: 100%;
     position: fixed;

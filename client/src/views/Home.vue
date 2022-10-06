@@ -1,7 +1,7 @@
 <template>
   <div class = "Welcomeview navbar-expand-md">
      <div class="animation">
-        <HomeAnimation/>
+        <TextAnimation/>
      </div>
      <section>
         <div class="contentBx navbar-expand-md">
@@ -39,11 +39,11 @@
 
 <script>
 import { Api } from '@/Api'
-import HomeAnimation from '../components/homeAnimation.vue'
+import TextAnimation from '../components/TextAnimation.vue'
 export default {
   name: 'home',
   components: {
-    HomeAnimation
+    TextAnimation
   },
   data() {
     return {
@@ -90,6 +90,10 @@ export default {
   height: 100vh;
   margin: auto;
   position: absolute;
+}
+.animation {
+  font-family: 'Georgia';
+  background-origin: padding-box;
 }
 
 section{

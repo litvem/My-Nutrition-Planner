@@ -11,14 +11,13 @@
 
 <script>
 import { Api } from '@/Api'
-// import AppHeader from './components/AppHeader.vue'
-// import AppFooter from './components/AppFooter.vue'
+import Navbar from './components/navbar.vue'
 
 export default {
   name: 'default',
-  /* components: {
-    AppFooter
-  }, */
+  components: {
+    Navbar
+  },
   data() {
     return {
       user: null
@@ -27,7 +26,7 @@ export default {
   created() {
     const id = localStorage.getItem('id')
     const token = localStorage.getItem('token')
-    Api.get('/profiles' + id, {
+    Api.get('/profiles/' + id, {
       headers: {
         Authorization: 'Bearer ' + token
       }
