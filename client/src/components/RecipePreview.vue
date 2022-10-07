@@ -4,15 +4,27 @@
         <div
         :style="{backgroundImage: 'url(' + imgURL + ')'}"
         class="thumbnail"></div>
-            <div class="content">
+          <div class="content">
               <h5>{{name}}</h5>
               <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{category}}</a></div>
-              <p></p>
-            </div>
+            <p></p>
+          </div>
       </article>
     </div>
 </template>
-
+<!--<template>
+    <div>
+      <article class="recipe-preview">
+        <div class="thumbnail"></div>
+          <img class="img" src="http://localhost:3000/uploads/lilo-stitch-.png-1665150914470.png" />
+          <div class="content">
+            <h5>{{category}}</h5>
+            <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{name}}</a></div>
+            <p></p>
+          </div>
+      </article>
+    </div>
+</template>-->
 <script>
 
 export default {
@@ -56,4 +68,5 @@ export default {
   width: 100%;
   height: 12rem;
 }
+
 </style>

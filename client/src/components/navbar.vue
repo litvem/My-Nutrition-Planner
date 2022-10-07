@@ -1,5 +1,5 @@
 <template>
-  <div id="mnpbar">
+  <div id="mbpbar">
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -13,17 +13,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="!user">
             <ul class="navbar-links">
-              <li class="nav-item"><b-link class="link" :to="{ name: 'home' }">Login</b-link></li>
-              <li class="nav-item"><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
+              <li ><router-link class="link" :to="{ name: 'home' }">Login</router-link></li>
+              <li><router-link class="link" :to="{ name: 'register' }">Register</router-link></li>
             </ul>
           </div>
           <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="user">
               <ul class="navbar-links">
-              <li><b-link class="link" :to="{ name: 'recipes' }">Recipes</b-link></li>
-              <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
-              <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
-              <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
-              <a  href="javascript:void(0)" @click="handleLogout" class="link" :to="{ name: 'home' }">Logout</a>
+              <li><router-link class="link" :to="{ name: 'recipes' }">Recipes</router-link></li>
+              <li><router-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</router-link></li>
+              <li><router-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</router-link></li>
+              <li><a  href="javascript:void(0)" @click="handleLogout" class="link">Logout</a></li>
             </ul>
           </div>
         </div>
@@ -41,6 +40,7 @@ export default {
       localStorage.removeItem('token')
       localStorage.removeItem('id')
       this.$router.push('/')
+      this.$router.go(0)
     }
   }
 }
@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
   .mnpbar {
-    background-color: rgba(9, 2, 2, 0.9);
+    background-color: rgba(0, 0, 0, 0.866);
     z-index: 99;
     width: 100%;
     position: fixed;
@@ -143,10 +143,10 @@ export default {
   /* Color of 3 lines */
 
   .navbar-toggler.collapsed .toggler-icon {
-    background: linear-gradient( 263deg, rgba(15, 200, 33, 0.962) 0%, rgba(18, 80, 3, 0.945) 100% );
+    background: linear-gradient( 263deg, rgba(211, 243, 69, 0.962) 0%, rgba(18, 80, 3, 0.945) 100% );
   }
 
-.navbar-links {
+  .navbar-links {
     height: 100%;
     font-weight: 500;
     color:rgb(12, 156, 31);
@@ -156,8 +156,9 @@ export default {
 
 .navbar-links ul {
   display: flex;
-  margin: 0;
-  padding: 0;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
   transition: .5 ease all;
 }
 
@@ -185,7 +186,15 @@ export default {
   }
 }
 
-@media screen and (max-width: 768px) {
+button{
+    height: 100%;
+    font-weight: 500;
+    color:rgb(12, 156, 31);
+    list-style: none;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
   .navbar-links ul {
     width: 100%;
     flex-direction: column;

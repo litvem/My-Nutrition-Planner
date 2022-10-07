@@ -18,13 +18,13 @@
                 <button class="search-btn" v-on:click="filterRecipes">Search</button>
             </div>
             <b-row>
-            <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
+            <b-col cols="12" md="6" xl="3" class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
               <RecipePreview v-bind:recipe-prev="recipe"
               :key="recipe._id"
               :name="recipe.name"
               :category="recipe.category"
               :imgURL="recipe.imgURL" />
-            </div>
+            </b-col>
             </b-row>
           </div>
         </div>
@@ -70,9 +70,10 @@ export default {
       this.$router.push('/shoppingList')
     },
     filterRecipes(e) {
+      /* const id = localStorage.getItem('id')
       const filter = this.category
       if (filter !== 'Category options') {
-        Api.get('/profiles/HarryPotter/recipes?category=' + filter)
+        Api.get('/profiles/' + id + '/recipes?category=' + 'Lunch')
           .then(response => {
             console.log(response)
             this.filteredRecipes = response.data
@@ -82,14 +83,17 @@ export default {
             this.message = error
           })
       } else {
-        Api.get('/profiles/HarryPotter/recipes')
-          .then(response => {
-            console.log(response)
-          })
-          .catch(error => {
-            this.message = error
-          })
-      }
+       */
+      const id = localStorage.getItem('id')
+      Api.get('/profiles/' + id + '/recipes')
+        .then(response => {
+          this.filteredRecipes = response.data.recipes
+          this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
+        })
+        .catch(error => {
+          this.message = error
+        })
+      // }
     }
   }
 }

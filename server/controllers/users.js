@@ -1,7 +1,8 @@
 var express = require('express');
 const mongoose = require("mongoose");
-const recipe = require('../models/recipe');
 var router = express.Router();
+const fs = require('fs');
+const multer = require('multer');
 
 var User = require('../models/user');
 var Recipe = require('../models/recipe');
@@ -16,7 +17,7 @@ const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
 
-router.post('/api/profiles/singup',function(req, res,next) {
+router.post('/api/profiles/signup',function(req, res,next) {
   User.find({ username: req.body.username })
     .exec()
     .then(username => {
@@ -213,27 +214,29 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
   
 });
 
-// deleting specific - IMPORTANT delete on cascade picture need to be added
-/*
+
+router.delete(specificUserPath,checkAuth, function(req, res, next) {
+ // test what happens when we use remove instead of findOneAndDelete
+  User.findOneAndDelete({_id: req.params.profileId})
+  .populate('recipes')
+  .exec()
+  .then(user =>{
+    if (user === null) {
+      return res.status(401).json({'message': userNotFound});
+    }
+    
     var defaultImagePath = "uploads\\defaultRecipeImage.png-1664301312162.png";
-      if(user.recipes.imagePath !== defaultImagePath){
-        fs.unlink(user.recipes.imagePath,(err =>{
+    user.recipes.forEach(recipe => {
+      if(recipe.imagePath !== defaultImagePath){
+        fs.unlink(recipe.imagePath,(err =>{
           if(err) res.json(err);
           else{
            console.log('Image: ' + recipe.imagePath + ' has been deleted.')
           }
         }))
       }  
-*/
-router.delete(specificUserPath,checkAuth, function(req, res, next) {
- // test what happens when we use remove instead of findOneAndDelete
-  User.findOneAndDelete({_id: req.params.profileId})
-  .exec()
-  .then(user =>{
-    if (user === null) {
-      return res.status(401).json({'message': userNotFound});
-    }
-   
+    })
+
     Recipe.deleteMany({
       "_id":{
         $in: user.recipes
