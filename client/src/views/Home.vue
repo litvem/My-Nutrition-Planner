@@ -20,9 +20,11 @@
               <hr />
               <br>
               <div class="inputs">
-              <input type="text" v-model="username" placeholder="username">
-              <br>
-              <input type="password" v-model="password" placeholder="password">
+                <input type="text" v-model="username" placeholder="username" :class="{ 'is-invalid': submitted && $v.username.$error }">
+                <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
+                <br>
+                <input type="password" v-model="password" placeholder="password" :class="{ 'is-invalid': submitted && $v.password.$error }">
+                <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
               </div>
               <br>
               <button @click="handleSubmit">Login</button>
@@ -39,6 +41,7 @@
 
 <script>
 import { Api } from '@/Api'
+import { required } from 'vuelidate/lib/validators'
 import TextAnimation from '../components/TextAnimation.vue'
 export default {
   name: 'home',
@@ -48,11 +51,21 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      submitted: false
     }
+  },
+  validations: {
+    username: { required },
+    password: { required }
   },
   methods: {
     handleSubmit() {
+      this.submitted = true
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
       Api.post('/profiles/login', {
         username: this.username,
         password: this.password
