@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">MNP
+          <img src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> MNP
         </a>
         <button class="navbar-toggler collapsed d-flex d-md-none flex-column justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="toggler-icon top-bar"></span>
