@@ -113,6 +113,7 @@ section .contentBx{
     align-items: center;
     width: 50%;
     height: 100%;
+    margin-left: -10%;
 }
 
 section .contentBx .welcome-text{
@@ -209,6 +210,10 @@ section .loginBx .login-form p {
   .contentBx .welcome-text h2{
     font-size: 15px;
     font-weight: 200;
+  }
+
+  section .contentBx {
+    margin-left: 0%;
   }
 }
 
