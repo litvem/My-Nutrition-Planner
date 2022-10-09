@@ -48,10 +48,10 @@
               <input type="number" placeholder="Amount" v-model="firstAmount">
               <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="firstUnit">
                 <option value="grams">grams</option>
-                <option value="tablespoon">tablespoon</option>
-                <option value="teaspoon">teaspoon</option>
+                <option value="tablespoon">kg</option>
+                <option value="teaspoon">ml</option>
                 <option value="dl">dl</option>
-                <option value="ml">ml</option>
+                <option value="ml">l</option>
               </select>
               <input type="text" placeholder="Item" v-model="firstItem">
           </div>

@@ -23,7 +23,7 @@
       <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
       <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
     </div>
-    <button class="btn" @click="save">Save list</button>
+    <button class="btn" @click="saveList">Save list</button>
   </div>
 </div>
 </template>
@@ -35,6 +35,7 @@ import { Api } from '@/Api'
 export default {
 
   name: 'AddShoppingList',
+  props: ['user'],
   data: function () {
     return {
       count: 1,
@@ -51,7 +52,7 @@ export default {
     remove: function () {
       this.count--
     },
-    save: function () {
+    saveList: function () {
       const itemKey = Object.keys(this.items)
       const unitKey = Object.keys(this.units)
       const amKey = Object.keys(this.amounts)
@@ -61,7 +62,9 @@ export default {
       for (let i = 0; i < this.count; i++) {
         this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
       }
-      Api.post('/shoppinglists', {
+      // console.log(this.user.id)
+      console.log(localStorage.id)
+      Api.post('/profiles/' + localStorage.id + '/shoppinglists', {
         name: this.name,
         items: this.itemsObj
       }).catch(error => {

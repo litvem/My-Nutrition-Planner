@@ -8,7 +8,7 @@ const checkAuth = require('../middleware/check-auth');
 var shoppinglistsPath = '/api/profiles/:profileId/shoppinglists';
 var specificShoppinglistsPath = '/api/profiles/:profileId/shoppinglists/:shoplistId';
 
-router.post(shoppinglistsPath, checkAuth, function(req, res,next) {
+router.post(shoppinglistsPath, function(req, res,next) {
   User.findById(req.params.profileId)
   .exec()
   .then(user =>{

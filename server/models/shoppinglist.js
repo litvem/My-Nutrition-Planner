@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var shoppingListSchema = new Schema({
-<<<<<<< HEAD
     week:{type: Number},
     year:{type: Number},
     items:{ type: [{
@@ -16,15 +15,5 @@ var shoppingListSchema = new Schema({
 
 
 });
-=======
-    name:{ type: String},
-    items:{ type: [{
-        item: {type:String}, 
-        amount: {type: Number},
-        unit:{type: String}
-        }]}
-    
- });
->>>>>>> gabi-front-end
 
  module.exports = mongoose.model('shoppinglists', shoppingListSchema);

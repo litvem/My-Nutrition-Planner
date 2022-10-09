@@ -44,11 +44,23 @@ export default {
   methods: {
 
     handleSubmit() {
-      const response = Api.post('/profiles/login', {
+      Api.post('/profiles/login', {
         username: this.username,
         password: this.password
+      }).then(response => {
+        if (response.data.message === 'Authentication successful') {
+          localStorage.token = response.data.token
+          localStorage.setItem('id', response.data.id)
+          return this.$router.push('/userHome')
+        } else {
+          return this.$router.push('/')
+        }
       })
-      console.log(response)
+        .catch(error => {
+          console.error(error)
+        })
+
+      console.log(localStorage.id)
     },
     goToUserHome() {
 

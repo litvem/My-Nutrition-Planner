@@ -22,20 +22,40 @@
     </b-navbar>
   </div>
     <body>
-      <router-view/>
+      <router-view :user="user"/>
     </body>
     <app-footer/>
   </div>
 </template>
 
 <script>
-// import AppHeader from './components/AppHeader.vue'
+import { Api } from '@/Api'
 import AppFooter from './components/AppFooter.vue'
 
 export default {
   name: 'default',
   components: {
     AppFooter
+  },
+  data() {
+    return {
+      user: null
+    }
+  },
+  created() {
+    const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
+    Api.get('/profiles/' + id, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(response => {
+        this.user = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
   },
   methods: {
     goToHome() {
