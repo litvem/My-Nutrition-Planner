@@ -40,7 +40,7 @@ router.post(shoppinglistsPath, function(req, res,next) {
 
 
 // get all 
-router.get(shoppinglistsPath, checkAuth, function(req,res,next){
+router.get(shoppinglistsPath, function(req,res,next){
   User.findById({_id:req.params.profileId})
   .populate('shoppinglists')
   .then(user => {

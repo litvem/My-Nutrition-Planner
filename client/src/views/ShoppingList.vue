@@ -5,20 +5,40 @@
       <br>
     <div class="card">
      <div class="card-body">
+        <shopping-list-prev v-for="shoppingList in shoppingLists.shoppinglists"
+        :key="shoppingList.name"
+        :name="shoppingList.name" />
      </div>
    </div>
     </div>
 </template>
 
 <script>
+import ShoppingListPrev from '../components/ShoppingListPrev.vue'
+import { Api } from '@/Api'
 
 export default {
   name: 'shoppingList',
-  setup() {
+  components: {
+    ShoppingListPrev
+  },
+  data() {
     return {
-      shoppingLists: []
-
+      message: '',
+      shoppingLists: null
     }
+  },
+  beforeCreate() {
+    Api.get('/profiles/' + localStorage.id + '/shoppinglists')
+      .then(response => {
+        this.shoppingLists = response.data
+        console.log(response.data)
+        // console.log(Object.toString(response.data))
+        // console.log(Object.toString(this.shoppingLists))
+      })
+      .catch(error => {
+        this.message = error
+      })
   },
   methods: {
     goToAddShoppingList() {

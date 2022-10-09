@@ -39,6 +39,9 @@ export default {
   data: function () {
     return {
       count: 1,
+      firstAmount: null,
+      firstUnit: '',
+      firstItem: '',
       amounts: {},
       units: {},
       items: {},

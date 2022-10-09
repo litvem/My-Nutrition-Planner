@@ -42,9 +42,7 @@ export default {
 
   data() {
     return {
-      props: ['recipe'],
-      profileID: 'ellaG',
-      recipesTest: [
+      recipes: [
         {
           name: 'Chicken soup',
           category: 'Soup',

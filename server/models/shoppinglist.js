@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var shoppingListSchema = new Schema({
+    name:{type: String},
     week:{type: Number},
     year:{type: Number},
     items:{ type: [{
