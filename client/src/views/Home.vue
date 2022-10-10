@@ -4,7 +4,7 @@
         <TextAnimation/>
      </div>
      <section>
-        <div class="contentBx navbar-expand-md">
+        <div class="contentBx navbar-expand-md  input-group form-group">
            <div class="welcome-text">
                <h2>Looking for a place to store your favourite recipes? <br />
                Make weekly shopping easier?<br />
@@ -14,7 +14,7 @@
                <hr />
               </div>
            </div>
-        <div class="loginBx navbar-expand-md">
+        <div class="loginBx navbar-expand-md  input-group form-group">
            <div class="login-form">
               <h3>Login</h3>
               <hr />
@@ -74,14 +74,19 @@ export default {
           if (response.data.message === 'Authentication successful') {
             localStorage.token = response.data.token
             localStorage.setItem('id', response.data.id)
-            return this.$router.push('/userHome')
-          } else {
-            return this.$router.push('/')
           }
         })
         .catch(error => {
           console.error(error)
         })
+    },
+    goToUserHome() {
+      this.$router.push('/userHome')
+      this.$router.go(0)
+    },
+    handleSubmit() {
+      this.sendLoginPost()
+      this.goToUserHome()
     }
   }
 }
@@ -221,8 +226,9 @@ section .loginBx .login-form p {
 
 @media(max-width: 768px){
   .contentBx .welcome-text h2{
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 200;
+
   }
 
   section .contentBx {

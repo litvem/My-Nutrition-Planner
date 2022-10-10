@@ -58,14 +58,14 @@
 							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -1421,14 +1421,14 @@
 							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -1551,14 +1551,14 @@
 							"raw": "{\r\n   \"username\":\"RonWeasley\",\r\n    \"password\":\"Hogwarts321\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -1670,14 +1670,14 @@
 							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Toppen1\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -1870,6 +1870,77 @@
 				},
 				{
 					"name": "Get profile 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); \r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get profile 1 Copy",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -2474,14 +2545,14 @@
 							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -2924,7 +2995,7 @@
 					"response": []
 				},
 				{
-					"name": "NoImage recipe 2- no image Copy 2",
+					"name": "NoImage recipe 2- no image",
 					"event": [
 						{
 							"listen": "test",
@@ -3029,6 +3100,151 @@
 								"exec": [
 									"var response =  pm.response.json();\r",
 									"var recipe1 = pm.environment.get('recipeId1');\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Correct day response\", function() {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(response.updatedDay.name).to.eql(\"Monday\");\r",
+									"    pm.expect(response.updatedDay.week).to.eql(1);\r",
+									"    pm.expect(response.updatedDay.year).to.eql(2022);\r",
+									"    pm.expect(response.updatedDay.recipes).to.include(recipe1);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Monday\",\r\n    \"week\": 1,\r\n    \"year\": 2022,\r\n    \"recipes\":[\"{{recipeId1}}\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated day 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"    var response = pm.response.json();",
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Correct day response\", function() {",
+									"",
+									"    pm.expect(response.day[0].name).to.eql(\"Monday\");",
+									"    pm.expect(response.day[0].week).to.eql(1);",
+									"    pm.expect(response.day[0].year).to.eql(2022);",
+									"    pm.expect(response.day[0].recipes[0].name).to.eql(\"Recipe1\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add Recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var recipe1 = pm.environment.get('recipeId1');\r",
 									"var recipe2 = pm.environment.get('recipeId2');\r",
 									"\r",
 									"pm.test(\"Correct status code\", function() {\r",
@@ -3102,7 +3318,7 @@
 					"response": []
 				},
 				{
-					"name": "Get updated day 1",
+					"name": "Get updated day with now 2 recipes",
 					"event": [
 						{
 							"listen": "test",

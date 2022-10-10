@@ -103,6 +103,37 @@ router.get(specificDaysPath, checkAuth,function(req,res,next){
   });  
 });
 
+// add recipe - not working yet
+router.patch(specificDaysPath + '/addRecipe', checkAuth,function(req,res,next){
+
+  User.findOne({_id:req.params.profileId})
+  .then(user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.days === null){
+      return res.status(404).json({message: 'Day not found'})
+    }
+    recipeID = req.body.recipeID;
+    user.days.recipes.push(recipeID);
+    user.save();
+
+    res.status(200).json({
+        day: user.days,
+      links: {
+        rel: "self",
+        type: "PATCH",
+        url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + user.days._id 
+      }
+   });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });  
+});
+
 // patch
 router.patch(specificDaysPath,checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)

@@ -90,6 +90,7 @@ export default {
       this.$router.push('/shoppingList')
     },
     filterRecipes(e) {
+      /* const id = localStorage.getItem('id')
       const filter = this.category
       console.log('category is ' + (filter !== 'Category options'))
       if (filter !== 'Category options') {
