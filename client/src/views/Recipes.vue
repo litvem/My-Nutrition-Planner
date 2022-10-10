@@ -1,4 +1,6 @@
 <template>
+<div>
+<div>
 <div id ="background" class="container-fluid">
   <div class="container-fluid">
     <div class="row">
@@ -19,30 +21,55 @@
 
     </div>
   </div>
-  <div class="row">
+    <b-row>
     <section class="container-fluid" id="recipes" v-on:click="goToRecipePage()">
+        <b-row>
         <recipe-preview
-        v-for="recipe in recipes"
+        v-for="recipe in recipes.recipes"
         :key="recipe.name"
         :name="recipe.name"
         :category="recipe.category"
-        :imgURL="recipe.imgURL"/>
+        :imgURL="recipe.imagePath"/>
+        </b-row>
     </section>
+    </b-row>
+</div>
+</div>
+<!--
+<div v-else>
+<div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <h1 class="float-start">My Recipes</h1>
+      </div>
+</div>
+      <div class="row">
+        <h3> Start by adding your favourite recipes here! </h3>
+        <button class="btn" v-on:click="goToAddRecipe()">Add new recipe</button>
+      </div>
+    </div>
   </div>
+</div>
+-->
 </div>
 </template>
 
 <script>
 import RecipePreview from '../components/RecipePreview.vue'
+import { Api } from '@/Api'
 
 export default {
+  name: 'recipes',
   components: {
     RecipePreview
   },
-
   data() {
     return {
-      recipes: [
+      recipes: null,
+      message: null,
+      haveRecipes: 0,
+
+      recipesTest: [
         {
           name: 'Chicken soup',
           category: 'Soup',
@@ -87,7 +114,22 @@ export default {
 
     }
   },
-  name: 'recipes',
+  beforeCreate() {
+    Api.get('/profiles/' + localStorage.id + '/recipes')
+      .then(response => {
+        this.recipes = response.data
+        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
+      })
+      .catch(error => {
+        this.message = error.message
+        // console.log(error.message)
+      })
+    if (this.message === 'Request failed with status code 404') {
+      this.haveRecipes = 1
+    }
+    console.log(this.message)
+    console.log(this.haveRecipes)
+  },
   methods: {
     goToAddRecipe() {
       this.$router.push('/addRecipe')

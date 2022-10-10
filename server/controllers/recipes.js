@@ -82,7 +82,7 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
         name: req.body.name,
         category: req.body.category,
         image: defaultImage,
-        imagePath: defaultImagePath,
+        imagePath: req.body.imagePath,
         tag: req.body.tag,
         instruction: req.body.instruction,
         items:req.body.items

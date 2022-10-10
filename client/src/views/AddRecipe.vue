@@ -48,10 +48,10 @@
               <input type="number" placeholder="Amount" v-model="firstAmount">
               <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="firstUnit">
                 <option value="grams">grams</option>
-                <option value="tablespoon">kg</option>
-                <option value="teaspoon">ml</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
                 <option value="dl">dl</option>
-                <option value="ml">l</option>
+                <option value="l">l</option>
               </select>
               <input type="text" placeholder="Item" v-model="firstItem">
           </div>
@@ -61,10 +61,10 @@
               <input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
               <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
                 <option value="grams">grams</option>
-                <option value="tablespoon">tablespoon</option>
-                <option value="teaspoon">teaspoon</option>
-                <option value="dl">dl</option>
+                <option value="kg">kg</option>
                 <option value="ml">ml</option>
+                <option value="dl">dl</option>
+                <option value="l">l</option>
               </select>
               <input type="text" placeholder="Item" v-model="items['item'+key]" :id="key">
             </div>
@@ -91,7 +91,6 @@ export default {
   data() {
     return {
       count: 1,
-      profileID: 'ellaG',
       selected: 'first',
       options: [
         { text: 'Breakfast', value: 'Breakfast' },
@@ -119,15 +118,15 @@ export default {
       const amKey = Object.keys(this.amounts)
 
       this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
-
+      // console.log(this.itemsObj[1].item)
       for (let i = 0; i < this.count; i++) {
         this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
       }
-      Api.post('/profiles/' + this.profileID + '/recipes', {
+      Api.post('/profiles/' + localStorage.id + '/recipes', {
         name: this.recipeName,
         items: this.itemsObj,
         instructions: this.instructions,
-        pictureURL: this.pictureURL,
+        imagePath: this.pictureURL,
         category: this.selected
       }).catch(error => {
         this.message = error
