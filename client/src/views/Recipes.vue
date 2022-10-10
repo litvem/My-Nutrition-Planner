@@ -22,14 +22,13 @@
     </div>
   </div>
     <b-row>
-    <section class="container-fluid" id="recipes" v-on:click="goToRecipePage()">
+    <section class="container-fluid" id="recipes">
         <b-row>
         <recipe-preview
         v-for="recipe in recipes.recipes"
         :key="recipe.name"
-        :name="recipe.name"
-        :category="recipe.category"
-        :imgURL="recipe.imagePath"/>
+        :recipe="recipe"
+        v-on:click="goToRecipePage()" />
         </b-row>
     </section>
     </b-row>
@@ -133,10 +132,8 @@ export default {
   methods: {
     goToAddRecipe() {
       this.$router.push('/addRecipe')
-    },
-    goToRecipePage() {
-      this.$router.push('/recipePage')
     }
+
   }
 }
 </script>

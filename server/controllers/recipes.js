@@ -158,7 +158,7 @@ router.get(recipesPath, function(req,res,next){
 router.get(specificRecipesPath, function(req,res,next){
 
   User.findOne({_id:req.params.profileId })
-  .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
+  //.populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
   .exec()
   .then(user =>{
     if(user === null){

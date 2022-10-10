@@ -60,7 +60,7 @@ export default new Router({
       component: AddRecipe
     },
     {
-      path: '/recipePage',
+      path: '/recipePage/:id',
       name: 'recipe-page',
       component: RecipePage
     },

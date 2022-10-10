@@ -1,21 +1,21 @@
 <template>
-  <div id = "background" class="container">
+<div id = "background" class="container">
     <div class="row">
-      <h1>Recipe Name</h1>
+      <h1 v-bind="recipe">{{this.recipe.name}}</h1>
     </div>
 
     <div class="row">
       <div class="col-6" id="left">
 
         <div class="row">
-          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80">
+          <img v-bind="recipe" :src="this.recipe.imagePath">
         </div>
 
         <br>
 
           <div class="row">
             <div class="col">
-              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">Category</a></div>
+              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link" v-bind="recipe">{{recipe.category}}</a></div>
             </div>
           </div>
 
@@ -47,27 +47,43 @@
             <b-card>
                 <h4>Ingredients</h4>
                 <ul>
-                  <li>150 grams eggs</li>
+                  <li v-bind="recipe" v-for="ingredient in recipe.items"
+                  :key="ingredient.itemId">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.item}}</li>
                 </ul>
                 <br>
 
                 <h4>Instructions</h4>
-                <p>Heat oven to 250 Celsius</p>
-                <p>Bring water to boil</p>
-                <p>Add pasta</p>
+                <p v-bind="recipe">{{recipe.instruction}}</p>
+
             </b-card>
         </div>
       </div>
 
-        </div>
+</div>
+
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
   name: 'recipe-page',
+  mounted() {
+    // Api.get('/profiles/' + localStorage.id + '/recipes/' + this.$route.param.id)
+    Api.get('/profiles/' + localStorage.id + '/recipes/' + 'PancakesURL')
+      .then(response => {
+        console.log(response.data)
+        this.recipe = response.data
+      })
+      .catch(error => {
+        this.message = error.message
+        console.log(error.message)
+      })
+  },
   data() {
     return {
       selected: 'first',
+      recipe: null,
       options: [
         { text: '2022-Week 39', value: '39' },
         { text: '2022-Week 40', value: '40' }
