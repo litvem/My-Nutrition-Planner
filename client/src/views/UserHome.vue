@@ -6,8 +6,7 @@
           <div class="menu">
             <h1>Home</h1>
             <br>
-            <button class="btn" v-on:click="goToProfile">Profile</button>
-            <button class="btn" v-on:click="goToRecipes">Recipes</button>
+            <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
             <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
             <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
             <div class="filter">
@@ -19,6 +18,13 @@
             </div>
             <b-row>
             <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
+              <RecipePreview v-bind:recipe-prev="recipe"
+              :key="recipe._id"
+              :name="recipe.name"
+              :category="recipe.category"
+              :imgURL="recipe.imgURL" />
+            </div>
+            <div v-for="recipe in recipes" v-bind:key="recipe._id">
               <RecipePreview v-bind:recipe-prev="recipe"
               :key="recipe._id"
               :name="recipe.name"
@@ -53,15 +59,24 @@ export default {
         { value: 'dinner', text: 'Dinner' },
         { value: 'snack', text: 'Snack' }
       ],
+      recipes: [],
       filteredRecipes: []
     }
+  },
+  mounted() {
+    fetch('/profiles/HarryPotter/recipes')
+      .then(res => res.json)
+      .then(data => this.recipes)
+      .catch(error => {
+        this.message = error
+      })
   },
   methods: {
     goToProfile() {
       this.$router.push('/profile')
     },
-    goToRecipes() {
-      this.$router.push('/recipes')
+    goToAddRecipe() {
+      this.$router.push('/addRecipe')
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
@@ -131,7 +146,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 13%;
+    margin-top: 20%;
     margin-bottom: 1%;
     width: 100%;
   }
