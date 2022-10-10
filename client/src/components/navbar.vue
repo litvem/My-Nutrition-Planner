@@ -17,9 +17,8 @@
               <li class="nav-item"><b-link class="link" :to="{ name: 'register' }">Sign up</b-link></li>
             </ul>
           </div>
-          <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="user">
+          <div class="navbar-links ml-auto mb-3 mb-lg-0" v-if="user">
               <ul class="navbar-links">
-              <li><b-link class="link" :to="{ name: 'recipes' }">Recipes</b-link></li>
               <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
               <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
