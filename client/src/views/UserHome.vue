@@ -16,15 +16,17 @@
                 </div>
                 <button class="search-btn" v-on:click="filterRecipes">Search</button>
             </div>
-            <b-row>
+            <b-row id="filteredRecipes" v-if="this.category!==''">
             <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
-              <RecipePreview v-bind:recipe-prev="recipe"
+              <RecipePreview v-model="filteredRecipes"
               :key="recipe._id"
               :name="recipe.name"
               :category="recipe.category"
               :imgURL="recipe.imgURL" />
             </div>
-            <div v-for="recipe in recipes" v-bind:key="recipe._id">
+            </b-row>
+            <b-row v-else>
+            <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id">
               <RecipePreview v-bind:recipe-prev="recipe"
               :key="recipe._id"
               :name="recipe.name"
@@ -40,7 +42,6 @@
 </template>
 
 <script>
-// import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 import RecipePreview from '../components/RecipePreview.vue'
 
@@ -53,24 +54,34 @@ export default {
   data() {
     return {
       options: [
-        { value: null, text: 'Caterogy options' },
-        { value: 'breakfast', text: 'Breakfast' },
-        { value: 'lunch', text: 'Lunch' },
-        { value: 'dinner', text: 'Dinner' },
-        { value: 'snack', text: 'Snack' }
+        { value: 'Category options', text: 'Category options' },
+        { value: 'Breakfast', text: 'Breakfast' },
+        { value: 'Lunch', text: 'Lunch' },
+        { value: 'Dinner', text: 'Dinner' },
+        { value: 'Snack', text: 'Snack' }
       ],
-      recipes: [],
-      filteredRecipes: []
+      recipes: null,
+      filteredRecipes: null,
+      category: ''
     }
   },
-  mounted() {
-    fetch('/profiles/HarryPotter/recipes')
-      .then(res => res.json)
-      .then(data => this.recipes)
-      .catch(error => {
-        this.message = error
+  beforeCreate() {
+    Api.get('/profiles/' + localStorage.id + '/recipes')
+      .then(response => {
+        this.recipes = response.data
+        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
       })
+      .catch(error => {
+        this.message = error.message
+        // console.log(error.message)
+      })
+    if (this.message === 'Request failed with status code 404') {
+      this.haveRecipes = 1
+    }
+    console.log(this.message)
+    console.log(this.haveRecipes)
   },
+
   methods: {
     goToProfile() {
       this.$router.push('/profile')
@@ -86,8 +97,9 @@ export default {
     },
     filterRecipes(e) {
       const filter = this.category
+      console.log(filter !== '')
       if (filter !== 'Category options') {
-        Api.get('/profiles/HarryPotter/recipes?category=' + filter)
+        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter)
           .then(response => {
             console.log(response)
             this.filteredRecipes = response.data
@@ -97,7 +109,7 @@ export default {
             this.message = error
           })
       } else {
-        Api.get('/profiles/HarryPotter/recipes')
+        Api.get('/profiles/' + localStorage.id + '/recipes')
           .then(response => {
             console.log(response)
           })

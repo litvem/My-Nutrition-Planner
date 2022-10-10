@@ -16,7 +16,7 @@ const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
 
-router.post('/api/profiles/singup',function(req, res,next) {
+router.post('/api/profiles/signup',function(req, res,next) {
   User.find({ username: req.body.username })
     .exec()
     .then(username => {
