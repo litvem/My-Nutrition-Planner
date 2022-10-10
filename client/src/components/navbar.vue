@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top">MNP
+          <img src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> MNP
         </a>
         <button class="navbar-toggler collapsed d-flex d-md-none flex-column justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="toggler-icon top-bar"></span>
@@ -17,12 +17,12 @@
               <li><router-link class="link" :to="{ name: 'register' }">Register</router-link></li>
             </ul>
           </div>
-          <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="user">
+          <div class="navbar-links ml-auto mb-3 mb-lg-0" v-if="user">
               <ul class="navbar-links">
-              <li><router-link class="link" :to="{ name: 'recipes' }">Recipes</router-link></li>
-              <li><router-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</router-link></li>
-              <li><router-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</router-link></li>
-              <li><a  href="javascript:void(0)" @click="handleLogout" class="link">Logout</a></li>
+              <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
+              <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
+              <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
+              <a  href="javascript:void(0)" @click="handleLogout" class="link" :to="{ name: 'home' }">Logout</a>
             </ul>
           </div>
         </div>

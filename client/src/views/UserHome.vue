@@ -6,8 +6,7 @@
           <div class="menu">
             <h1>Home</h1>
             <br>
-            <button class="btn" v-on:click="goToProfile">Profile</button>
-            <button class="btn" v-on:click="goToRecipes">Recipes</button>
+            <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
             <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
             <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
             <div class="filter">
@@ -17,14 +16,20 @@
                 </div>
                 <button class="search-btn" v-on:click="filterRecipes">Search</button>
             </div>
-            <b-row>
-            <b-col cols="12" md="6" xl="3" class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
-              <RecipePreview v-bind:recipe-prev="recipe"
-              :key="recipe._id"
-              :name="recipe.name"
-              :category="recipe.category"
-              :imgURL="recipe.imgURL" />
-            </b-col>
+            <b-row id="allRecipes" v-if="this.category==='Category options'">
+            <!-- <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id"> -->
+              <RecipePreview  v-for="recipe in recipes.recipes"
+                :key="recipe._id"
+                :recipe="recipe"
+                v-on:click="goToRecipePage()"/>/>
+            </b-row>
+
+            <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
+            <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
+              <RecipePreview  v-for="recipe in filteredRecipes"
+                :key="recipe._id"
+                :recipe="recipe"
+                v-on:click="goToRecipePage()"/>
             </b-row>
           </div>
         </div>
@@ -34,7 +39,6 @@
 </template>
 
 <script>
-// import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 import RecipePreview from '../components/RecipePreview.vue'
 
@@ -47,21 +51,37 @@ export default {
   data() {
     return {
       options: [
-        { value: null, text: 'Caterogy options' },
-        { value: 'breakfast', text: 'Breakfast' },
-        { value: 'lunch', text: 'Lunch' },
-        { value: 'dinner', text: 'Dinner' },
-        { value: 'snack', text: 'Snack' }
+        { value: 'Category options', text: 'Category options' },
+        { value: 'Breakfast', text: 'Breakfast' },
+        { value: 'Lunch', text: 'Lunch' },
+        { value: 'Dinner', text: 'Dinner' },
+        { value: 'Snack', text: 'Snack' }
       ],
-      filteredRecipes: []
+      recipes: null,
+      filteredRecipes: null,
+      category: 'Category options'
     }
   },
+  beforeCreate() {
+    Api.get('/profiles/' + localStorage.id + '/recipes')
+      .then(response => {
+        this.recipes = response.data
+        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
+      })
+      .catch(error => {
+        this.message = error.message
+      })
+    if (this.message === 'Request failed with status code 404') {
+      this.haveRecipes = 1
+    }
+  },
+
   methods: {
     goToProfile() {
       this.$router.push('/profile')
     },
-    goToRecipes() {
-      this.$router.push('/recipes')
+    goToAddRecipe() {
+      this.$router.push('/addRecipe')
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
@@ -72,8 +92,9 @@ export default {
     filterRecipes(e) {
       /* const id = localStorage.getItem('id')
       const filter = this.category
+      console.log('category is ' + (filter !== 'Category options'))
       if (filter !== 'Category options') {
-        Api.get('/profiles/' + id + '/recipes?category=' + 'Lunch')
+        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter)
           .then(response => {
             console.log(response)
             this.filteredRecipes = response.data
@@ -82,18 +103,7 @@ export default {
           .catch(error => {
             this.message = error
           })
-      } else {
-       */
-      const id = localStorage.getItem('id')
-      Api.get('/profiles/' + id + '/recipes')
-        .then(response => {
-          this.filteredRecipes = response.data.recipes
-          this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
-        })
-        .catch(error => {
-          this.message = error
-        })
-      // }
+      }
     }
   }
 }
@@ -135,7 +145,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 13%;
+    margin-top: 20%;
     margin-bottom: 1%;
     width: 100%;
   }

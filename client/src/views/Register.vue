@@ -69,7 +69,7 @@ export default {
       if (this.$v.$invalid) {
         return
       }
-      Api.post('/profiles/signup', {
+      Api.post('/profiles/singup', {
         username: this.username,
         password: this.password
       })

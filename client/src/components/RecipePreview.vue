@@ -1,14 +1,14 @@
 <template>
     <div>
       <article class="recipe-preview">
+        <!--:style="{backgroundImage: 'url(' + recipe.imagePath + ')'}"-->
         <div
-        :style="{backgroundImage: 'url(' + imgURL + ')'}"
         class="thumbnail"></div>
-          <div class="content">
-              <h5>{{name}}</h5>
-              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{category}}</a></div>
-            <p></p>
-          </div>
+            <div class="content">
+              <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
+              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.category}}</a></div>
+              <p></p>
+            </div>
       </article>
     </div>
 </template>
@@ -29,18 +29,11 @@
 
 export default {
   name: 'recipe-prev',
-  props: {
-    name: {
-      type: String,
-      required: true
-    },
-    category: {
-      type: String,
-      required: true
-    },
-    imgURL: {
-      type: String,
-      required: true
+  props: ['recipe'],
+  backgroundImage: '',
+  methods: {
+    goToRecipePage() {
+      this.$router.push(`/recipePage/${this.recipe.name}`)
     }
   }
 }
