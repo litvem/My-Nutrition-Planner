@@ -7,6 +7,7 @@
             <div class="content">
               <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.category}}</h5>
               <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.name}}</a></div>
+
               <p></p>
             </div>
       </article>

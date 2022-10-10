@@ -69,6 +69,7 @@ export default {
       if (this.$v.$invalid) {
         return
       }
+
       Api.post('/profiles/signup', {
         username: this.username,
         password: this.password

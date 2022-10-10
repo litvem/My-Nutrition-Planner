@@ -4,6 +4,7 @@
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view :user="user" :key="$route.fullPath"/>
+
       </div>
     </div>
   </div>
@@ -18,6 +19,7 @@ export default {
   components: {
     Navbar
   },
+
   data() {
     return {
       user: null
@@ -26,7 +28,9 @@ export default {
   created() {
     const id = localStorage.getItem('id')
     const token = localStorage.getItem('token')
+
     Api.get('/profiles/' + id, {
+
       headers: {
         Authorization: 'Bearer ' + token
       }
@@ -37,6 +41,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
+
   }
 }
 </script>
@@ -48,6 +53,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: rgba(255, 254, 254, 0.9);
+}
+body {
+  min-height: 88vh;
+  display: grid;
+  margin: auto 0;
 }
 body {
   min-height: 88vh;

@@ -7,6 +7,7 @@
             <h1>Home</h1>
             <br>
             <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
+
             <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
             <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
             <div class="filter">
@@ -30,6 +31,7 @@
                 :recipe="recipe"
                 v-on:click="goToRecipePage()">
               </b-col>
+
             </b-row>
           </div>
         </div>
@@ -82,6 +84,7 @@ export default {
     },
     goToAddRecipe() {
       this.$router.push('/addRecipe')
+
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
