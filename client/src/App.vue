@@ -3,7 +3,7 @@
     <Navbar :user="user"/>
     <div class="auth-wrapper">
       <div class="auth-inner">
-        <router-view :user="user"/>
+        <router-view :user="user" :key="$route.fullPath"/>
       </div>
     </div>
   </div>

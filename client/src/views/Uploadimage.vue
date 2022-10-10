@@ -1,16 +1,16 @@
 <template>
-    <div class="form">
-        <label for="recipename">Name</label>
-        <input type="text" v-model="name" name="name" />
-        <label for="category">Category</label>
-        <input type="text" v-model="category" name="category" />
-        <label for="instruction">Instruction</label>
-        <input type="text" v-model="instruction" name="instruction" />
-        <input style="display:none" type="file"
-        @change="onFileSelected" ref="fileInput">
-        <button @click="$refs.fileInput.click()">Choice file</button>
-        <button @click="uploadImage">Upload</button>
-    </div>
+  <div class="form">
+      <label for="recipename">Name</label>
+      <input type="text" v-model="name" name="name" />
+      <label for="category">Category</label>
+      <input type="text" v-model="category" name="category" />
+      <label for="instruction">Instruction</label>
+      <input type="text" v-model="instruction" name="instruction" />
+      <input style="display:none" type="file"
+      @change="onFileSelected" ref="fileInput">
+      <button @click="$refs.fileInput.click()">Choice file</button>
+      <button @click="uploadImage">Upload</button>
+  </div>
 </template>
 
 <script>
@@ -34,7 +34,7 @@ export default {
     uploadImage() {
       const id = localStorage.getItem('id')
       const formData = new FormData()
-      formData.append('image', this.selectedFile, this.selectedFile.name)
+      formData.append('recipeImage', this.selectedFile)
       Api.post('/profiles/' + id + '/recipes', formData)
         .then(response => {
           console.log(response)

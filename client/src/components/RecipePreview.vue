@@ -5,26 +5,14 @@
         <div
         class="thumbnail"></div>
             <div class="content">
-              <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
-              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.category}}</a></div>
+              <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.category}}</h5>
+              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.name}}</a></div>
               <p></p>
             </div>
       </article>
     </div>
 </template>
-<!--<template>
-    <div>
-      <article class="recipe-preview">
-        <div class="thumbnail"></div>
-          <img class="img" src="http://localhost:3000/uploads/lilo-stitch-.png-1665150914470.png" />
-          <div class="content">
-            <h5>{{category}}</h5>
-            <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{name}}</a></div>
-            <p></p>
-          </div>
-      </article>
-    </div>
-</template>-->
+
 <script>
 
 export default {
@@ -34,6 +22,7 @@ export default {
   methods: {
     goToRecipePage() {
       this.$router.push(`/recipePage/${this.recipe.name}`)
+      this.$router.go()
     }
   }
 }
@@ -61,5 +50,4 @@ export default {
   width: 100%;
   height: 12rem;
 }
-
 </style>

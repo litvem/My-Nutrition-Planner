@@ -1,6 +1,12 @@
 <template>
    <section>
-      <h1>
+<!--
+   <video autoplay muted class="smokeVideo">
+      <source src="@/assets/smoke.mp4" type="video/mp4"/>
+   </video>
+   -->
+
+    <h1>
        <span>M</span>
        <span>Y</span>
        <span>N</span>
@@ -18,10 +24,6 @@
        <span>E</span>
        <span>R</span>
     </h1>
-
-   <video autoplay muted class="smokeVideo">
-      <source src="@/assets/smoke.mp4" type="video/mp4"/>
-   </video>
  </section>
 </template>
 
@@ -35,17 +37,16 @@ export default {
 section{
  height: 100vh;
  background: #000;
- z-index: 1;
 }
-
+/*
+https://www.youtube.com/watch?v=lx3UtGiRcYA
 video{
 object-fit: cover;
 height: 100vh;
 width: 100%;
 object-fit: contain;
-z-index: 1;
 }
-
+*/
 h1{
  margin: 0;
  padding:0;
@@ -58,12 +59,11 @@ h1{
  font-size: 5em;
  font-family: sans-serif;
  letter-spacing: 0.2em;
- z-index: 999;
+
 }
 h1 span {
  display: inline-block;
  animation: animate 1s linear forwards;
- z-index: 999;
 }
 @keyframes animate{
  0%
@@ -129,4 +129,20 @@ h1 span:nth-child(16){
 animation-delay: 4.5s;
 }
 
+@media(max-width: 1200px){
+
+   h1{
+      top:-24%;
+      margin-left: -3%;
+      font-size: 2.6em;
+   }
+}
+
+@media(max-width: 768px){
+   h1{
+    top:-18%;
+    margin-left: 8%;
+    font-size: 2.2em;
+   }
+}
 </style>

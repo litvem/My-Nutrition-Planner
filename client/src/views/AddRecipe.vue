@@ -1,25 +1,22 @@
 <template>
-<div id ="background" class="container-fluid">
+<div class="container-fluid">
 
   <div class="row">
     <div class="col">
       <h1>Create new recipe</h1>
       <br>
     </div>
-
+    <div class="col">
+      <button type="submit" class="btn btn-success">Save recipe</button>
+    </div>
   </div>
   <div class="row">
     <div class="col" id="left">
-      <h4>Add recipe name</h4>
-        <input type="text" name="recipeName" class="form-control" placeholder="Type name here" v-model="recipeName">
 
       <h4>Add recipe image</h4>
       <div class="mb-3">
         <label for="formFile" class="form-label">Select file</label>
         <input class="form-control" type="file" id="formFile">
-
-        <input type="text" name="imgURL" class="form-control" placeholder="Add image URL" v-model="pictureURL">
-
       </div>
 
       <div>
@@ -33,8 +30,6 @@
           stacked>
           </b-form-radio-group>
         </b-form-group>
-        <button type="submit" class="btn btn-success" @click="save">Save recipe</button>
-
       </div>
 
       </div>
@@ -42,101 +37,88 @@
       <div class="row">
         <h4>Ingredients list</h4>
         <br>
-        <br>
         <div class="card-body">
-            <div class="form-inline">
-              <input type="number" placeholder="Amount" v-model="firstAmount">
-              <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="firstUnit">
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
-                <option value="ml">ml</option>
-                <option value="dl">dl</option>
-                <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="firstItem">
-          </div>
+          <b-form id="ingredients-section">
+            <table id="ingredients">
+              <tr>
+                <td>
+                  <div class="col-4">
+                    <input type="text" name="item1" class="form-control" placeholder="ingredient">
+                  </div>
+                </td>
 
-          <div v-for="key in count" :key="key">
-            <div class="form-inline">
-              <input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
-              <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
-                <option value="ml">ml</option>
-                <option value="dl">dl</option>
-                <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="items['item'+key]" :id="key">
-            </div>
-          </div>
-    <div class="controls">
-      <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
-      <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
-    </div>
-    </div>
+                <td>
+                  <div class="col-2">
+                    <input type="number" name="amount1" class="form-control" placeholder="amount">
+                  </div>
+                </td>
+                <!-- TODO: fix select size in comparison to other fields -->
+                <td>
+                <div class="col-4">
+                  <select class="form-select" aria-label="Unit">
+                    <option selected>unit</option>
+                    <option value="grams">grams</option>
+                    <option value="tablespoon">tablespoon</option>
+                    <option value="teaspoon">teaspoon</option>
+                    <option value="dl">dl</option>
+                    <option value="ml">ml</option>
+                  </select>
+                </div>
+              </td>
+              </tr>
+              <tr></tr>
+            </table>
+          </b-form>
+          <button class="btn btn-dark float-right mt-2" v-on:click="addRow()">Add more +</button>
+        </div>
       </div>
       <h4>Instructions</h4>
-      <textarea class="form-control" id="instructions" rows="10" v-model="instructions"></textarea>
+      <textarea class="form-control" id="instructions" rows="10"></textarea>
     </div>
   </div>
-  </div>
 
+</div>
 </template>
 
 <script>
-import { Api } from '@/Api'
-
+let counter = 1
 export default {
   name: 'addRecipe',
   data() {
     return {
-      count: 1,
       selected: 'first',
       options: [
-        { text: 'Breakfast', value: 'Breakfast' },
-        { text: 'Lunch', value: 'Lunch' },
-        { text: 'Dinner', value: 'Dinner' },
-        { text: 'Snack', value: 'Snack' }
-      ],
-      amounts: {},
-      units: {},
-      items: {},
-      itemsObj: []
+        { text: 'Breakfast', value: 'breakfast' },
+        { text: 'Lunch', value: 'lunch' },
+        { text: 'Dinner', value: 'dinner' },
+        { text: 'Dessert', value: 'dessert' },
+        { text: 'Side', value: 'side' },
+        { text: 'Snack', value: 'snack' }
+      ]
     }
   },
   methods: {
-    add: function () {
-      this.count++
-      console.log(this.count)
+    goToRecipes() {
+      this.$router.push('/recipes')
     },
-    remove: function () {
-      this.count--
+    addRow() {
+      console.log(counter)
+      // FIXED - fix add (not showing the ingredients field)
+      const table = document.getElementById('ingredients')
+      const row = table.insertRow()
+      counter++
+      const html = '<div class="row" id="r' + counter + '"><div class="col-4"><input type="text" name="item' + counter + '" class="form-control" placeholder="ingredient"></div><div class="col-2"><input type="number" name="amount' + counter + '" class="form-control" placeholder="amount"></div><div class="col-4"><select class="form-select" aria-label="Unit"><option selected>unit</option><option value="grams">grams</option><option value="tablespoon">tablespoon</option><option value="teaspoon">teaspoon</option><option value="dl">dl</option><option value="ml">ml</option></select></div><div class="col-1"><br><button type="button" id="' + counter + '" class="btn btn-danger" v-on:click="deleteRow()">Remove</button></div></div>'
+      // const form = document.getElementById('ingredients-section')
+      row.innerHTML += html
     },
-    save: function () {
-      const itemKey = Object.keys(this.items)
-      const unitKey = Object.keys(this.units)
-      const amKey = Object.keys(this.amounts)
-
-      this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
-      // console.log(this.itemsObj[1].item)
-      for (let i = 0; i < this.count; i++) {
-        this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
-      }
-      Api.post('/profiles/' + localStorage.id + '/recipes', {
-        name: this.recipeName,
-        items: this.itemsObj,
-        instructions: this.instructions,
-        imagePath: this.pictureURL,
-        category: this.selected
-      }).catch(error => {
-        this.message = error
-        alert('Warning: Recipe was not created!' + error)
-      })
-      if (this.message === null) {
-        alert('Recipe was succesfully created!')
-        this.$router.push('/recipes')
-      }
+    // TODO - fix delete
+    deleteRow() {
+      console.log(counter)
+      document.getElementById('ingredients').deleteRow(counter - 1)
+      console.log(counter)
+      counter--
     }
+
   }
 }
 </script>

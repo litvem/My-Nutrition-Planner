@@ -4,7 +4,7 @@
         <TextAnimation/>
      </div>
      <section>
-        <div class="contentBx navbar-expand-md  input-group form-group">
+        <div class="contentBx navbar-expand-md">
            <div class="welcome-text">
                <h2>Looking for a place to store your favourite recipes? <br />
                Make weekly shopping easier?<br />
@@ -14,17 +14,15 @@
                <hr />
               </div>
            </div>
-        <div class="loginBx navbar-expand-md  input-group form-group">
+        <div class="loginBx navbar-expand-md">
            <div class="login-form">
               <h3>Login</h3>
               <hr />
               <br>
               <div class="inputs">
-                <input type="text" v-model="username" placeholder="username" :class="{ 'is-invalid': submitted && $v.username.$error }">
-                <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
-                <br>
-                <input type="password" v-model="password" placeholder="password" :class="{ 'is-invalid': submitted && $v.password.$error }">
-                <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
+              <input type="text" v-model="username" placeholder="username">
+              <br>
+              <input type="password" v-model="password" placeholder="password">
               </div>
               <br>
               <button @click="handleSubmit">Login</button>
@@ -41,7 +39,6 @@
 
 <script>
 import { Api } from '@/Api'
-import { required } from 'vuelidate/lib/validators'
 import TextAnimation from '../components/TextAnimation.vue'
 export default {
   name: 'home',
@@ -51,21 +48,11 @@ export default {
   data() {
     return {
       username: '',
-      password: '',
-      submitted: false
+      password: ''
     }
-  },
-  validations: {
-    username: { required },
-    password: { required }
   },
   methods: {
     handleSubmit() {
-      this.submitted = true
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return
-      }
       Api.post('/profiles/login', {
         username: this.username,
         password: this.password
@@ -74,19 +61,17 @@ export default {
           if (response.data.message === 'Authentication successful') {
             localStorage.token = response.data.token
             localStorage.setItem('id', response.data.id)
+            this.$router.push('/userHome')
+            this.$router.go(0)
+          } else {
+            this.$router.push('/')
+            this.$router.go(0)
+            // Emma TODO: here we need to do the red notification for wrong password or username.
           }
         })
         .catch(error => {
           console.error(error)
         })
-    },
-    goToUserHome() {
-      this.$router.push('/userHome')
-      this.$router.go(0)
-    },
-    handleSubmit() {
-      this.sendLoginPost()
-      this.goToUserHome()
     }
   }
 }
@@ -226,13 +211,8 @@ section .loginBx .login-form p {
 
 @media(max-width: 768px){
   .contentBx .welcome-text h2{
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 200;
-
-  }
-
-  section .contentBx {
-    margin-left: 0%;
   }
 }
 

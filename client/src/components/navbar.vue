@@ -1,9 +1,9 @@
 <template>
-  <div id="mbpbar">
+  <div id="mnpbar">
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> MNP
+          <img id="logo"  src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> MNP
         </a>
         <button class="navbar-toggler collapsed d-flex d-md-none flex-column justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="toggler-icon top-bar"></span>
@@ -13,16 +13,17 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="!user">
             <ul class="navbar-links">
-              <li ><router-link class="link" :to="{ name: 'home' }">Login</router-link></li>
-              <li><router-link class="link" :to="{ name: 'register' }">Register</router-link></li>
+              <li class="nav-item"><b-link class="link" :to="{ name: 'home' }">Login</b-link></li>
+              <li class="nav-item"><b-link class="link" :to="{ name: 'register' }">Register</b-link></li>
             </ul>
           </div>
           <div class="navbar-links ml-auto mb-3 mb-lg-0" v-if="user">
               <ul class="navbar-links">
+              <li><b-link class="link" :to="{ name: 'recipes' }">Recipes</b-link></li>
               <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
               <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
-              <a  href="javascript:void(0)" @click="handleLogout" class="link" :to="{ name: 'home' }">Logout</a>
+              <a  href="/" @click="handleLogOut()" class="link">Logout</a>
             </ul>
           </div>
         </div>
@@ -36,11 +37,11 @@ export default {
   name: 'Navbar',
   props: ['user'],
   methos: {
-    handleLogout() {
+    handleLogOut() {
       localStorage.removeItem('token')
       localStorage.removeItem('id')
       this.$router.push('/')
-      this.$router.go(0)
+      this.$router.go()
     }
   }
 }
@@ -48,7 +49,7 @@ export default {
 
 <style lang="scss" scoped>
   .mnpbar {
-    background-color: rgba(0, 0, 0, 0.866);
+    background-color: rgba(9, 2, 2, 0.9);
     z-index: 99;
     width: 100%;
     position: fixed;
@@ -60,6 +61,9 @@ export default {
     color: rgb(12, 156, 31);
     font-weight: bold;
     font-size: 20px;
+  }
+  #logo{
+    margin-right: 10%;
   }
 
   .navbar-toggler {
@@ -143,10 +147,10 @@ export default {
   /* Color of 3 lines */
 
   .navbar-toggler.collapsed .toggler-icon {
-    background: linear-gradient( 263deg, rgba(211, 243, 69, 0.962) 0%, rgba(18, 80, 3, 0.945) 100% );
+    background: linear-gradient( 263deg, rgba(15, 200, 33, 0.962) 0%, rgba(18, 80, 3, 0.945) 100% );
   }
 
-  .navbar-links {
+.navbar-links {
     height: 100%;
     font-weight: 500;
     color:rgb(12, 156, 31);
@@ -156,9 +160,8 @@ export default {
 
 .navbar-links ul {
   display: flex;
-  width: 100%;
-  flex-direction: row;
-  align-items: center;
+  margin: 0;
+  padding: 0;
   transition: .5 ease all;
 }
 
@@ -186,15 +189,7 @@ export default {
   }
 }
 
-button{
-    height: 100%;
-    font-weight: 500;
-    color:rgb(12, 156, 31);
-    list-style: none;
-    text-decoration: none;
-}
-
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .navbar-links ul {
     width: 100%;
     flex-direction: column;

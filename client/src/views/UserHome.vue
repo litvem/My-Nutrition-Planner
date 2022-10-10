@@ -23,13 +23,13 @@
                 :recipe="recipe"
                 v-on:click="goToRecipePage()"/>/>
             </b-row>
-
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
             <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
-              <RecipePreview  v-for="recipe in filteredRecipes"
+              <b-col md=3 RecipePreview  v-for="recipe in filteredRecipes"
                 :key="recipe._id"
                 :recipe="recipe"
-                v-on:click="goToRecipePage()"/>
+                v-on:click="goToRecipePage()">
+              </b-col>
             </b-row>
           </div>
         </div>
@@ -90,7 +90,6 @@ export default {
       this.$router.push('/shoppingList')
     },
     filterRecipes(e) {
-      /* const id = localStorage.getItem('id')
       const filter = this.category
       console.log('category is ' + (filter !== 'Category options'))
       if (filter !== 'Category options') {
