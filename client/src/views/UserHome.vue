@@ -84,7 +84,6 @@ export default {
     },
     goToAddRecipe() {
       this.$router.push('/addRecipe')
-
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
