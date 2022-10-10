@@ -16,23 +16,20 @@
                 </div>
                 <button class="search-btn" v-on:click="filterRecipes">Search</button>
             </div>
-            <b-row id="filteredRecipes" v-if="this.category!==''">
-            <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id">
-              <RecipePreview v-model="filteredRecipes"
-              :key="recipe._id"
-              :name="recipe.name"
-              :category="recipe.category"
-              :imgURL="recipe.imgURL" />
-            </div>
+            <b-row id="allRecipes" v-if="this.category==='Category options'">
+            <!-- <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id"> -->
+              <RecipePreview  v-for="recipe in recipes.recipes"
+                :key="recipe._id"
+                :recipe="recipe"
+                v-on:click="goToRecipePage()"/>/>
             </b-row>
-            <b-row v-else>
-            <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id">
-              <RecipePreview v-bind:recipe-prev="recipe"
-              :key="recipe._id"
-              :name="recipe.name"
-              :category="recipe.category"
-              :imgURL="recipe.imgURL" />
-            </div>
+
+            <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
+            <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
+              <RecipePreview  v-for="recipe in filteredRecipes"
+                :key="recipe._id"
+                :recipe="recipe"
+                v-on:click="goToRecipePage()"/>
             </b-row>
           </div>
         </div>
@@ -62,7 +59,7 @@ export default {
       ],
       recipes: null,
       filteredRecipes: null,
-      category: ''
+      category: 'Category options'
     }
   },
   beforeCreate() {
@@ -73,13 +70,10 @@ export default {
       })
       .catch(error => {
         this.message = error.message
-        // console.log(error.message)
       })
     if (this.message === 'Request failed with status code 404') {
       this.haveRecipes = 1
     }
-    console.log(this.message)
-    console.log(this.haveRecipes)
   },
 
   methods: {
@@ -97,21 +91,13 @@ export default {
     },
     filterRecipes(e) {
       const filter = this.category
-      console.log(filter !== '')
+      console.log('category is ' + (filter !== 'Category options'))
       if (filter !== 'Category options') {
         Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter)
           .then(response => {
             console.log(response)
             this.filteredRecipes = response.data
             this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
-          })
-          .catch(error => {
-            this.message = error
-          })
-      } else {
-        Api.get('/profiles/' + localStorage.id + '/recipes')
-          .then(response => {
-            console.log(response)
           })
           .catch(error => {
             this.message = error
