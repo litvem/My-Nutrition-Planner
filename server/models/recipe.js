@@ -20,7 +20,8 @@ var recipeSchema = new Schema({
             unit:{type: String,
             enum:["grams","kg","ml", "dl","l"]}
             }]
-      }
+      },
+      userID:{type: String}
  });
 
 

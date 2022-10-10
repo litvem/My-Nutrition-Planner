@@ -1,19 +1,57 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link>
+  <div class="app">
+    <Navbar :user="user"/>
+    <div class="auth-wrapper">
+      <div class="auth-inner">
+        <router-view :user="user" :key="$route.fullPath"/>
+      </div>
     </div>
-    <!-- Render the content of the current page view -->
-    <router-view/>
   </div>
 </template>
 
-<style>
+<script>
+import { Api } from '@/Api'
+import Navbar from './components/navbar.vue'
+
+export default {
+  name: 'default',
+  components: {
+    Navbar
+  },
+  data() {
+    return {
+      user: null
+    }
+  },
+  created() {
+    const id = localStorage.getItem('id')
+    const token = localStorage.getItem('token')
+    Api.get('/profiles/' + id, {
+      headers: {
+        Authorization: 'Bearer ' + token
+      }
+    })
+      .then(response => {
+        this.user = response.data
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+}
+</script>
+
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: rgba(255, 254, 254, 0.9);
+}
+body {
+  min-height: 88vh;
+  display: grid;
+  margin: auto 0;
 }
 </style>
