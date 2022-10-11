@@ -16,7 +16,6 @@ const userPath = '/api/profiles';
 const specificUserPath = '/api/profiles/:profileId';
 const userNotFound = "User not found";
 
-
 router.post('/api/profiles/signup',function(req, res,next) {
   User.find({ username: req.body.username })
     .exec()
@@ -214,9 +213,7 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
   
 });
 
-
 router.delete(specificUserPath,checkAuth, function(req, res, next) {
-
   User.findOneAndDelete({_id: req.params.profileId})
   .populate('recipes')
   .exec()
@@ -224,7 +221,6 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
     if (user === null) {
       return res.status(401).json({'message': userNotFound});
     }
-    
     var defaultImagePath = "uploads\\defaultRecipeImage.png-1664301312162.png";
     user.recipes.forEach(recipe => {
       if(recipe.imagePath !== defaultImagePath){
@@ -237,28 +233,15 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
       }  
     })
 
-    Recipe.deleteMany({
-      "_id":{
-        $in: user.recipes
-      }
-    }, function(err){
+    Recipe.deleteMany( {"_id":{$in: user.recipes}  }, function(err){
       if(err) return next(err);
     });
     
-
-    Day.deleteMany({
-      "_id":{
-        $in: user.days
-      }
-    }, function(err){
+    Day.deleteMany({ "_id":{ $in: user.days} }, function(err){
       if(err) return next(err);
     });
 
-    Shoppinglist.deleteMany({
-      "_id":{
-        $in: user.Shoppinglist
-      }
-    }, function(err){
+    Shoppinglist.deleteMany({ "_id":{ $in: user.Shoppinglist }  }, function(err){
       if(err) return next(err);
     });
 
@@ -279,5 +262,4 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
   });
 });
 
-  
 module.exports = router;
