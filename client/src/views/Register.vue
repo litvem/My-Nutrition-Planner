@@ -30,8 +30,15 @@
                 </div>
                 <div class="form-group">
                   <hr>
-                  <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
                   <button class="btn register-btn" v-on:click="handleSubmit()">Register</button>
+                  <hr>
+                  <div>
+                  <b-alert v-model="successAlert" variant="success">
+                    <h5>Congratulations!</h5>
+                    <h6>You have been successfully registered.</h6>
+                    <h6>Click <a href="#" v-on:click="goToLogin()">here</a> to login.</h6>
+                  </b-alert>
+                </div>
                   <hr>
                   <p>Already have an account? <a href="#" v-on:click="goToLogin()">Sign in</a>.</p>
                 </div>
@@ -54,7 +61,8 @@ export default {
       username: '',
       password: '',
       confirmPassword: '',
-      submitted: false
+      submitted: false,
+      successAlert: false
     }
   },
   validations: {
@@ -69,7 +77,6 @@ export default {
       if (this.$v.$invalid) {
         return
       }
-
       Api.post('/profiles/signup', {
         username: this.username,
         password: this.password
@@ -77,7 +84,7 @@ export default {
         .catch(error => {
           this.message = error
         })
-      this.$router.push('/')
+      this.successAlert = true
     },
     goToLogin() {
       this.$router.push('/')
@@ -95,7 +102,7 @@ export default {
     background-size: cover;
     background-attachment: fixed;
     position: relative;
-    height: 100vh;
+    height: 100%;
   }
 
   .box-form .form-container {
