@@ -14,7 +14,7 @@
                <hr />
               </div>
            </div>
-        <div class="loginBx navbar-expand-md">
+        <form class="loginBx navbar-expand-md">
            <div class="login-form">
               <h3>Login</h3>
               <hr />
@@ -32,7 +32,7 @@
                    <router-link class="link" :to="{ name: 'register' }">Register now</router-link>
               </div>
            </div>
-         </div>
+        </form>
        </section>
    </div>
 </template>
