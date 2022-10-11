@@ -23,7 +23,12 @@
               <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
               <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
-              <a  href="/" @click="handleLogOut()" class="link">Logout</a>
+              <a href="javascript:void(0)" class="link" @click="handleClick()">Logout</a>
+             <!--<a id="Logout" href="#" onclick="handleLogOut();return false;">Logout</a> -->
+      <!--
+              <a  href="/" onclick="handleLogOut()" class="link">Logout</a>
+      -->
+
             </ul>
           </div>
         </div>
@@ -37,11 +42,13 @@ export default {
   name: 'Navbar',
   props: ['user'],
   methos: {
-    handleLogOut() {
+
+    handleClick() {
+      console.log('inside the logout functin')
       localStorage.removeItem('token')
       localStorage.removeItem('id')
       this.$router.push('/')
-      this.$router.go()
+      return this.$router.go(0)
     }
   }
 }
