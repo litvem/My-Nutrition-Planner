@@ -216,7 +216,7 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
 
 
 router.delete(specificUserPath,checkAuth, function(req, res, next) {
- // test what happens when we use remove instead of findOneAndDelete
+
   User.findOneAndDelete({_id: req.params.profileId})
   .populate('recipes')
   .exec()

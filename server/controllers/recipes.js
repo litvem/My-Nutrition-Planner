@@ -43,51 +43,34 @@ const upload = multer({
 
 
 router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
-  console.log(req.file);
+
   User.findById(req.params.profileId)
+  .populate('recipes')
   .exec()
   .then(user =>{
     if(user ==null){
       return res.status(404).json({message:"User not found"});
     }
-    if(req.file){
-      const fileName =req.file.filename;
-      const basePath =`${req.protocol}://${req.get('host')}/uploads/`;
+    var checkRecipe =  user.recipes.filter(recipe => recipe.name == req.body.name)
+    console.log(checkRecipe)
+    if( checkRecipe.length > 0){
+      res.status(404).json({message:"Recipe name already exist"});
+    }else {
 
-      var recipe = new Recipe({
-      name: req.body.name,
-      category: req.body.category,
-      image: `${basePath}${fileName}`,
-      imagePath: req.file.path, 
-      tag: req.body.tag,
-      instruction: req.body.instruction,
-      items:req.body.items
-    });
+      if(req.file){
+        const fileName =req.file.filename;
+        const basePath =`${req.protocol}://${req.get('host')}/uploads/`;
 
-    recipe.save()
-    
-     res.status(201).json({ 
-      recipeCreated: recipe,
-      links: {
-        rel: "self",
-        type: "GET",
-        url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes/'+ recipe._id 
-      }
-    });
-
-    user.recipes.push(recipe);
-    user.save();
-    }else{
-      var recipe = new Recipe({
+        var recipe = new Recipe({
         name: req.body.name,
         category: req.body.category,
-        image: defaultImage,
-        imagePath: defaultImagePath,
+        image: `${basePath}${fileName}`,
+        imagePath: req.file.path, 
         tag: req.body.tag,
         instruction: req.body.instruction,
         items:req.body.items
       });
-  
+
       recipe.save()
       
       res.status(201).json({ 
@@ -98,10 +81,35 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
           url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes/'+ recipe._id 
         }
       });
-  
+
       user.recipes.push(recipe);
       user.save();
-    }     
+      }else{
+        var recipe = new Recipe({
+          name: req.body.name,
+          category: req.body.category,
+          image: defaultImage,
+          imagePath: defaultImagePath,
+          tag: req.body.tag,
+          instruction: req.body.instruction,
+          items:req.body.items
+        });
+    
+        recipe.save()
+        
+        res.status(201).json({ 
+          recipeCreated: recipe,
+          links: {
+            rel: "self",
+            type: "GET",
+            url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes/'+ recipe._id 
+          }
+        });
+    
+        user.recipes.push(recipe);
+        user.save();
+      }
+    }       
   }) 
   .catch(err => {
     res.status(500).json({
@@ -115,7 +123,9 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
 // get all 
 router.get(recipesPath, function(req,res,next){
 
-  var filter = req.query.category;
+  var category = req.query.category;
+  var tag = req.query.tag;
+  
 
   User.findOne({_id:req.params.profileId})
   .populate('recipes')
@@ -126,31 +136,69 @@ router.get(recipesPath, function(req,res,next){
       });
     }
     if(user.recipes.length === 0){
-      return res.status(404).json({
-        message: "Recipe not found"
-      });
+      return res.status(404).json({ message: "Recipe not found"});
     }
+     if(category){
+      var filtered = user.recipes.filter(recipe =>{
+           return category === recipe.category;
+      }); 
 
-    if(filter){
-       res.json(user.recipes.filter(document =>{
-        return filter === document.category ;
-      }));
-    }else{
-       res.status(200).json({
-        recipes: user.recipes,
-        link: {
-         rel: "Recipe",
-         type: "POST",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
-       }
-     });
+/*
+      if(category || tag){
+        res.json(user.recipes.filter(recipe =>{
+        if(category && !tag ){
+           return category === recipe.category 
+        }
+        if(!category && tag){
+          return recipe.tags.every(tagName => tag.includes(tag))
+        }
+        if(category && tag){
+          return category === recipe.category && tag === recipe.tag
+        }
+      }));    
+*/   
+
+        var sorted = filtered.sort((recipe1,recipe2) =>{
+          let first = recipe1.name.toUpperCase(), second = recipe2.name.toUpperCase()
+
+          return first == second ? 0: first > second ? 1 : -1
+        });
+        if(sorted.length >0){
+        res.status(200).json({
+          recipes: sorted
+        })
+      } else {
+        return res.status(404).json({ message: "Recipe not found"});
+      }
+
+     }else{
+
+      var sorted = user.recipes.sort((recipe1,recipe2) =>{
+        let first = recipe1.name.toUpperCase() , second = recipe2.name.toUpperCase();
+
+        return first == second ? 0: first > second ? 1 : -1
+      });
+      if(sorted.length >0){
+
+        res.status(200).json({
+          recipes: sorted,
+          link: {
+          rel: "Recipe",
+            type: "POST",
+            url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
+          }
+        });
+        
+      } else {
+        return res.status(404).json({ message: "Recipe not found"});
+      }
     }
-})
-.catch(err => {
-  res.status(500).json({
-    error: err
+  })  
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
   });
-});
 
 });
 

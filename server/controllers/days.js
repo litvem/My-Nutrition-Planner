@@ -12,26 +12,33 @@ var specificDaysPath = '/api/profiles/:profileId/days/:dayId';
 
 router.post(daysPath, checkAuth, function(req, res,next) {
   User.findById(req.params.profileId)
+  .populate('days')
   .exec()
   .then(user =>{
     if(user ==null){
       return res.status(404).json({message:"User not found"});
     }
+    var checkDay =  user.days.filter(days => days.week == req.body.week && days.name == req.body.name)
 
-    var day = new Day(req.body);
-    day.save()
-    
-    res.status(201).json({ 
-        dayCreated: day,
-         links: {
-            rel: "self",
-            type: "GET",
-            url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + day._id 
-        }
-    });
-
-    user.days.push(day);
-    user.save();
+    if(checkDay.length > 0){
+      console.log(checkDay)
+      res.status(404).json({message:"Day already exist"});
+    }else {
+      var day = new Day(req.body);
+      day.save()
+      
+      res.status(201).json({ 
+          dayCreated: day,
+           links: {
+              rel: "self",
+              type: "GET",
+              url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + day._id 
+          }
+      });
+  
+      user.days.push(day);
+      user.save();
+    }
       
   }) 
   .catch(err => {
