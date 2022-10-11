@@ -21,7 +21,7 @@
               <RecipePreview  v-for="recipe in recipes.recipes"
                 :key="recipe._id"
                 :recipe="recipe"
-                v-on:click="goToRecipePage()"/>/>
+                />
             </b-row>
 
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
@@ -29,7 +29,7 @@
               <RecipePreview  v-for="recipe in filteredRecipes"
                 :key="recipe._id"
                 :recipe="recipe"
-                v-on:click="goToRecipePage()"/>
+                />
             </b-row>
           </div>
         </div>
@@ -63,17 +63,17 @@ export default {
     }
   },
   beforeCreate() {
-    Api.get('/profiles/' + localStorage.id + '/recipes')
+    Api.get('/profiles/' + localStorage.id + '/recipes', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
       .then(response => {
         this.recipes = response.data
-        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
       })
       .catch(error => {
-        this.message = error.message
+        console.log(error)
       })
-    if (this.message === 'Request failed with status code 404') {
-      this.haveRecipes = 1
-    }
   },
 
   methods: {
@@ -93,7 +93,11 @@ export default {
       const filter = this.category
       console.log('category is ' + (filter !== 'Category options'))
       if (filter !== 'Category options') {
-        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter)
+        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
           .then(response => {
             console.log(response)
             this.filteredRecipes = response.data

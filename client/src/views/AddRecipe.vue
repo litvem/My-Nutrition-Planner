@@ -76,6 +76,7 @@
     </div>
       </div>
       <h4>Instructions</h4>
+      <p>{{this.instructions}}</p>
       <textarea class="form-control" id="instructions" rows="10" v-model="instructions"></textarea>
     </div>
   </div>
@@ -90,6 +91,7 @@ export default {
   name: 'addRecipe',
   data() {
     return {
+      message: '',
       count: 1,
       selected: 'first',
       options: [
@@ -101,7 +103,11 @@ export default {
       amounts: {},
       units: {},
       items: {},
-      itemsObj: []
+      itemsObj: [],
+      firstAmount: 0,
+      firstUnit: 'grams',
+      firstItem: 'item',
+      instructions: ''
     }
   },
   methods: {
@@ -118,24 +124,39 @@ export default {
       const amKey = Object.keys(this.amounts)
 
       this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
-      // console.log(this.itemsObj[1].item)
-      for (let i = 0; i < this.count; i++) {
-        this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
+
+      console.log('---------start-------------')
+      console.log(this.itemsObj[0].amount + ' ' + this.itemsObj[0].unit + ' ' + this.itemsObj[0].item)
+      for (let i = 1; i <= this.count; i++) {
+        // check if they are undefined
+        this.itemsObj.push({ amount: this.amounts[amKey[i - 1]], unit: this.units[unitKey[i - 1]], item: this.items[itemKey[i - 1]] })
+        console.log(this.itemsObj[i].amount + ' ' + this.itemsObj[i].unit + '' + this.itemsObj[i].item)
       }
+      console.log('---------------------------')
+
       Api.post('/profiles/' + localStorage.id + '/recipes', {
         name: this.recipeName,
+        category: this.selected,
         items: this.itemsObj,
-        instructions: this.instructions,
-        imagePath: this.pictureURL,
-        category: this.selected
-      }).catch(error => {
-        this.message = error
-        alert('Warning: Recipe was not created!' + error)
-      })
-      if (this.message === null) {
-        alert('Recipe was succesfully created!')
-        this.$router.push('/recipes')
+        instruction: this.instructions,
+        imagePath: this.pictureURL
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
       }
+      ).catch(error => {
+        // this.message = error
+        if (error) {
+          alert('Warning: Recipe was not created!' + error)
+        } else {
+          alert('Recipe was succesfully created!')
+          this.$router.push('/userHome')
+        }
+      })
+
+      console.log(this.instructions)
     }
   }
 }

@@ -6,7 +6,7 @@
         class="thumbnail"></div>
             <div class="content">
               <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
-              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.category}}</a></div>
+              <div class="alert alert-success" role="alert" v-bind="recipe">{{recipe.category}}</div>
               <p></p>
             </div>
       </article>
@@ -21,7 +21,8 @@ export default {
   backgroundImage: '',
   methods: {
     goToRecipePage() {
-      this.$router.push(`/recipePage/${this.recipe.name}`)
+      this.$router.push(`/recipePage/${this.recipe._id}`)
+      // this.$router.push({ name: 'recipePage', params:{} ${this.recipe._id} })
     }
   }
 }

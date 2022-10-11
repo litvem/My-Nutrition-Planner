@@ -5,6 +5,7 @@ const fs = require('fs');
 
 var Recipe = require('../models/recipe');
 const User = require('../models/user');
+const checkAuth = require('../middleware/check-auth');
 
 var recipesPath = '/api/profiles/:profileId/recipes';
 var specificRecipesPath = '/api/profiles/:profileId/recipes/:recipeId';
@@ -42,7 +43,7 @@ const upload = multer({
 })
 
 
-router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
+router.post(recipesPath, checkAuth, upload.single('recipeImage'),function(req, res,next) {
   console.log(req.file);
   User.findById(req.params.profileId)
   .exec()
@@ -113,7 +114,7 @@ router.post(recipesPath, upload.single('recipeImage'),function(req, res,next) {
 
 
 // get all 
-router.get(recipesPath, function(req,res,next){
+router.get(recipesPath, checkAuth, function(req,res,next){
 
   var filter = req.query.category;
 
@@ -155,7 +156,7 @@ router.get(recipesPath, function(req,res,next){
 });
 
 // Get specific - for patch copy and add. 
-router.get(specificRecipesPath, function(req,res,next){
+router.get(specificRecipesPath, checkAuth, function(req,res,next){
 
   User.findOne({_id:req.params.profileId })
   .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
@@ -186,7 +187,7 @@ router.get(specificRecipesPath, function(req,res,next){
 
 //PATCH -
 
-router.patch(specificRecipesPath, upload.single('recipeImage'), function (req, res, next) {
+router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), function (req, res, next) {
   User.findById(req.params.profileId)
   .then(user =>{
     if(user === null){
@@ -230,7 +231,7 @@ router.patch(specificRecipesPath, upload.single('recipeImage'), function (req, r
 
 
 // deleting specific
-router.delete(specificRecipesPath, function(req, res, next) {
+router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
   .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
   .exec()
