@@ -1,21 +1,22 @@
 <template>
-  <div class="container">
+<div id = "background" class="container">
+  <br><br><br>
     <div class="row">
-      <h1>Recipe Name</h1>
+      <h1 :recipe="recipe">{{recipe.recipe[0].name}}</h1>
     </div>
 
     <div class="row">
       <div class="col-6" id="left">
 
         <div class="row">
-          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80">
+          <img :recipe="recipe" :src="recipe.recipe[0].imagePath">
         </div>
 
         <br>
 
           <div class="row">
             <div class="col">
-              <div class="alert alert-success" role="alert"> <a href="#" class="alert-link">Category</a></div>
+              <div class="alert alert-success" role="alert" :recipe="recipe">{{recipe.recipe[0].category}}</div>
             </div>
           </div>
 
@@ -25,15 +26,21 @@
                     <b-collapse id="collapse-1" class="mt-2">
                         <b-card>
                         <p class="card-text">Choose week:</p>
-                        <b-form-group v-slot="{ ariaDescribedby }">
-                        <b-form-checkbox-group
-                        v-model="selected"
-                        :options="options"
-                        :aria-describedby="ariaDescribedby"
-                        name="radios-stacked"
-                        stacked>
-                        </b-form-checkbox-group>
+                        <b-form-group>
+                          <b-form-input id="week"
+                            v-model="weekNumber"
+                            type="number"
+                            placeholder="Enter week number"
+                            required ></b-form-input>
+
+                            <b-form-input id="day"
+                            v-model="day"
+                            type="text"
+                            placeholder="Enter day (Monday,Tuesday,...)"
+                            required ></b-form-input>
                         </b-form-group>
+                        <b-button type="submit" variant="primary" v-on:click="addToDay">Submit</b-button>
+
                     </b-card>
                     </b-collapse>
                   </div>
@@ -47,34 +54,68 @@
             <b-card>
                 <h4>Ingredients</h4>
                 <ul>
-                  <li>150 grams eggs</li>
+                  <li :recipe="recipe" v-for="ingredient in recipe.recipe[0].items"
+                  :key="ingredient.itemId">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.item}}</li>
                 </ul>
                 <br>
 
                 <h4>Instructions</h4>
-                <p>Heat oven to 250 Celsius</p>
-                <p>Bring water to boil</p>
-                <p>Add pasta</p>
+                <p :recipe="recipe">{{recipe.recipe[0].instruction}}</p>
+
             </b-card>
         </div>
       </div>
 
-        </div>
+</div>
+
 </template>
 
 <script>
+import { Api } from '@/Api'
+
 export default {
   name: 'recipe-page',
+
+  beforeCreate() {
+    Api.get('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        this.recipe = response.data
+      })
+      .catch(error => {
+        console.log(error.message)
+      })
+  },
   data() {
     return {
-      selected: 'first',
-      options: [
-        { text: '2022-Week 39', value: '39' },
-        { text: '2022-Week 40', value: '40' }
-      ]
+      recipe: null,
+      day: '',
+      weekNumber: ''
+    }
+  },
+  methods: {
+    addToDay() {
+      Api.post('profiles/' + localStorage.id + '/days', {
+        name: this.day,
+        week: this.weekNumber,
+        recipes: this.recipe.recipe[0]
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).catch(error => {
+        alert('Warning: Recipe not added to day ' + error)
+      })
+      console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
     }
   }
 }
+
 </script>
 
 <style scoped>

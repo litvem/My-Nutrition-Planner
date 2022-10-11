@@ -58,9 +58,5 @@ body {
   display: grid;
   margin: auto 0;
 }
-body {
-  min-height: 88vh;
-  display: grid;
-  margin: auto 0;
-}
+
 </style>
