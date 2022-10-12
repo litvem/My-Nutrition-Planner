@@ -19,10 +19,12 @@
               <h3>Login</h3>
               <hr />
               <br>
-              <div class="inputs">
-              <input type="text" v-model="username" placeholder="username">
-              <br>
-              <input type="password" v-model="password" placeholder="password">
+              <div class="inputs" @submit.prevent="handleSubmit">
+                <input type="text" v-model="username" placeholder="username" :class="{ 'is-invalid': submitted && $v.username.$error }">
+                <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
+                <br>
+                <input type="password" v-model="password" placeholder="password" :class="{ 'is-invalid': submitted && $v.password.$error }">
+                <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
               </div>
               <br>
               <button @click="handleSubmit">Login</button>
@@ -40,6 +42,8 @@
 <script>
 import { Api } from '@/Api'
 import TextAnimation from '../components/TextAnimation.vue'
+import { required } from 'vuelidate/lib/validators'
+
 export default {
   name: 'home',
   components: {
@@ -48,11 +52,21 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      submitted: false
     }
+  },
+  validations: {
+    username: { required },
+    password: { required }
   },
   methods: {
     handleSubmit() {
+      this.submitted = true
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
       Api.post('/profiles/login', {
         username: this.username,
         password: this.password
@@ -149,7 +163,7 @@ section .loginBx .login-form h3{
    font-weight: 600;
    font-size: 30xp;
    text-transform: uppercase;
-   margin-top: 60px;
+   margin-top: 5%;
    border-bottom: 4px solid rgba(209, 1, 1, 0.956);
    display: inline-block;
    letter-spacing: 2px;
@@ -188,6 +202,7 @@ section .loginBx .login-form p {
 
 .link{
     color: rgb(12, 156, 31);
+    font-weight: bold;
 }
 
 @media(max-width: 1200px){
@@ -210,10 +225,16 @@ section .loginBx .login-form p {
 }
 
 @media(max-width: 768px){
-  .contentBx .welcome-text h2{
-    font-size: 15px;
-    font-weight: 200;
+  section .contentBx{
+    margin-top: 5%;
+    margin-left: -2%;
+}
+  section .contentBx .welcome-text h2{
+    font-size: 20px;
   }
+  section .loginBx{
+    margin-top: 5%;
+}
 }
 
 </style>
