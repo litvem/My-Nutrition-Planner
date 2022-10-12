@@ -37,16 +37,29 @@
 -->
       <div>
         <h4>Edit recipe category</h4>
-        <b-form-group v-slot="{ ariaDescribedby }">
-          <b-form-radio-group
-          v-model="selected"
-          :options="options"
-          :aria-describedby="ariaDescribedby"
-          name="radios-stacked"
-          stacked>
-          </b-form-radio-group>
-        </b-form-group>
-
+        <b-button type="submit" variant="primary" @click="toggleCategory">Edit Name</b-button>
+        <div v-if="this.editCategory">
+          <b-form-group v-slot="{ ariaDescribedby }">
+            <b-form-radio-group
+            v-model="selected"
+            :options="options"
+            :aria-describedby="ariaDescribedby"
+            name="radios-stacked"
+            stacked>
+            </b-form-radio-group>
+          </b-form-group>
+        </div>
+        <div v-else>
+           <b-form-group v-slot="{ ariaDescribedby }">
+            <b-form-radio-group
+            v-model="selected"
+            :options="disabledOptions"
+            :aria-describedby="ariaDescribedby"
+            name="radios-stacked"
+            stacked>
+            </b-form-radio-group>
+          </b-form-group>
+        </div>
       </div>
 
       </div>
@@ -108,6 +121,7 @@ export default {
       recipe: null,
       // recipeName: this.recipe.recipes[0].name,
       editName: false,
+      editCategory: false,
       // editPictureURL: false,
       selected: null,
       options: [
@@ -115,6 +129,12 @@ export default {
         { text: 'Lunch', value: 'Lunch' },
         { text: 'Dinner', value: 'Dinner' },
         { text: 'Snack', value: 'Snack' }
+      ],
+      disabledOptions: [
+        { text: 'Breakfast', value: 'Breakfast', disabled: true },
+        { text: 'Lunch', value: 'Lunch', disabled: true },
+        { text: 'Dinner', value: 'Dinner', disabled: true },
+        { text: 'Snack', value: 'Snack', disabled: true }
       ],
       amounts: {},
       units: {},
@@ -147,7 +167,23 @@ export default {
   },
   methods: {
     saveChanges() {
-
+      Api.patch('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+        name: this.recipe.recipe[0].name,
+        category: this.selected,
+        items: this.recipe.recipe[0].items,
+        instruction: this.recipe.recipe[0].instruction
+        // imagePath: this.pictureURL
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).then(response => {
+        console.log(response.data.message)
+      })
+        .catch(error => {
+          console.log(error)
+        })
     },
     cancelEdit() {
       this.$router.push('/userHome')
@@ -155,7 +191,7 @@ export default {
     toggleName() {
       // this.recipeName = this.recipe.recipe[0].name
       // this.editName = !this.editName
-      this.editName = !this.editName
+      this.editName = true
       console.log('edit name ' + this.editName)
       console.log(this.recipe.recipe[0].name)
     },
@@ -163,7 +199,8 @@ export default {
 
     },
     toggleCategory() {
-
+      this.editCategory = true
+      console.log('edit name ' + this.editCategory)
     },
     toggleInstructions() {
 
