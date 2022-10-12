@@ -23,7 +23,8 @@
               <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
               <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
-              <a  href="/" @click="handleLogOut()" class="link">Logout</a>
+              <li><a href="/" @click="handleLogOut()" class="link">Logout</a></li>
+
             </ul>
           </div>
         </div>
@@ -36,12 +37,12 @@
 export default {
   name: 'Navbar',
   props: ['user'],
-  methos: {
+  methods: {
+
     handleLogOut() {
       localStorage.removeItem('token')
       localStorage.removeItem('id')
-      this.$router.push('/')
-      this.$router.go()
+      return this.$router.go(0)
     }
   }
 }
