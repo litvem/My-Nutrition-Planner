@@ -6,7 +6,7 @@
         </div>
         <div class="list">
           <b-row>
-          <b-col cols="12" lg="6"  v-for="plan in plans" v-bind:key="plan.name">
+          <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan.name">
             <h5 v-on:click="goToWeeklyPlan()" v-bind="plan">{{plan.name}}</h5>
           </b-col>
           </b-row>
@@ -120,11 +120,19 @@ h5:hover {
     }
 
     .box-form .list {
+      width: 100%;
       margin-right: 10%;
+      min-height: 70vh;
     }
+
     .title h1 {
       margin-top: 25%;
       font-size: 35px;
+    }
+
+    h5 {
+      width: 70%;
+      text-align: center;
     }
   }
   </style>
