@@ -9,10 +9,15 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        color:turquoise;
-    }
-    footer {
-        margin-top: auto;
-    }
+  footer {
+    height: 100%;
+    font-weight: 500;
+    color:rgb(12, 156, 31);
+    list-style: none;
+    text-decoration: none;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    background-color: rgb(1, 0, 0);
+    text-align: center;
+  }
 </style>
