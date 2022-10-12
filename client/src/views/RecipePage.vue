@@ -9,7 +9,7 @@
       <div class="col-6" id="left">
 
         <div class="row">
-          <img :recipe="recipe" :src="recipe.recipe[0].imagePath">
+          <img :recipe="recipe" :src="recipe.recipe[0].image">
         </div>
 
         <br>
@@ -124,6 +124,7 @@ export default {
         alert('Warning: ' + error)
       })
       this.$router.push('/userHome')
+      return this.$router.go()
     }
   }
 }

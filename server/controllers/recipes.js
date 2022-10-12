@@ -264,8 +264,8 @@ router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
     
     var recipeID = req.params.recipeId;
     Day.updateMany({recipes: {$elemMatch: { recipeID }}})
-    .then( () => {
-      user.days.recipes.pull({_id: req.params.recipeId});
+    .then( day => {
+      day.recipes.pull({_id: req.params.recipeId});
     })
 
     user.recipes.pull({_id: req.params.recipeId});

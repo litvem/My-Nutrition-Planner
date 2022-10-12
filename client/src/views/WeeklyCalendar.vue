@@ -85,7 +85,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 0%;
+    margin-top: 7%;
     margin-bottom: 1%;
     width: 100%;
   }
@@ -127,13 +127,13 @@ export default {
     padding: 0;
   }
 
-  .jumbotron {
+  .b-jumbotron {
     display: flex;
     justify-content: center;
     align-items: top;
     margin: 0%;
     min-height: 100px;
-    width: 100%;;
+    width: 100%;
     padding: 0.5%;
   }
 
@@ -142,6 +142,8 @@ export default {
       flex-direction: column;
     }
     h1 {
+      margin-top: 15%;
+      margin-bottom: 1%;
       font-size: 40px;
     }
     .day {
