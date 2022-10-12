@@ -8,7 +8,7 @@ const checkAuth = require('../middleware/check-auth');
 var shoppinglistsPath = '/api/profiles/:profileId/shoppinglists';
 var specificShoppinglistsPath = '/api/profiles/:profileId/shoppinglists/:shoplistId';
 
-router.post(shoppinglistsPath, checkAuth, function(req, res, next) {
+router.post(shoppinglistsPath, checkAuth, function(req, res,next) {
   User.findById(req.params.profileId)
   .populate('shoppinglists')
   .exec()
@@ -45,8 +45,9 @@ router.post(shoppinglistsPath, checkAuth, function(req, res, next) {
   });
 });
 
+
 // get all 
-router.get(shoppinglistsPath, checkAuth, function(req, res, next){
+router.get(shoppinglistsPath, checkAuth, function(req,res,next){
   User.findById({_id:req.params.profileId})
   .populate('shoppinglists')
   .then(user => {
@@ -60,7 +61,7 @@ router.get(shoppinglistsPath, checkAuth, function(req, res, next){
       });
     }else{
       // sorting descending order - change x and y to get ascending order
-      var sortedShopList = user.shoppinglists.sort((x, y) => {return  y.week - x.week})
+      var sortedShopList = user.shoppinglists.sort((x,y) => {return  y.week - x.week})
       return res.status(200).json({
         shoppinglists: sortedShopList,
         link: {
@@ -91,6 +92,7 @@ router.get(specificShoppinglistsPath, checkAuth, function(req,res,next){
     if(user.shoppinglists.length === 0){
       return res.status(404).json({message: 'Shoppinglist not found'})
     }
+
     res.status(200).json({
       shoppinglist: user.shoppinglists,
       links: {
@@ -167,7 +169,7 @@ router.delete(specificShoppinglistsPath, checkAuth, function(req, res, next) {
   }) 
 });
 
-//Delete all the recipes
+//Delete all the shoppinglist
 router.delete(shoppinglistsPath, checkAuth, function(req, res, next) {
 
   User.findOne({_id:req.params.profileId})
@@ -178,11 +180,22 @@ router.delete(shoppinglistsPath, checkAuth, function(req, res, next) {
     if(user.shoppinglists.length === 0){
       return res.status(404).json({message: 'Shoppinglist not found'})
     }
-
-    Shoppinglist.deleteMany( {"_id":{$in: user.shoppinglists}  }, function(err){
+ 
+    Shoppinglist.deleteMany({ "_id":{ $in: user.shoppinglists }  }, function(err){
       if(err) return next(err);
     });
-     user.save();
+    user.shoppinglists=[];
+    user.save();
+    
+    return res.status(200).send({
+      message : "All shoppinglist have been deleted",
+      link:{
+        rel:'Shoppinglists',
+        type:'POST',
+        url:'http://localhost:3000/api/profiles/' + user._id + '/shoppinglists'
+      }
+    });
+
   })
 });
 
