@@ -5,6 +5,9 @@
   <div class="row">
     <div class="col">
       <h1>Edit recipe</h1>
+      <button type="submit" class="btn btn-success" @click="saveChanges()">Save changes</button>
+      <button type="submit" class="btn btn-danger" @click="cancelEdit()">Cancel</button>
+
       <!-- Save, cancel button warning when button is pressed that the changes will be lost -->
       <br>
     </div>
@@ -13,13 +16,14 @@
   <div class="row">
     <div class="col" id="left">
       <h4>Edit recipe name</h4>
-      <section v-bind="editName" v-if="editName">
-        <b-form-input type="text" name="recipeName" v-model="recipeName" class="form-control"></b-form-input>
+      <section v-if="this.editName">
+        <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control"></b-form-input>
       </section>
       <div v-else>
-        <b-form-input type="text" name="recipeName" v-model="recipeName" class="form-control" :disabled="true"></b-form-input>
+        <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control" :disabled=true></b-form-input>
       </div>
-      <b-button type="submit" variant="primary" v-on:click="toggleName()">Edit Name</b-button>
+
+      <b-button type="submit" variant="primary" @click="toggleName">Edit Name</b-button>
 
 <!--
       <h4>Add recipe image</h4>
@@ -42,7 +46,6 @@
           stacked>
           </b-form-radio-group>
         </b-form-group>
-        <button type="submit" class="btn btn-success" @click="save">Save recipe</button>
 
       </div>
 
@@ -50,6 +53,7 @@
     <div class="col" id="right">
       <div class="row">
         <h4>Edit ingredients list</h4>
+        <!--
         <br>
         <br>
         <div class="card-body">
@@ -78,11 +82,12 @@
               <input type="text" placeholder="Item" v-model="items['item'+key]" :id="key">
             </div>
           </div>
-    <div class="controls">
-      <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
-      <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
-    </div>
-    </div>
+          <div class="controls">
+            <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
+            <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
+          </div>
+          </div>
+          -->
       </div>
       <h4>Instructions</h4>
       <textarea class="form-control" id="instructions" rows="10" v-model="instructions"></textarea>
@@ -101,12 +106,29 @@ export default {
   data() {
     return {
       recipe: null,
-      recipeName: 'def',
-      editName: true
+      // recipeName: this.recipe.recipes[0].name,
+      editName: false,
       // editPictureURL: false,
+      selected: null,
+      options: [
+        { text: 'Breakfast', value: 'Breakfast' },
+        { text: 'Lunch', value: 'Lunch' },
+        { text: 'Dinner', value: 'Dinner' },
+        { text: 'Snack', value: 'Snack' }
+      ],
+      amounts: {},
+      units: {},
+      items: {},
+      itemsObj: [],
+      firstAmount: null,
+      firstUnit: 'grams',
+      firstItem: 'item',
+      recipeName: '',
+      instructions: '',
+      pictureURL: ''
     }
   },
-  setup() {
+  beforeCreate() {
     Api.get('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -115,6 +137,7 @@ export default {
       .then(response => {
         console.log(response.data)
         this.recipe = response.data
+        this.selected = this.recipe.recipe[0].category
         this.recipeName = this.recipe.recipe[0].name
         console.log(this.recipeName)
       })
@@ -131,7 +154,10 @@ export default {
     },
     toggleName() {
       // this.recipeName = this.recipe.recipe[0].name
+      // this.editName = !this.editName
       this.editName = !this.editName
+      console.log('edit name ' + this.editName)
+      console.log(this.recipe.recipe[0].name)
     },
     toggleImageURL() {
 
