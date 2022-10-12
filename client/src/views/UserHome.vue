@@ -1,44 +1,50 @@
 <template>
   <div class="UserHome">
-    <div class="UserHomeView">
-      <div class="box-form">
-        <div class="form-container">
-          <div class="menu">
-            <h1>Home</h1>
-            <br>
-            <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
-            <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
-            <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
-            <div class="filter">
-                <h2>Choose recipe category:</h2>
-                <div class="category" aria-label="Default select example">
-                  <b-form-select v-model="category" :options="options"></b-form-select>
-                </div>
-                <button class="search-btn" v-on:click="filterRecipes">Search</button>
+    <div class="box-form">
+      <div class="form-container">
+        <div class="menu">
+          <h1>Home</h1>
+          <br>
+          <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
+          <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
+          <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
+          <div class="filter">
+            <h2>Choose recipe category:</h2>
+            <div class="category" aria-label="Default select example">
+              <b-form-select v-model="category" :options="options"></b-form-select>
             </div>
-            <b-row id="allRecipes" v-if="this.category==='Category options'">
+            <button class="search-btn" v-on:click="filterRecipes">Search</button>
+            <button class="delete-btn">Delete all recipes</button>
+          </div>
+          <div>
+            <b-row id="allRecipes" v-if="this.category==='Category options'" >
             <!-- <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id"> -->
-              <RecipePreview  v-for="recipe in recipes.recipes"
-                :key="recipe._id"
-                :recipe="recipe"
-                />
+              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in recipes.recipes">
+                <RecipePreview
+                  :recipe="recipe"
+                  :image="recipe.image"
+                  v-on:click="goToRecipePage()" />
+              </b-col>
             </b-row>
 
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
             <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
-              <RecipePreview  v-for="recipe in filteredRecipes"
-                :key="recipe._id"
+              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
+              <RecipePreview
                 :recipe="recipe"
-                />
+                v-on:click="goToRecipePage()" />
+              </b-col>
             </b-row>
+            </div>
+          </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
+// import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 import RecipePreview from '../components/RecipePreview.vue'
 
@@ -51,37 +57,38 @@ export default {
   data() {
     return {
       options: [
-        { value: 'Category options', text: 'Category options' },
+        { value: null, text: 'Caterogy options' },
         { value: 'Breakfast', text: 'Breakfast' },
         { value: 'Lunch', text: 'Lunch' },
         { value: 'Dinner', text: 'Dinner' },
         { value: 'Snack', text: 'Snack' }
       ],
-      recipes: null,
-      filteredRecipes: null,
+      recipes: [],
       category: 'Category options'
+
     }
   },
   beforeCreate() {
-    Api.get('/profiles/' + localStorage.id + '/recipes', {
+    const id = localStorage.getItem('id')
+    Api.get('/profiles/' + id + '/recipes', {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + localStorage.token
       }
     })
       .then(response => {
-        this.recipes = response.data
+        this.recipes = response.data.recipes
+        this.recipes.forEach((recipe) => console.log(recipe.name))
       })
       .catch(error => {
-        console.log(error)
+        this.message = error
       })
   },
-
   methods: {
     goToProfile() {
       this.$router.push('/profile')
     },
-    goToAddRecipe() {
-      this.$router.push('/addRecipe')
+    goToRecipes() {
+      this.$router.push('/recipes')
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
@@ -90,18 +97,35 @@ export default {
       this.$router.push('/shoppingList')
     },
     filterRecipes(e) {
+      const id = localStorage.getItem('id')
       const filter = this.category
-      console.log('category is ' + (filter !== 'Category options'))
-      if (filter !== 'Category options') {
-        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter, {
+      if (filter !== null) {
+        Api.get('/profiles/' + id + '/recipes?category=' + filter, {
           headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
+            Authorization: 'Bearer ' + localStorage.token
           }
         })
           .then(response => {
             console.log(response)
-            this.filteredRecipes = response.data
-            this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
+            this.recipes = response.data
+            this.recipes.forEach((recipe) => console.log(recipe.name))
+            this.$router.go(0)
+          })
+          .catch(error => {
+            this.message = error
+          })
+      } else {
+        const id = localStorage.getItem('id')
+        Api.get('/profiles/' + id + '/recipes', {
+
+          headers: {
+            Authorization: 'Bearer ' + localStorage.token
+          }
+        })
+          .then(response => {
+            this.recipes = response.data.recipes
+            this.recipes.forEach((recipe) => console.log(recipe.name))
+            this.$router.go(0)
           })
           .catch(error => {
             this.message = error
@@ -113,7 +137,7 @@ export default {
 </script>
 
 <style scoped>
-  .UserHomeView {
+  .UserHome {
     background-image: url("../assets/user-home-background.jpg");
     background-size: cover;
     background-attachment: fixed;
@@ -124,19 +148,16 @@ export default {
   .box-form .form-container {
     height: 100%;
     display: flex;
-    padding: 80px;
-    width: 80%;
+    width: 100%;
     box-sizing: border-box;
     align-items: center;
     justify-content: center;
-    margin-right: 10%;
-    margin-left: 10%;
   }
 
   .box-form .menu {
     width: 100%;
     height: 100%;
-    padding: 40px;
+    padding: 5%;
     overflow: hidden;
     align-items: center;
     text-align: center;
@@ -148,7 +169,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 20%;
+    margin-top: 13%;
     margin-bottom: 1%;
     width: 100%;
   }
@@ -156,15 +177,6 @@ export default {
   .filter {
     display: flex;
     position: relative;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-  }
-
-  .filter view {
-    display: flex;
-    position: relative;
-    justify-content: space-between;
     align-items: center;
     flex-direction: row;
   }
@@ -173,8 +185,8 @@ export default {
     color: #fff;
     font-size: 23px;
     font-weight: bold;
-    text-align: left;
-    margin-top: 5%;
+    text-align: center;
+    margin-top: 6%;
     margin-bottom: 5%;
     margin-right: 0%;
     margin-left: 0%;
@@ -221,11 +233,34 @@ export default {
     color: #fff;
   }
 
+  .delete-btn {
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    margin-right: 0;
+    margin-left: 1em;
+    float: center;
+    align-self: auto;
+    color: black;
+    font-size: 16px;
+    padding: 12px 35px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 10px 0px #ed51518e;
+    background-image: linear-gradient(135deg, #f88686ca 10%, #ff0000c7 100%);
+  }
+
+  .delete-btn:hover {
+    color: #fff;
+  }
+
   .filter .category {
     margin-top: 1em;
     margin-bottom: 0.7em;
-    margin-left: 1%;
-    width: 50%;
+    margin-left: 0%;
+    margin-right: 2%;
+    width: 35%;
     font-size: 25px;
     color: #5d2f00;
     box-shadow: 0px 4px 10px 0px #ff7d038e;
@@ -245,6 +280,7 @@ export default {
     .box-form .menu {
       width: 100%;
       align-items: center;
+      margin-right: 5%;
     }
     .menu h1 {
       font-size: 35px;
@@ -255,6 +291,7 @@ export default {
     .filter {
       flex-direction: column;
       align-items: center;
+      margin-left: 7%;
     }
     .filter h2 {
       font-size: 17px;

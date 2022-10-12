@@ -42,7 +42,7 @@ const upload = multer({
   }
 })
 
-router.post(recipesPath, upload.single('recipeImage'), checkAuth, function(req, res, next) {
+router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, res, next) {
   User.findById(req.params.profileId)
   .populate('recipes')
   .exec()
@@ -215,7 +215,7 @@ router.get(specificRecipesPath, checkAuth, function(req, res, next) {
 });
 
 // Patch
-router.patch(specificRecipesPath, upload.single('recipeImage'), checkAuth, function (req, res, next) {
+router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), function (req, res, next) {
   User.findById(req.params.profileId)
   .then(user => {
     if(user === null) {

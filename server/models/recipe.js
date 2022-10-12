@@ -2,13 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var recipeSchema = new Schema({
-      name: {type:String}, //primary key
+      name: {type:String}, 
       category: {type: String,
             enum: ['Breakfast','Lunch','Dinner','Snack']
       },
       image:{type: String},
       imagePath: {type: String},
-      tag: {type:[String]}, // CHANGE TO TAGS
+      tag: {type:[String]}, 
       instruction: {type:String},
       items:{ type: 
             [{
