@@ -16,7 +16,7 @@ export default {
   props: ['recipe'],
   methods: {
     goToRecipePage() {
-      this.$router.push(`/recipePage/${this.recipe.name}`)
+      this.$router.push(`/recipePage/${this.recipe._id}`)
       this.$router.go()
     }
   }

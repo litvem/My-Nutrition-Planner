@@ -23,7 +23,7 @@
                 <RecipePreview
                   :recipe="recipe"
                   :image="recipe.image"
-                  v-on:click="goToRecipePage()" />
+                   />
               </b-col>
             </b-row>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
