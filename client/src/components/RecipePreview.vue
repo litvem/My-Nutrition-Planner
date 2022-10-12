@@ -2,7 +2,9 @@
     <div>
       <article class="recipe-preview">
         <!--:style="{backgroundImage: 'url(' + recipe.imagePath + ')'}"-->
-        <div class="thumbnail"></div>
+        <div class="thumbnail">
+          <img id="image" class="img" :src= "recipe.image" />
+        </div>
         <div class="content">
           <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
           <h6>Category: {{ recipe.category }}</h6>
@@ -45,8 +47,16 @@ export default {
 .thumbnail {
   background-position: center;
   background-size: cover;
-  width: 100%;
-  height: 12rem;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#image {
+  margin-top: 10%;
+  align-content: center;
+  max-width: 200px;
+  height: 150xp;
+  z-index: 1;
 }
 
 h5 {
