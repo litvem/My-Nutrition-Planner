@@ -29,7 +29,12 @@ export default {
     }
   },
   beforeCreate() {
-    Api.get('/profiles/' + localStorage.id + '/shoppinglists')
+    Api.get('/profiles/' + localStorage.id + '/shoppinglists', {
+
+      headers: {
+        Authorization: 'Bearer ' + localStorage.token
+      }
+    })
       .then(response => {
         this.shoppingLists = response.data
         console.log(response.data)

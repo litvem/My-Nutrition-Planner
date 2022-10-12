@@ -63,13 +63,20 @@ export default {
       this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
 
       for (let i = 0; i < this.count; i++) {
-        this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
+        if (this.items[itemKey[i]]) {
+          this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
+        }
       }
       // console.log(this.user.id)
       console.log(localStorage.id)
       Api.post('/profiles/' + localStorage.id + '/shoppinglists', {
         name: this.name,
         items: this.itemsObj
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
       }).catch(error => {
         this.message = error
         alert('Warning: Shopping list was not created!' + error)
