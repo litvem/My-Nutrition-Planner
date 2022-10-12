@@ -45,6 +45,8 @@
                     </b-collapse>
                   </div>
                   <div class="col">
+                    <b-button type="submit" variant="primary" v-on:click="editRecipe()">Edit</b-button>
+                    <br>
                     <b-button variant="danger" v-on:click="deleteRecipe()">Delete recipe</b-button>
                   </div>
 
@@ -113,6 +115,10 @@ export default {
         alert('Warning: Recipe not added to day ' + error)
       })
       console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
+    },
+
+    editRecipe() {
+      this.$router.push(`/editRecipe/${this.recipeId}`)
     },
 
     deleteRecipe() {
