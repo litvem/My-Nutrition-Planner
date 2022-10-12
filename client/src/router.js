@@ -6,7 +6,6 @@ import ForgotPassword from './views/ForgotPassword.vue'
 import UserHome from './views/UserHome.vue'
 import Profile from './views/Profile.vue'
 import EditProfile from './views/EditProfile.vue'
-import Recipes from './views/Recipes.vue'
 import AddRecipe from './views/AddRecipe.vue'
 import WeeklyCalendar from './views/WeeklyCalendar.vue'
 import ShoppingList from './views/ShoppingList.vue'
@@ -50,20 +49,16 @@ export default new Router({
       component: EditProfile
     },
     {
-      path: '/recipes',
-      name: 'recipes',
-      component: Recipes
-    },
-    {
       path: '/addRecipe',
       name: 'addRecipe',
       component: AddRecipe
     },
     {
-      path: '/recipePage',
+      path: '/recipePage/:id',
       name: 'recipe-page',
       component: RecipePage
     },
+
     {
       path: '/weeklyCalendar',
       name: 'weeklyCalendar',

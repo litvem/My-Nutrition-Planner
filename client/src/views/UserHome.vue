@@ -26,6 +26,7 @@
                   v-on:click="goToRecipePage()" />
               </b-col>
             </b-row>
+
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
             <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
@@ -81,9 +82,6 @@ export default {
       .catch(error => {
         this.message = error
       })
-    if (this.message === 'Request failed with status code 404') {
-      this.haveRecipes = 1
-    }
   },
   methods: {
     goToProfile() {
