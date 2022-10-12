@@ -26,7 +26,6 @@
                   v-on:click="goToRecipePage()" />
               </b-col>
             </b-row>
-
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
             <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
@@ -37,14 +36,12 @@
             </b-row>
             </div>
           </div>
-          </div>
         </div>
       </div>
   </div>
 </template>
 
 <script>
-// import RecipeItem from '@/components/RecipeItem.vue'
 import { Api } from '@/Api'
 import RecipePreview from '../components/RecipePreview.vue'
 
@@ -57,38 +54,41 @@ export default {
   data() {
     return {
       options: [
-        { value: null, text: 'Caterogy options' },
+        { value: 'Category options', text: 'Category options' },
         { value: 'Breakfast', text: 'Breakfast' },
         { value: 'Lunch', text: 'Lunch' },
         { value: 'Dinner', text: 'Dinner' },
         { value: 'Snack', text: 'Snack' }
       ],
       recipes: [],
+      filteredRecipes: [],
       category: 'Category options'
-
     }
   },
   beforeCreate() {
-    const id = localStorage.getItem('id')
-    Api.get('/profiles/' + id + '/recipes', {
+    Api.get('/profiles/' + localStorage.id + '/recipes', {
+
       headers: {
         Authorization: 'Bearer ' + localStorage.token
       }
     })
       .then(response => {
-        this.recipes = response.data.recipes
-        this.recipes.forEach((recipe) => console.log(recipe.name))
+        this.recipes = response.data
+        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
       })
       .catch(error => {
-        this.message = error
+        this.message = error.message
       })
+    if (this.message === 'Request failed with status code 404') {
+      this.haveRecipes = 1
+    }
   },
   methods: {
     goToProfile() {
       this.$router.push('/profile')
     },
-    goToRecipes() {
-      this.$router.push('/recipes')
+    goToAddRecipe() {
+      this.$router.push('/addRecipe')
     },
     goToWeeklyCalendar() {
       this.$router.push('/weeklyCalendar')
@@ -97,35 +97,19 @@ export default {
       this.$router.push('/shoppingList')
     },
     filterRecipes(e) {
-      const id = localStorage.getItem('id')
       const filter = this.category
-      if (filter !== null) {
-        Api.get('/profiles/' + id + '/recipes?category=' + filter, {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.token
-          }
-        })
-          .then(response => {
-            console.log(response)
-            this.recipes = response.data
-            this.recipes.forEach((recipe) => console.log(recipe.name))
-            this.$router.go(0)
-          })
-          .catch(error => {
-            this.message = error
-          })
-      } else {
-        const id = localStorage.getItem('id')
-        Api.get('/profiles/' + id + '/recipes', {
+      console.log('category is ' + (filter !== 'Category options'))
+      if (filter !== 'Category options') {
+        Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter, {
 
           headers: {
             Authorization: 'Bearer ' + localStorage.token
           }
         })
           .then(response => {
-            this.recipes = response.data.recipes
-            this.recipes.forEach((recipe) => console.log(recipe.name))
-            this.$router.go(0)
+            console.log(response)
+            this.filteredRecipes = response.data
+            this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
           })
           .catch(error => {
             this.message = error
@@ -169,7 +153,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 13%;
+    margin-top: 20%;
     margin-bottom: 1%;
     width: 100%;
   }
