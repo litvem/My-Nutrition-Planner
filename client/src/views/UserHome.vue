@@ -6,8 +6,8 @@
           <h1>Home</h1>
           <br>
           <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
-          <button class="btn" v-on:click="goToWeeklyCalendar">Weekly Plan</button>
-          <button class="btn" v-on:click="goToShoppingList">Shopping List</button>
+          <button class="btn" v-on:click="goToWeeklyPlans">Weekly plans</button>
+          <button class="btn" v-on:click="goToShoppingList">Shopping list</button>
           <div class="filter">
             <h2>Choose recipe category:</h2>
             <div class="category" aria-label="Default select example">
@@ -16,9 +16,8 @@
             <button class="search-btn" v-on:click="filterRecipes">Search</button>
             <button class="delete-btn">Delete all recipes</button>
           </div>
-          <div>
+          <div class="recipesHolder">
             <b-row id="allRecipes" v-if="this.category==='Category options'" >
-            <!-- <div v-for="recipe in recipes.recipes" v-bind:key="recipe._id"> -->
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in recipes.recipes">
                 <RecipePreview
                   :recipe="recipe"
@@ -27,16 +26,15 @@
               </b-col>
             </b-row>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
-            <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes.recipes">
-              <RecipePreview
+                <RecipePreview
                 :recipe="recipe"/>
               </b-col>
             </b-row>
-            </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -89,8 +87,8 @@ export default {
     goToAddRecipe() {
       this.$router.push('/addRecipe')
     },
-    goToWeeklyCalendar() {
-      this.$router.push('/weeklyCalendar')
+    goToWeeklyPlans() {
+      this.$router.push('/allPlans')
     },
     goToShoppingList() {
       this.$router.push('/shoppingList')
@@ -164,6 +162,10 @@ export default {
     position: relative;
     align-items: center;
     flex-direction: row;
+  }
+
+  .recipesHolder {
+    min-height: 35vh;
   }
 
   h2 {
