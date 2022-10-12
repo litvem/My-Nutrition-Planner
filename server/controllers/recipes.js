@@ -163,14 +163,7 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
 
       if(sorted.length > 0){
 
-        res.status(200).json({
-          recipes: sorted,
-          link: {
-          rel: "Recipe",
-            type: "POST",
-            url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes'
-          }
-        }); 
+        res.status(200).json({recipes: sorted}); 
       } else {
         return res.status(404).json({ message: "Recipe not found"});
       }

@@ -14,7 +14,6 @@
 export default {
   name: 'recipe-prev',
   props: ['recipe'],
-  backgroundImage: '',
   methods: {
     goToRecipePage() {
       this.$router.push(`/recipePage/${this.recipe.name}`)

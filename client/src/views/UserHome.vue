@@ -28,10 +28,9 @@
             </b-row>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
             <!-- <div class="view" v-for="recipe in filteredRecipes" v-bind:key="recipe._id"> -->
-              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
+              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes.recipes">
               <RecipePreview
-                :recipe="recipe"
-                v-on:click="goToRecipePage()" />
+                :recipe="recipe"/>
               </b-col>
             </b-row>
             </div>
@@ -60,8 +59,8 @@ export default {
         { value: 'Dinner', text: 'Dinner' },
         { value: 'Snack', text: 'Snack' }
       ],
-      recipes: [],
-      filteredRecipes: [],
+      recipes: null,
+      filteredRecipes: null,
       category: 'Category options'
     }
   },
@@ -98,7 +97,9 @@ export default {
     },
     filterRecipes(e) {
       const filter = this.category
+
       console.log('category is ' + (filter !== 'Category options'))
+
       if (filter !== 'Category options') {
         Api.get('/profiles/' + localStorage.id + '/recipes?category=' + filter, {
 
