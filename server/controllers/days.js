@@ -10,28 +10,35 @@ var daysPath = '/api/profiles/:profileId/days';
 var specificDaysPath = '/api/profiles/:profileId/days/:dayId';
 
 
-router.post(daysPath, checkAuth, function(req, res,next) {
+router.post(daysPath, checkAuth, function(req, res, next) {
   User.findById(req.params.profileId)
+  .populate('days')
   .exec()
-  .then(user =>{
-    if(user ==null){
+  .then(user => {
+    if(user ==null) {
       return res.status(404).json({message:"User not found"});
     }
+    var checkDay =  user.days.filter(days => days.week == req.body.week && days.name == req.body.name)
 
-    var day = new Day(req.body);
-    day.save()
-    
-    res.status(201).json({ 
-        dayCreated: day,
-         links: {
-            rel: "self",
-            type: "GET",
-            url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + day._id 
-        }
-    });
-
-    user.days.push(day);
-    user.save();
+    if(checkDay.length > 0) {
+      console.log(checkDay)
+      res.status(404).json({message:"Day already exist"});
+    } else {
+      var day = new Day(req.body);
+      day.save()
+      
+      res.status(201).json({ 
+          dayCreated: day,
+           links: {
+              rel: "self",
+              type: "GET",
+              url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + day._id 
+          }
+      });
+  
+      user.days.push(day);
+      user.save();
+    }
       
   }) 
   .catch(err => {
@@ -42,39 +49,56 @@ router.post(daysPath, checkAuth, function(req, res,next) {
 });
 
 
-// get all 
+// Get all 
 router.get(daysPath, checkAuth,function(req,res,next){
-  User.findById({_id:req.params.profileId})
+  var week = req.query.week;
+
+  User.findOne({_id:req.params.profileId})
   .populate('days')
-  .then(user => {
-    if (!user) {
-      return res.status(404).json({
-        message: "User not found"
+  .exec()
+  .then(user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.days.length === 0){
+      return res.status(404).json({message: 'Day not found'})
+    }
+
+    if(week) {
+      var days = user.days.filter(day =>{
+        return day.week == week
+      })
+      res.status(200).json({
+        days: days,
+        links: {
+          rel: "self",
+          type: "PATCH",
+          url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + user.days._id 
+        }
       });
-    }else if(user.days.length === 0){
-      return res.status(404).json({
-        message: "Day not found"
-      });
+
     }else{
-      return res.status(200).json({
-        days: user.days,
-        link: {
-         rel: "day",
-         type: "POST",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/days'
-       }
-     });
+
+      var days = user.days.sort((x,y) => {return  y.week - x.week})
+      res.status(200).json({
+          days: days,
+        links: {
+          rel: "self",
+          type: "PATCH",
+          url: 'http://localhost:3000/api/profiles/'+ user._id + '/days/' + user.days._id 
+        }
+      });
     }
   })
   .catch(err => {
     res.status(500).json({
       error: err
     });
-  });
+  });  
 });
 
 
-// get specific
+// Get specific
 router.get(specificDaysPath, checkAuth,function(req,res,next){
 
   User.findOne({_id:req.params.profileId})
@@ -84,7 +108,7 @@ router.get(specificDaysPath, checkAuth,function(req,res,next){
     if(user === null){
       return res.status(404).json({message: 'User not found'}); 
     }
-    if(user.days === null){
+    if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
     res.status(200).json({
@@ -102,6 +126,7 @@ router.get(specificDaysPath, checkAuth,function(req,res,next){
     });
   });  
 });
+
 
 // add recipe - not working yet
 router.patch(specificDaysPath + '/addRecipe', checkAuth,function(req,res,next){
@@ -177,7 +202,6 @@ router.delete(specificDaysPath,checkAuth, function(req, res, next) {
     Day.findOneAndDelete({_id: req.params.dayId})
     .then(day =>{
   
-
       return res.status(200).send({
         message : "The day has been deleted",
         deletedday: day.name,
@@ -197,6 +221,56 @@ router.delete(specificDaysPath,checkAuth, function(req, res, next) {
 });
 
 
+//Delete all the days
+router.delete(daysPath, checkAuth, function(req, res, next) {
 
+  var week = req.query.week;
+
+  User.findOne({_id:req.params.profileId})
+  .populate('days')
+  .then( user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.days.length === 0){
+      return res.status(404).json({message: 'Days not found'})
+    }
+    if(week){
+      var filtered = user.days.filter(day =>{
+        return day.week == week
+      }) 
+
+      Day.deleteMany({ "_id":{ $in: filtered} }, function(err){
+        if(err) return next(err);
+      });
+
+      return res.status(200).send({
+        message : 'All days for week '+ week  +' deleted',
+        link:{
+          rel:'Days',
+          type:'POST',
+          url:'http://localhost:3000/api/profiles/' + user._id + '/days'
+        }
+      });
+
+    }else{
+      Day.deleteMany({ "_id":{ $in: user.days} }, function(err){
+        if(err) return next(err);
+      });
+  
+      user.days=[];
+      user.save();
+      
+      return res.status(200).send({
+        message : "All days have been deleted",
+        link:{
+          rel:'Days',
+          type:'POST',
+          url:'http://localhost:3000/api/profiles/' + user._id + '/days'
+        }
+      });
+    }
+  })
+});
 
 module.exports = router;

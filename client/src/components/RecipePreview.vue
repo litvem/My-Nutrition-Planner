@@ -13,13 +13,8 @@
 <script>
 export default {
   name: 'recipe-prev',
-  props: ['recipe'],
-  backgroundImage: '',
-  methods: {
-    goToRecipePage() {
-      this.$router.push(`/recipePage/${this.recipe.name}`)
-      this.$router.go()
-    }
+  props: {
+    recipe: Object
   }
 }
 </script>
@@ -33,6 +28,11 @@ export default {
   height: 30%;
   background-color: rgba(240, 255, 240, 0.263);
 }
+#image{
+  align-content: center;
+  max-width: 200px;
+  height: 150xp;
+  z-index: 1;
 
 #image {
   margin-top: 10%;
@@ -41,8 +41,8 @@ export default {
   z-index: 1;
 }
 .content {
-  text-align: center;
-  padding: 1rem;
+text-align: center;
+padding: 1rem;
 }
 
 h5 {
@@ -75,4 +75,5 @@ h6 {
   text-decoration: underline;
   margin-top: 3%;
 }
+
 </style>
