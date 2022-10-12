@@ -45,7 +45,7 @@
                     </b-collapse>
                   </div>
                   <div class="col">
-                    <b-button variant="danger">Delete recipe</b-button>
+                    <b-button variant="danger" v-on:click="deleteRecipe()">Delete recipe</b-button>
                   </div>
 
         </div>
@@ -94,7 +94,8 @@ export default {
     return {
       recipe: null,
       day: '',
-      weekNumber: ''
+      weekNumber: '',
+      recipeId: this.$route.params.id
     }
   },
   methods: {
@@ -112,6 +113,17 @@ export default {
         alert('Warning: Recipe not added to day ' + error)
       })
       console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
+    },
+
+    deleteRecipe() {
+      Api.delete('profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).catch(error => {
+        alert('Warning: ' + error)
+      })
+      this.$router.push('/userHome')
     }
   }
 }
