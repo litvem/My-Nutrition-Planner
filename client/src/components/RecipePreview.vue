@@ -1,21 +1,16 @@
 <template>
-    <div>
-      <article class="recipe-preview">
-        <!--:style="{backgroundImage: 'url(' + recipe.imagePath + ')'}"-->
-        <div class="thumbnail">
-          <img id="image" class="img" :src= "recipe.image" />
-        </div>
-        <div class="content">
-          <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
-          <h6>Category: {{ recipe.category }}</h6>
-          <!--<div class="alert alert-success" role="alert"> <a href="#" class="alert-link">{{recipe.name}}</a></div> -->
-        </div>
-      </article>
+  <div>
+    <div class="card">
+      <img id="image" class="img" :src= "recipe.image" />
+      <div class="content">
+        <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
+        <h6>Category: {{ recipe.category }}</h6>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-
 export default {
   name: 'recipe-prev',
   props: ['recipe'],
@@ -30,7 +25,7 @@ export default {
 </script>
 
 <style scoped>
-.recipe-preview {
+.card {
   border-radius: 3px;
   box-shadow: 1px 1px 5px 1px rgba(150, 255, 194, 0.267);
   width: 100%;
@@ -39,24 +34,15 @@ export default {
   background-color: rgba(240, 255, 240, 0.263);
 }
 
+#image {
+  margin-top: 10%;
+  margin-left: 30%;
+  margin-right: 30%;
+  z-index: 1;
+}
 .content {
   text-align: center;
   padding: 1rem;
-}
-
-.thumbnail {
-  background-position: center;
-  background-size: cover;
-  max-width: 100%;
-  max-height: 100%;
-}
-
-#image {
-  margin-top: 10%;
-  align-content: center;
-  max-width: 200px;
-  height: 150xp;
-  z-index: 1;
 }
 
 h5 {
