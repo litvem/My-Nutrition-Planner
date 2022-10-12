@@ -159,8 +159,8 @@ export default {
     color: #fff;
     font-size: 23px;
     font-weight: bold;
-    text-align: left;
-    margin-top: 5%;
+    text-align: center;
+    margin-top: 6%;
     margin-bottom: 5%;
     margin-right: 0%;
     margin-left: 0%;
@@ -210,7 +210,7 @@ export default {
   .delete-btn {
     margin-top: 0.7em;
     margin-bottom: 0.7em;
-    margin-right: 1em;
+    margin-right: 0;
     margin-left: 1em;
     float: center;
     align-self: auto;
@@ -232,9 +232,9 @@ export default {
   .filter .category {
     margin-top: 1em;
     margin-bottom: 0.7em;
-    margin-left: 2%;
+    margin-left: 0%;
     margin-right: 2%;
-    width: 100%;
+    width: 35%;
     font-size: 25px;
     color: #5d2f00;
     box-shadow: 0px 4px 10px 0px #ff7d038e;
@@ -254,6 +254,7 @@ export default {
     .box-form .menu {
       width: 100%;
       align-items: center;
+      margin-right: 5%;
     }
     .menu h1 {
       font-size: 35px;
@@ -264,6 +265,7 @@ export default {
     .filter {
       flex-direction: column;
       align-items: center;
+      margin-left: 7%;
     }
     .filter h2 {
       font-size: 17px;
