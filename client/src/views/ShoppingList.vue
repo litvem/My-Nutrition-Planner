@@ -2,6 +2,9 @@
     <div class="container-fluid" id="shoppingListView">
       <h2>Shopping lists</h2>
         <b-button v-on:click="goToAddShoppingList">Create Shopping List</b-button>
+        <br>
+        <b-button v-on:click="deleteShoppingLists()">Delete All</b-button>
+
       <br>
     <div class="card">
      <div class="card-body">
@@ -10,7 +13,8 @@
         :name="shoppingList.name" />
      </div>
    </div>
-    </div>
+</div>
+
 </template>
 
 <script>
@@ -37,17 +41,36 @@ export default {
     })
       .then(response => {
         this.shoppingLists = response.data
-        console.log(response.data)
+        console.log(response.data.message)
+
+        // if (response.data.message === 'Shoppinglist not found') {
+        //   console.log('empty')
+        // }
+
+        // if (response.data.message)
         // console.log(Object.toString(response.data))
         // console.log(Object.toString(this.shoppingLists))
       })
       .catch(error => {
-        this.message = error
+        console.log(error.response.status)
+        if (error.response.status === 404) {
+          console.log('404 error found')
+          this.$router.push('/addShoppingList')
+        }
       })
   },
   methods: {
     goToAddShoppingList() {
       this.$router.push('/addShoppingList')
+    },
+    deleteShoppingLists() {
+      Api.delete('/profiles/' + localStorage.id + '/shoppingLists', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   }
 }
