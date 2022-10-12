@@ -10,11 +10,18 @@ var specificShoppinglistsPath = '/api/profiles/:profileId/shoppinglists/:shoplis
 
 router.post(shoppinglistsPath, checkAuth, function(req, res,next) {
   User.findById(req.params.profileId)
+  .populate('shoppinglists')
   .exec()
   .then(user =>{
     if(user ==null){
       return res.status(404).json({message:"User not found"});
     }
+
+    var checkShoppinglist =  user.shoppinglists.filter(shoppinglist => shoppinglist.week == req.body.week)
+
+    if(checkShoppinglist.length > 0){
+      res.status(404).json({message:"Shoppinglist already exist"});
+    }else {
     var shoppinglist = new Shoppinglist(req.body);
     shoppinglist.save()
     
@@ -29,7 +36,7 @@ router.post(shoppinglistsPath, checkAuth, function(req, res,next) {
 
     user.shoppinglists.push(shoppinglist);
     user.save();
-      
+    }   
   }) 
   .catch(err => {
     res.status(500).json({
@@ -53,8 +60,10 @@ router.get(shoppinglistsPath, checkAuth, function(req,res,next){
         message: "Shoppinglist not found"
       });
     }else{
+      // sorting descending order - change x and y to get ascending order
+      var sortedShopList = user.shoppinglists.sort((x,y) => {return  y.week - x.week})
       return res.status(200).json({
-        shoppinglists: user.shoppinglists,
+        shoppinglists: sortedShopList,
         link: {
          rel: "Shoppinglist",
          type: "POST",
@@ -161,6 +170,36 @@ router.delete(specificShoppinglistsPath, checkAuth, function(req, res, next) {
       });
     });
   }) 
+});
+
+//Delete all the shoppinglist
+router.delete(shoppinglistsPath, checkAuth, function(req, res, next) {
+
+  User.findOne({_id:req.params.profileId})
+  .then( user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.shoppinglists.length === 0){
+      return res.status(404).json({message: 'Shoppinglist not found'})
+    }
+ 
+    Shoppinglist.deleteMany({ "_id":{ $in: user.shoppinglists }  }, function(err){
+      if(err) return next(err);
+    });
+    user.shoppinglists=[];
+    user.save();
+    
+    return res.status(200).send({
+      message : "All shoppinglist have been deleted",
+      link:{
+        rel:'Shoppinglists',
+        type:'POST',
+        url:'http://localhost:3000/api/profiles/' + user._id + '/shoppinglists'
+      }
+    });
+
+  })
 });
 
 
