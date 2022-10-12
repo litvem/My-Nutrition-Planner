@@ -109,6 +109,8 @@ router.get(specificShoppinglistsPath, checkAuth, function(req,res,next){
   });  
 });
 
+
+
 // patch
 router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)
@@ -133,6 +135,7 @@ router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {
     });
   }) 
 });
+
 
 // deleting specific
 router.delete(specificShoppinglistsPath, checkAuth, function(req, res, next) {
@@ -198,5 +201,7 @@ router.delete(shoppinglistsPath, checkAuth, function(req, res, next) {
 
   })
 });
+
+
 
 module.exports = router;

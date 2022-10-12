@@ -58,14 +58,14 @@
 							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
 						},
 						"url": {
-							"raw": "{{host}}/api/profiles/singup",
+							"raw": "{{host}}/api/profiles/signup",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
 								"profiles",
-								"singup"
+								"signup"
 							]
 						}
 					},
@@ -198,6 +198,165 @@
 									"\r",
 									" \r",
 									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var dateNow = Date.now();\r",
+									"pm.environment.set(\"timeStamp\", dateNow);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Recipe1",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "Lunch",
+									"type": "text"
+								},
+								{
+									"key": "tag",
+									"value": "bad",
+									"type": "text"
+								},
+								{
+									"key": "tag",
+									"value": "fast",
+									"type": "text"
+								},
+								{
+									"key": "instruction",
+									"value": "Cooking instruction",
+									"type": "text"
+								},
+								{
+									"key": "items[0][itemId]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "items[0][item]",
+									"value": "ketchup",
+									"type": "text"
+								},
+								{
+									"key": "items[0][amount]",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "items[0][unit]",
+									"value": "ml",
+									"type": "text"
+								},
+								{
+									"key": "items[1][itemId]",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "items[1][item]",
+									"value": "potato",
+									"type": "text"
+								},
+								{
+									"key": "items[1][amount]",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "items[1][unit]",
+									"value": "grams",
+									"type": "text"
+								},
+								{
+									"key": "recipeImage",
+									"type": "file",
+									"src": "lilo-stitch-.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RecipeName uniqueness",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct day response\", function () {\r",
+									"\r",
+									"    pm.expect(response.message).to.eql(\"Recipe name already exist\");\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -612,7 +771,7 @@
 									"\r",
 									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
 									"   \r",
-									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe3Image\");\r",
+									"    pm.expect(response.recipeCreated.name).to.eql(\"ARecipe3Image\");\r",
 									"    pm.expect(response.recipeCreated.category).to.eql(\"Dinner\");\r",
 									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"low carb\"); // both work for identify String in array\r",
 									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
@@ -682,7 +841,7 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "Recipe3Image",
+									"value": "ARecipe3Image",
 									"type": "text"
 								},
 								{
@@ -836,6 +995,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
@@ -851,7 +1020,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"Recipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"carbs\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+							"raw": "{   \r\n    \"name\":\"AaRecipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"carbs\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles/:profileId/recipes",
@@ -875,7 +1044,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all recipes",
+					"name": "Get all",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -900,6 +1069,13 @@
 									"pm.test('Number of user = ' + recipes.length, function () {\r",
 									"    pm.expect(recipes.length).to.eql(4);\r",
 									"});\r",
+									"pm.test('Alphabetical order', function () {\r",
+									"    pm.expect(recipes[0].name).to.eql('AaRecipe4');\r",
+									"    pm.expect(recipes[1].name).to.eql('ARecipe3Image');\r",
+									"    pm.expect(recipes[2].name).to.eql('Recipe1');\r",
+									"    pm.expect(recipes[3].name).to.eql('Recipe2');\r",
+									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -948,6 +1124,13 @@
 								":profileId",
 								"recipes"
 							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							],
 							"variable": [
 								{
 									"key": "profileId",
@@ -982,7 +1165,7 @@
 									"});\r",
 									"\r",
 									"pm.test('Number of user = ' + recipes.length, function () {\r",
-									"    pm.expect(recipes.length).to.eql(4);\r",
+									"    pm.expect(recipes.length).to.eql(2);\r",
 									"});\r",
 									""
 								],

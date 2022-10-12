@@ -123,7 +123,6 @@ router.post(recipesPath, upload.single('recipeImage'), checkAuth, function(req, 
 router.get(recipesPath, checkAuth, function(req, res, next) {
 
   var category = req.query.category;
-  // var tag = req.query.tag;
   
   User.findOne({_id:req.params.profileId})
   .populate('recipes')
@@ -139,28 +138,12 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
      if(category) {
       var filtered = user.recipes.filter(recipe => {
            return category === recipe.category;
-      }); 
+      });  
 
-/*
-      if(category || tag){
-        res.json(user.recipes.filter(recipe =>{
-        if(category && !tag ){
-           return category === recipe.category 
-        }
-        if(!category && tag){
-          return recipe.tags.every(tagName => tag.includes(tag))
-        }
-        if(category && tag){
-          return category === recipe.category && tag === recipe.tag
-        }
-      }));    
-*/   
-
-        var sorted = filtered.sort((recipe1, recipe2) => {
-          let first = recipe1.name.toUpperCase(), second = recipe2.name.toUpperCase()
-
+      var sorted = filtered.sort((recipe1, recipe2) => {
+      let first = recipe1.name.toUpperCase(), second = recipe2.name.toUpperCase()
           return first == second ? 0: first > second ? 1 : -1
-        });
+      });
 
       if(sorted.length >0){
         res.status(200).json({
@@ -201,21 +184,6 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
   });
 
 });
-
-//searchBar
-router.get(recipesPath + '/search', checkAuth, function(req, res){
-  User.findOne({_id:req.params.profileId })
-  .populate({path: 'recipes' , match:{_id: {$eq: req.params.recipeId}},})
-  .exec()
-  .then(user => {
-    if(user === null){
-      return res.status(404).json({message: 'User not found'}); 
-    }
-    if(user.recipes.length === 0){
-      return res.status(404).json({message: 'Recipe not found'})
-    }
-  })
-})
 
 // Get specific - for patch copy and add
 router.get(specificRecipesPath, checkAuth, function(req, res, next) {

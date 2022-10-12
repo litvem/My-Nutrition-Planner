@@ -241,7 +241,7 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
       if(err) return next(err);
     });
 
-    Shoppinglist.deleteMany({ "_id":{ $in: user.Shoppinglist }  }, function(err){
+    Shoppinglist.deleteMany({ "_id":{ $in: user.shoppinglists }  }, function(err){
       if(err) return next(err);
     });
 
