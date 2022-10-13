@@ -11,6 +11,7 @@ import WeeklyCalendar from './views/WeeklyCalendar.vue'
 import ShoppingList from './views/ShoppingList.vue'
 import RecipePage from './views/RecipePage.vue'
 import test from './testingFolder/test.vue'
+import AllPlans from './views/AllPlans.vue'
 
 Vue.use(Router)
 
@@ -73,7 +74,11 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: test
-
+    },
+    {
+      path: '/allPlans',
+      name: 'allPlans',
+      component: AllPlans
     }
   ]
 })

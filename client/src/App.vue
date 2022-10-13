@@ -4,7 +4,7 @@
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view :user="user" :key="$route.fullPath"/>
-
+        <AppFooter/>
       </div>
     </div>
   </div>
@@ -13,11 +13,13 @@
 <script>
 import { Api } from '@/Api'
 import Navbar from './components/navbar.vue'
+import AppFooter from './components/AppFooter.vue'
 
 export default {
   name: 'default',
   components: {
-    Navbar
+    Navbar,
+    AppFooter
   },
 
   data() {
