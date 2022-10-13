@@ -81,14 +81,12 @@
 <!-- TODO add pcs as option once backend enables it -->
 
         <div v-if="this.editIngredients">
-<!-- TODO check if can do with array instead of first-..  -->
-
           <div v-for="key in count" :key="key">
             <div class="form-inline">
-              <!-- {{key-1}} -->
+              <!--{{key-1}} -->
               <input type="number" size="20" placeholder="Amount" v-model="ingredientsObj[key-1].amount">
-              <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="ingredientsObj[key-1].unit">
-                <!-- <option value="grams">pcs</option> -->
+              <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="ingredientsObj[key-1].unit"> -->
+                <!-- <option value="pcs">pcs</option> -->
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
@@ -104,7 +102,7 @@
           </div>
           </div>
 
-        <div v-else>
+        <div>
           <ul>
             <li :recipe="recipe" v-for="ingredient in recipe.recipe[0].items"
             :key="ingredient.itemId">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.item}}
@@ -118,7 +116,7 @@
 
 <!-- EDIT INSTRUCTIONS -->
       <div v-if="editInstructions">
-        <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction"></textarea>
+        <textarea class="form-control" id="instructions" rows="10" v-model="instructionString"></textarea>
       </div>
       <div v-else>
         <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction" disabled></textarea>
@@ -138,6 +136,7 @@ export default {
   data() {
     return {
       recipe: null,
+
       // input togglers
       editName: false,
       editCategory: false,
@@ -158,17 +157,11 @@ export default {
         { text: 'Dinner', value: 'Dinner', disabled: true },
         { text: 'Snack', value: 'Snack', disabled: true }
       ],
+
       count: 0,
       ingredientsObj: [],
 
-      // to remove if array solution is valid
-      // amounts: {},
-      // units: {},
-      // items: {},
-      // firstAmount: null,
-      // firstUnit: '',
-      // firstItem: '',
-      instructions: '',
+      instructionString: '',
       pictureURL: '', // TODO change to use file
       unitsArray: [],
       amountsArray: [],
@@ -184,23 +177,21 @@ export default {
       .then(response => {
         console.log(response.data)
         this.recipe = response.data
-        // needed for proper rendering
+        // needed for proper rendering and data binding
         this.selected = this.recipe.recipe[0].category
+        this.instructionString = this.recipe.recipe[0].instruction
 
         // important for correct looping through array in render (for each key in count starts from 1)
-        this.count = this.recipe.recipe.length + 2
+        this.count = this.recipe.recipe.length + 1
 
         // for proper data binding of ingredients after edit
         this.ingredientsObj = this.recipe.recipe[0].items
-        // this.
       })
       .catch(error => {
         console.log(error.message)
       })
   },
-  // unmounted() {
-  //   this.ingredientsObj = this.recipe.recipe[0].items
-  // },
+
   methods: {
     add() {
       this.ingredientsObj.push({ amount: null, unit: '', item: '' })
@@ -215,33 +206,44 @@ export default {
       }
     },
     saveChanges() {
+      // TODO bind data image upload
+
       // add each not null ingredient in ingredients array
       for (let i = 0; i < this.count; i++) {
         if (this.ingredientsObj[i].amount > 0 && this.ingredientsObj[i].unit !== '' && this.ingredientsObj[i].item !== '') {
           this.recipe.recipe[0].items[i] = this.ingredientsObj[i]
-          console.log(this.ingredientsObj[i].amount + ' ' + this.ingredientsObj[i].unit + ' ' + this.ingredientsObj[i].item)
         }
-        //   this.recipe.recipe[0].items = this.
-        // }
+      }
 
-        // Api.patch('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
-        //   name: this.recipe.recipe[0].name,
-        //   category: this.selected,
-        //   items: this.recipe.recipe[0].items,
-        //   instruction: this.recipe.recipe[0].instruction
-        //   // imagePath: this.pictureURL
-        // },
-
-      // {
-      //   headers: {
-      //     Authorization: 'Bearer ' + localStorage.getItem('token')
-      //   }
-      // }).then(response => {
-      //   console.log(response.data.message)
-      // })
-      //   .catch(error => {
-      //     console.log(error)
-      //   })
+      console.log(this.instructionString)
+      // check if user deleted item in first row
+      if (this.recipe.recipe[0].items[0].amount > 0 && this.recipe.recipe[0].items[0].unit !== '' && this.recipe.recipe[0].items[0].item !== '') {
+        if (this.instructionString !== '') {
+          Api.patch('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+            name: this.recipe.recipe[0].name,
+            category: this.selected,
+            items: this.recipe.recipe[0].items,
+            instruction: this.instructionString
+            // imagePath: this.pictureURL
+          },
+          {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then(response => {
+            if (response.status === 200) {
+              alert('Recipe was edited with succes!')
+              this.$router.push(`/recipePage/${this.recipe.recipe[0]._id}`)
+            }
+          })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          alert('Warning: Please enter instructions!')
+        }
+      } else {
+        alert('Warning: Cannot have empty ingredient or negative amount!')
       }
     },
     cancelEdit() {
