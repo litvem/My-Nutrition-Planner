@@ -12,6 +12,7 @@ import ShoppingList from './views/ShoppingList.vue'
 import RecipePage from './views/RecipePage.vue'
 import test from './testingFolder/test.vue'
 import AllPlans from './views/AllPlans.vue'
+import EditRecipe from './views/EditRecipe.vue'
 
 Vue.use(Router)
 
@@ -58,6 +59,11 @@ export default new Router({
       path: '/recipePage/:id',
       name: 'recipe-page',
       component: RecipePage
+    },
+    {
+      path: '/editRecipe/:id',
+      name: 'edit-recipe',
+      component: EditRecipe
     },
 
     {
