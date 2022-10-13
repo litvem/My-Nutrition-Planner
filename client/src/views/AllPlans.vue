@@ -6,9 +6,9 @@
         </div>
         <div class="list">
           <b-row>
-          <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan.name">
-            <h5 v-on:click="goToWeeklyPlan()" v-bind="plan">{{plan.name}}</h5>
-          </b-col>
+            <b-col cols="12" lg="6" sm="12" v-for="plan in plans.weeklyCalenders" v-bind:key="plan._id">
+              <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
+            </b-col>
           </b-row>
         </div>
       </div>
@@ -16,17 +16,37 @@
   </template>
 
 <script>
+import { Api } from '@/Api'
 export default {
   name: 'allPlans',
   data() {
     return {
-      plans: [
-        { name: 'Weekly plan 1' },
-        { name: 'Weekly plan 2' },
-        { name: 'Weekly plan 3' },
-        { name: 'Weekly plan 4' },
-        { name: 'Weekly plan 5' }
-      ]
+      plans: null
+    }
+  },
+  mounted() {
+    Api.get('/profiles/' + localStorage.id + '/days?weekcalenders=true', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.token
+      }
+    })
+      .then(response => {
+        console.log(response.data)
+        this.plans = response.data
+      })
+      .catch(error => {
+        this.message = error.message
+      })
+    if (this.message === 'Request failed with status code 404') {
+      this.havePlans = 1
+    }
+  },
+  methods: {
+    goToWeeklyPlan() {
+      localStorage.setItem('week', this.plans.week)
+      localStorage.setItem('year', this.plans.year)
+      this.$router.push('/weeklyCalendar')
+      this.$router.go()
     }
   }
 }
@@ -73,7 +93,7 @@ export default {
 
   .box-form .list {
     width: 50%;
-    min-height: 50vh;
+    min-height: 66vh;
     padding: 4%;
     padding-top: 1%;
     overflow: hidden;
@@ -84,13 +104,13 @@ export default {
   h5 {
   margin-top: 0.7em;
   margin-bottom: 0.7em;
-  margin-right: 1em;
+  margin-right: 0;
   margin-left: 0;
   float: center;
   color: #fff;
   font-size: 20px;
   font-weight: bold;
-  padding: 12px 50px;
+  padding: 12px 40px;
   border-radius: 8px;
   display: inline-block;
   border: 0;
@@ -115,24 +135,24 @@ h5:hover {
     }
     .box-form .title {
       width: 100%;
-      align-items: center;
-      margin-right: 5%;
     }
 
     .box-form .list {
       width: 100%;
-      margin-right: 10%;
-      min-height: 70vh;
+      min-height: 60vh;
+      text-align: center;
     }
 
     .title h1 {
-      margin-top: 25%;
+      text-align: center;
+      margin-top: 40%;
       font-size: 35px;
     }
 
     h5 {
       width: 70%;
       text-align: center;
+      margin-left: 5%;
     }
   }
   </style>
