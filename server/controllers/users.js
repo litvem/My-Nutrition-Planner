@@ -114,7 +114,7 @@ router.post("/api/profiles/login", (req, res, next) => {
 });
 
 
-// get all -- not needed but for testing purpose
+// get all -- not needed in project but for testing purpose
 router.get(userPath, function(req,res,next){
   User.find()
   .exec()
@@ -166,12 +166,66 @@ router.get(specificUserPath, checkAuth, function(req,res,next){
   });
 });
 
+//put
+router.put(specificUserPath, checkAuth, function(req, res, next) {
+  User.findById({_id: req.params.profileId})
+  .exec()
+  .then(user =>{
+    console.log(user)
+    bcrypt.hash(req.body.password, 10, (err, hashPassword) => {
+      if (err) {
+        return res.status(500).json({
+          error: err
+        });
+      } else {
+        user.username = req.body.username;
+        user.password = hashPassword;
+        user.save();
+
+      }
+    });
+    user.save();
+
+      const token = jwt.sign(
+        {
+          username: req.body.username,
+          userId: user._id
+        },
+        process.env.JWT_KEY,
+        {
+            expiresIn: "1h"
+        }
+      );
+
+      res.status(200).json({
+        token: token, 
+        message: 'Password has ben updated',
+        id: user.id,
+        link: {
+          rel: "self",
+          type: 'GET',
+          hrel: 'http://localhost:3000/api/profiles/' + user._id,
+        }
+      });
+  })  
+  .catch(err => {
+    res.status(500).json({
+      error: err
+    });
+  });
+});
+  
+
+
 // patch - partial replacement - specific attribute
 router.patch(specificUserPath, checkAuth, function(req, res, next) {
  
   User.findById({_id: req.params.profileId})
   .exec()
   .then(user =>{
+    if(user === null){
+      return res.status(401).json({'message': userNotFound});   
+    }
      User.find({ username: req.body.username })
     .exec()
     .then(username => {
@@ -245,9 +299,8 @@ router.delete(specificUserPath,checkAuth, function(req, res, next) {
       if(err) return next(err);
     });
 
-    return res.status(200 ).json({
+    return res.status(200).json({
       message:'The user has been deleted',
-      deletedUSer: user,
       link: {
         rel: "self",
         type: 'POST',

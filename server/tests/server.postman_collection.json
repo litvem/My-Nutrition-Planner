@@ -530,78 +530,6 @@
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
 									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get profile 1 Copy",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response = pm.response.json(); \r",
-									"\r",
-									"pm.test(\"Correct status code\",\r",
-									"    function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Correct user response\", function () {\r",
-									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
-									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
 									"});\r",
 									"\r",
 									"\r",
@@ -890,6 +818,164 @@
 					"response": []
 				},
 				{
+					"name": "Change password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var profileId = response.id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Password updated\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Password has ben updated\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login after password change",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Username already exist",
 					"event": [
 						{
@@ -925,7 +1011,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
+							"raw": "{\r\n    \"username\":\"HarryPotter\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1087,9 +1173,7 @@
 									"});\r",
 									"\r",
 									"pm.test(\"Correct delete message\"), function(){\r",
-									"\r",
 									"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
-									"    pm.expect(response.deletedUSer.username).to.eql(\"RonWeasley\");\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -2189,6 +2273,189 @@
 					"response": []
 				},
 				{
+					"name": "change shopList2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"\r",
+									"const ketchupObject = response.updatedShoppinglist.items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct shoppinglist response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"      pm.expect(response.updatedShoppinglist.week).to.eql(40);\r",
+									"    pm.expect(response.updatedShoppinglist.year).to.eql(2022);\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  first item response\", function () {\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(1);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"week\": 40,\r\n    \"year\":2022,\r\n \"items\": [\r\n        {  \r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":1,\r\n        \"unit\":\"ml\"\r\n         }\r\n    ]  \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get  put changed  shopList2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"\r",
+									"const ketchupObject = response.shoppinglist[0].items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct shoppinglist response- non item attributes\", function () {\r",
+									"    pm.expect(response.shoppinglist[0].week).to.eql(40);\r",
+									"     pm.expect(response.shoppinglist[0].year).to.eql(2022);  \r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct  first items array object response\", function () {\r",
+									"    pm.expect(ketchupObject.itemId).to.eql(1);\r",
+									"    pm.expect(ketchupObject.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(ketchupObject.amount).to.eql(1);\r",
+									"    pm.expect(ketchupObject.unit).to.eql(\"ml\");\r",
+									"\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/shoppinglists/:shoplistId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"shoppinglists",
+								":shoplistId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "shoplistId",
+									"value": "{{shopList_2}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete shoppinglist 1",
 					"event": [
 						{
@@ -2263,7 +2530,7 @@
 									"\r",
 									"pm.test(\"Correct error response\", function () {\r",
 									"    var jsonData = pm.response.json(); // parse to json\r",
-									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 51 has been deleted');\r",
+									"    pm.expect(jsonData.message).to.eql('The shoppinglist for week 40 has been deleted');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -3355,7 +3622,7 @@
 								"exec": [
 									"var jsonData =  pm.response.json();",
 									"var dayId = jsonData.dayCreated._id;",
-									"pm.environment.set(\"dayID_1\", dayId);",
+									"pm.environment.set(\"dayID_3\", dayId);",
 									"",
 									"pm.test(\"Correct status code\",",
 									"    function(){",
@@ -3366,7 +3633,7 @@
 									"    var jsonData = pm.response.json(); // parse to json",
 									"    pm.expect(jsonData.dayCreated.name).to.eql(\"Monday\");",
 									"    pm.expect(jsonData.dayCreated.week).to.eql(2);",
-									"    pm.expect(jsonData.dayCreated.year).to.eql(2022);",
+									"    pm.expect(jsonData.dayCreated.year).to.eql(2021);",
 									"});",
 									"",
 									""
@@ -3410,7 +3677,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 2,\n    \"year\": 2022,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
+							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 2,\n    \"year\": 2021,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3612,8 +3879,8 @@
 									"",
 									"pm.test(' Right order ', function () {",
 									"    pm.expect(days[0].week).to.eql(2)",
-									"    pm.expect(days[1].week).to.eql(2)",
-									"    pm.expect(days[2].week).to.eql(1)",
+									"    pm.expect(days[1].week).to.eql(1)",
+									"    pm.expect(days[2].week).to.eql(2)",
 									"",
 									"});"
 								],
@@ -3669,7 +3936,7 @@
 									"    pm.response.to.have.status(200);",
 									"});",
 									"",
-									"pm.test('Number of user = ' + days.length, function () {",
+									"pm.test('Number of days = ' + days.length, function () {",
 									"",
 									"    pm.expect(days.length).to.eql(2);",
 									"});"
@@ -3719,6 +3986,78 @@
 					"response": []
 				},
 				{
+					"name": "Get  unique weeks and year. Sorted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); ",
+									"var weeklyCalenders = response.weeklyCalenders;",
+									"",
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('Number of weeklyCalenders = ' + weeklyCalenders.length, function () {",
+									"",
+									"    pm.expect(weeklyCalenders.length).to.eql(3);",
+									"});",
+									"",
+									"pm.test('Correct order', function(){",
+									"    pm.expect(weeklyCalenders[0].week).to.eql(2)",
+									"    pm.expect(weeklyCalenders[0].year).to.eql(2022)",
+									"    pm.expect(weeklyCalenders[1].week).to.eql(1)",
+									"    pm.expect(weeklyCalenders[1].year).to.eql(2022)",
+									"    pm.expect(weeklyCalenders[2].week).to.eql(2)",
+									"    pm.expect(weeklyCalenders[2].year).to.eql(2021)",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days?weekcalenders=true",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days"
+							],
+							"query": [
+								{
+									"key": "weekcalenders",
+									"value": "true"
+								}
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get day 1 - including the recipe",
 					"event": [
 						{
@@ -3731,7 +4070,7 @@
 									"",
 									"pm.test(\"Correct day response\", function() {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.day[0].name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.day[0].name).to.eql(\"Friday\");",
 									"    pm.expect(jsonData.day[0].week).to.eql(2);",
 									"    pm.expect(jsonData.day[0].year).to.eql(2022);",
 									"    pm.expect(jsonData.day[0].recipes[0].name).to.eql(\"Recipe1\");",
@@ -3883,6 +4222,164 @@
 								{
 									"key": "profileId",
 									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change day 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();",
+									"",
+									"pm.test(\"Correct status code\",",
+									"    function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct day response\", function () {",
+									"    pm.expect(response.updatedDay.name).to.eql(\"Sunday\");",
+									"    pm.expect(response.updatedDay.week).to.eql(2);",
+									"    pm.expect(response.updatedDay.year).to.eql(2021);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Acccept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sunday\",\n    \"week\": 2,\n    \"year\": 2021,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_3}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get updated day 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();",
+									"",
+									"pm.test(\"Correct status code\",",
+									"    function(){",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Correct day response\", function () {",
+									"    pm.expect(response.day[0].name).to.eql(\"Sunday\");",
+									"    pm.expect(response.day[0].week).to.eql(2);",
+									"    pm.expect(response.day[0].year).to.eql(2021);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_3}}"
 								}
 							]
 						}
@@ -5191,6 +5688,589 @@
 				},
 				{
 					"name": "Delete profile 1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user message\"), function(){\r",
+									"      var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql(\"The profile has been deleted\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipe  delete on cascade",
+			"item": [
+				{
+					"name": "Sign up  profile 1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var profileId = response.userCreated._id;\r",
+									"pm.environment.set(\"profileID_1\", profileId)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct user response\", function () {\r",
+									"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+									"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/signup",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login profile 1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var token = response.token;\r",
+									"pm.environment.set(\"token_p1\", token)\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.collectionVariables.get(\"variable_key\");\r",
+									"pm.test(\"Correct login response\", function () {\r",
+									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NoImage recipe 1- no image Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response =  pm.response.json();\r",
+									"var recipeId = response.recipeCreated._id;\r",
+									"pm.environment.set(\"recipeId1\", recipeId);\r",
+									"\r",
+									"const obj1 = response.recipeCreated.items.find(obj => obj.item ===\"ketchup\");\r",
+									"\r",
+									"const obj2 = response.recipeCreated.items.find(obj => obj.item ===\"sallad\");\r",
+									"\r",
+									"pm.test(\"Correct status code\",\r",
+									"    function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct recipe response - excluding array of object\", function () {\r",
+									"    var response =  pm.response.json();\r",
+									"    pm.expect(response.recipeCreated.name).to.eql(\"Recipe1\");\r",
+									"    pm.expect(response.recipeCreated.category).to.eql(\"Lunch\");\r",
+									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.tag).to.include(\"fast\"); // both work for identify String in array\r",
+									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction4\"); \r",
+									"    pm.expect(response.recipeCreated.image).to.contain(\"http://localhost:3000/uploads/defaultRecipeImage.png-\"); \r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Correct first items array object response\", function () {\r",
+									"    console.log(obj1);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj1.itemId).to.eql(1);\r",
+									"    pm.expect(obj1.item).to.eql(\"ketchup\");\r",
+									"    pm.expect(obj1.amount).to.eql(5);\r",
+									"    pm.expect(obj1.unit).to.eql(\"ml\");\r",
+									"\r",
+									"\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct  second items array object response\", function () {\r",
+									"    console.log(obj2);\r",
+									"// testing the array of object response\r",
+									"    pm.expect(obj2.itemId).to.eql(2);\r",
+									"    pm.expect(obj2.item).to.eql(\"sallad\");\r",
+									"    pm.expect(obj2.amount).to.eql(200);\r",
+									"    pm.expect(obj2.unit).to.eql(\"grams\");\r",
+									"});\r",
+									"\r",
+									" \r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{   \r\n    \"name\":\"Recipe1\",\r\n    \"category\": \"Lunch\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad\",\"fast\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"ketchup\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Day 1 -week 1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();",
+									"var dayId = jsonData.dayCreated._id;",
+									"pm.environment.set(\"dayID_1\", dayId);",
+									"",
+									"pm.test(\"Correct status code\",",
+									"    function(){",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Correct day response\", function () {",
+									"    var jsonData = pm.response.json(); // parse to json",
+									"    pm.expect(jsonData.dayCreated.name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.dayCreated.week).to.eql(1);",
+									"    pm.expect(jsonData.dayCreated.year).to.eql(2022);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Acccept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 1,\n    \"year\": 2022,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get day 1 - including the recipe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"",
+									"pm.test(\"Correct day response\", function() {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.day[0].name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.day[0].week).to.eql(1);",
+									"    pm.expect(jsonData.day[0].year).to.eql(2022);",
+									"    pm.expect(jsonData.day[0].recipes[0].name).to.eql(\"Recipe1\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete recipe 1 Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Correct status code\", function(){\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Correct error response\", function () {\r",
+									"    var jsonData = pm.response.json(); // parse to json\r",
+									"    pm.expect(jsonData.message).to.eql('The recipe has been deleted');\r",
+									"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/recipes/:recipeId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"recipes",
+								":recipeId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "recipeId",
+									"value": "{{recipeId1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get day 1 - no recipes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json(); ",
+									"",
+									"pm.test(\"Correct status code\", function() {",
+									"    pm.response.to.have.status(200);",
+									"})",
+									"pm.test(' No recipes = ', function () {",
+									"    pm.expect(response.day[0].recipes.length).to.eql(0);",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days/:dayId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days",
+								":dayId"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								},
+								{
+									"key": "dayId",
+									"value": "{{dayID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete profile 1 Copy 2",
 					"event": [
 						{
 							"listen": "test",

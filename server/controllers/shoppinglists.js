@@ -109,7 +109,30 @@ router.get(specificShoppinglistsPath, checkAuth, function(req,res,next){
   });  
 });
 
+//put 
+router.put(specificShoppinglistsPath, checkAuth, function (req, res, next) {
+  User.findById(req.params.profileId)
+  .then(user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.shoppinglists.length === 0){
+      return res.status(404).json({message: 'Shoppinglist not found'})
+    }
 
+    Shoppinglist.findByIdAndUpdate(req.params.shoplistId, req.body, { new: true })
+    .then(shoppinglists =>{
+      return res.status(200).json({
+        updatedShoppinglist: shoppinglists
+      });  
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: err
+      });
+    });
+  }) 
+});
 
 // patch
 router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {

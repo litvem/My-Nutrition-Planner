@@ -51,7 +51,7 @@ router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, 
       return res.status(404).json({message:"User not found"});
     }
     var checkRecipe = user.recipes.filter(recipe => recipe.name == req.body.name)
-    console.log(checkRecipe)
+
     if(checkRecipe.length > 0) {
       res.status(404).json({message:"Recipe name already exist"});
     } else {
@@ -135,9 +135,10 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
     if(user.recipes.length === 0) {
       return res.status(404).json({ message: "Recipe not found"});
     }
-     if(category) {
+    
+    if(category) {
       var filtered = user.recipes.filter(recipe => {
-           return category === recipe.category;
+        return category === recipe.category;
       });  
 
       var sorted = filtered.sort((recipe1, recipe2) => {
@@ -153,7 +154,7 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
         return res.status(404).json({ message: "Recipe not found"});
       }
 
-     } else {
+    } else {
 
       var sorted = user.recipes.sort((recipe1,recipe2) => {
         let first = recipe1.name.toUpperCase() , second = recipe2.name.toUpperCase();
@@ -165,7 +166,7 @@ router.get(recipesPath, checkAuth, function(req, res, next) {
 
         res.status(200).json({recipes: sorted}); 
       } else {
-        return res.status(404).json({ message: "Recipe not found"});
+      return res.status(404).json({ message: "Recipe not found"});
       }
 
     }
@@ -207,6 +208,7 @@ router.get(specificRecipesPath, checkAuth, function(req, res, next) {
   });  
 });
 
+
 // Patch
 router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), function (req, res, next) {
   User.findById(req.params.profileId)
@@ -245,7 +247,7 @@ router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), funct
         error: err        
         });
       })
-  });   
+  })   
 });
 
 // Delete specific
