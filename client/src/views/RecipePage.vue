@@ -34,6 +34,12 @@
                 <b-card id="options">
                   <p class="card-text">Choose week:</p>
                   <b-form-group>
+                    <b-form-input id="year"
+                      v-model="year"
+                      type="number"
+                      placeholder="Enter year"
+                      required >
+                    </b-form-input>
                     <b-form-input id="week"
                       v-model="weekNumber"
                       type="number"
@@ -80,6 +86,7 @@ export default {
   data() {
     return {
       recipe: null,
+      year: '',
       day: '',
       weekNumber: ''
     }
@@ -87,6 +94,7 @@ export default {
   methods: {
     addToDay() {
       Api.post('profiles/' + localStorage.id + '/days', {
+        year: this.year,
         name: this.day,
         week: this.weekNumber,
         recipes: this.recipe.recipe[0]
@@ -99,6 +107,21 @@ export default {
         alert('Warning: Recipe not added to day ' + error)
       })
       console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
+    },
+    editRecipe() {
+      this.$router.push(`/editRecipe/${this.recipeId}`)
+    },
+
+    deleteRecipe() {
+      Api.delete('profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('token')
+        }
+      }).catch(error => {
+        alert('Warning: ' + error)
+      })
+      this.$router.push('/userHome')
+      return this.$router.go()
     }
   }
 }
@@ -270,13 +293,7 @@ export default {
       box-shadow: 0px 4px 10px 0px #ffc8038e;
     }
 
-    #week {
-      font-size: 17px;
-      background-color: #fffcd4ce;
-      box-shadow: 0px 4px 10px 0px #ffc8038e;
-    }
-
-    #day {
+    #year, #week, #day {
       font-size: 17px;
       background-color: #fffcd4ce;
       box-shadow: 0px 4px 10px 0px #ffc8038e;
