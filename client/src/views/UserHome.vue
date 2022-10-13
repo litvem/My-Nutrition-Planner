@@ -14,7 +14,7 @@
               <b-form-select v-model="category" :options="options"></b-form-select>
             </div>
             <button class="search-btn" v-on:click="filterRecipes">Search</button>
-            <button class="delete-btn">Delete all recipes</button>
+            <button class="delete-btn" v-on:click="deleteAllRecipes">Delete all recipes</button>
           </div>
           <div class="recipesHolder">
             <b-row id="allRecipes" v-if="this.category==='Category options'" >
@@ -25,6 +25,7 @@
                    />
               </b-col>
             </b-row>
+            <b-row v-else><p>No recipes created yet</p></b-row>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes.recipes">
                 <RecipePreview
@@ -71,7 +72,6 @@ export default {
     })
       .then(response => {
         this.recipes = response.data
-        this.recipes.recipes.forEach(recipe => console.log(recipe.image))
       })
       .catch(error => {
         this.message = error.message
@@ -114,6 +114,17 @@ export default {
             this.message = error
           })
       }
+    },
+    deleteAllRecipes() {
+      Api.delete('/profiles/' + localStorage.id + '/recipes', {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+        .catch(error => {
+          this.message = error
+        })
+      this.$router.go()
     }
   }
 }

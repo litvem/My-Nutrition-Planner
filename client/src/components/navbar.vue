@@ -2,8 +2,8 @@
   <div id="mnpbar">
     <nav class="navbar navbar-expand-md mnpbar">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img id="logo"  src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> MNP
+        <a class="navbar-brand" href="/userHome">
+          <img id="logo"  src="@/assets/logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top" > MNP
         </a>
         <button class="navbar-toggler collapsed d-flex d-md-none flex-column justify-content-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="toggler-icon top-bar"></span>
@@ -19,8 +19,8 @@
           </div>
           <div class="navbar-links ml-auto mb-3 mb-lg-0" v-if="user">
               <ul class="navbar-links">
-              <li><b-link class="link" :to="{ name: 'recipes' }">Recipes</b-link></li>
-              <li><b-link class="link" :to="{ name: 'weeklyCalendar' }">WeeklyCalendar</b-link></li>
+              <li><b-link class="link" :to="{ name: 'addRecipe' }">AddRecipe</b-link></li>
+              <li><b-link class="link" :to="{ name: 'allPlans' }">WeeklyPlans</b-link></li>
               <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
               <li><a href="/" @click="handleLogOut()" class="link">Logout</a></li>
