@@ -10,6 +10,380 @@
 			"name": "Users Controller Test",
 			"item": [
 				{
+					"name": "Change password",
+					"item": [
+						{
+							"name": "Sign up  profile 1 Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response =  pm.response.json();\r",
+											"var profileId = response.userCreated._id;\r",
+											"pm.environment.set(\"profileID_1\", profileId)\r",
+											"\r",
+											"\r",
+											"pm.test(\"Correct status code\",\r",
+											"    function(){\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Correct user response\", function () {\r",
+											"    pm.expect(response.userCreated.username).to.eql(\"HarryPotter\");\r",
+											"//    pm.expect(jsonData.userCreated.password).to.eql(\"Hogwarts123\"); - it hash now\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}"
+								},
+								"url": {
+									"raw": "{{host}}/api/profiles/signup",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"profiles",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login profile 1 Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response =  pm.response.json();\r",
+											"var token = response.token;\r",
+											"pm.environment.set(\"token_p1\", token)\r",
+											"\r",
+											"\r",
+											"pm.test(\"Correct status code\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.collectionVariables.get(\"variable_key\");\r",
+											"pm.test(\"Correct login response\", function () {\r",
+											"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n    \"password\":\"Hogwarts123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/profiles/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"profiles",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response =  pm.response.json();\r",
+											"var profileId = response.id;\r",
+											"pm.environment.set(\"profileID_1\", profileId)\r",
+											"\r",
+											"\r",
+											"pm.test(\"Correct status code\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Password updated\", function () {\r",
+											"      pm.expect(response.message).to.eql(\"Password has ben updated\"); \r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function(){}, [1000]);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_p1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/profiles/:profileId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"profiles",
+										":profileId"
+									],
+									"variable": [
+										{
+											"key": "profileId",
+											"value": "{{profileID_1}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login after password change",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response =  pm.response.json();\r",
+											"var token = response.token;\r",
+											"pm.environment.set(\"token_p1\", token)\r",
+											"\r",
+											"\r",
+											"pm.test(\"Correct status code\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.collectionVariables.get(\"variable_key\");\r",
+											"pm.test(\"Correct login response\", function () {\r",
+											"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function(){}, [1000]);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_p1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/profiles/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"profiles",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete profile 1 Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var response = pm.response.json(); \r",
+											"\r",
+											"pm.test(\"Correct status code\", function(){\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Correct delete message\"), function(){\r",
+											"\r",
+											"    pm.expect(response.message).to.eql(\"The profile has been deleted\");\r",
+											"    pm.expect(response.deletedUSer.username).to.eql(\"HarryPotter1\");\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token_p1}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/profiles/:profileId",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"profiles",
+										":profileId"
+									],
+									"variable": [
+										{
+											"key": "profileId",
+											"value": "{{profileID_1}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Sign up  profile 1",
 					"event": [
 						{
@@ -818,164 +1192,6 @@
 					"response": []
 				},
 				{
-					"name": "Change password",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var profileId = response.id;\r",
-									"pm.environment.set(\"profileID_1\", profileId)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Password updated\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Password has ben updated\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/:profileId",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								":profileId"
-							],
-							"variable": [
-								{
-									"key": "profileId",
-									"value": "{{profileID_1}}"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login after password change",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"var response =  pm.response.json();\r",
-									"var token = response.token;\r",
-									"pm.environment.set(\"token_p1\", token)\r",
-									"\r",
-									"\r",
-									"pm.test(\"Correct status code\", function(){\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.collectionVariables.get(\"variable_key\");\r",
-									"pm.test(\"Correct login response\", function () {\r",
-									"      pm.expect(response.message).to.eql(\"Authentication successful\"); \r",
-									"});\r",
-									"\r",
-									"\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{token_p1}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\":\"HarryPotter\",\r\n  \"password\":\"123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/profiles/login",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"profiles",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Username already exist",
 					"event": [
 						{
@@ -1011,7 +1227,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"HarryPotter\"\r\n}",
+							"raw": "{\r\n    \"username\":\"HarryPotter1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3614,6 +3830,98 @@
 					"response": []
 				},
 				{
+					"name": "Create Day 2-week 2 2 day",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData =  pm.response.json();",
+									"var dayId = jsonData.dayCreated._id;",
+									"pm.environment.set(\"dayID_1\", dayId);",
+									"",
+									"pm.test(\"Correct status code\",",
+									"    function(){",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Correct day response\", function () {",
+									"    var jsonData = pm.response.json(); // parse to json",
+									"    pm.expect(jsonData.dayCreated.name).to.eql(\"Monday\");",
+									"    pm.expect(jsonData.dayCreated.week).to.eql(2);",
+									"    pm.expect(jsonData.dayCreated.year).to.eql(2022);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token_p1}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Acccept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Monday\",\n    \"week\": 2,\n    \"year\": 2022,\n    \"recipes\":\"{{recipeId1}}\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/profiles/:profileId/days",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"profiles",
+								":profileId",
+								"days"
+							],
+							"variable": [
+								{
+									"key": "profileId",
+									"value": "{{profileID_1}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Create Day 3- week 2",
 					"event": [
 						{
@@ -3874,13 +4182,14 @@
 									"",
 									"pm.test('Number of days = ' + days.length, function () {",
 									"",
-									"    pm.expect(days.length).to.eql(3);",
+									"    pm.expect(days.length).to.eql(4);",
 									"});",
 									"",
 									"pm.test(' Right order ', function () {",
 									"    pm.expect(days[0].week).to.eql(2)",
-									"    pm.expect(days[1].week).to.eql(1)",
-									"    pm.expect(days[2].week).to.eql(2)",
+									"    pm.expect(days[1].week).to.eql(2)",
+									"    pm.expect(days[2].week).to.eql(1)",
+									"    pm.expect(days[3].week).to.eql(2)",
 									"",
 									"});"
 								],
@@ -3959,7 +4268,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days?week=2",
+							"raw": "{{host}}/api/profiles/:profileId/days?week=2&year=2022",
 							"host": [
 								"{{host}}"
 							],
@@ -3973,6 +4282,10 @@
 								{
 									"key": "week",
 									"value": "2"
+								},
+								{
+									"key": "year",
+									"value": "2022"
 								}
 							],
 							"variable": [
@@ -4070,7 +4383,7 @@
 									"",
 									"pm.test(\"Correct day response\", function() {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.day[0].name).to.eql(\"Friday\");",
+									"    pm.expect(jsonData.day[0].name).to.eql(\"Monday\");",
 									"    pm.expect(jsonData.day[0].week).to.eql(2);",
 									"    pm.expect(jsonData.day[0].year).to.eql(2022);",
 									"    pm.expect(jsonData.day[0].recipes[0].name).to.eql(\"Recipe1\");",

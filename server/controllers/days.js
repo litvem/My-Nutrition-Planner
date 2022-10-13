@@ -51,6 +51,7 @@ router.post(daysPath, checkAuth, function(req, res, next) {
 // Get all 
 router.get(daysPath, checkAuth,function(req,res,next){
   var week = req.query.week;
+  var year = req.query.year;
   var weekcalenders = req.query.weekcalenders
 
   User.findOne({_id:req.params.profileId})
@@ -65,11 +66,8 @@ router.get(daysPath, checkAuth,function(req,res,next){
     }
 
     if(week) {
-      var days = user.days.filter(day =>{
-        return day.week == week 
-      })
-
-      
+      var days =  user.days.filter(days => days.year == year && days.week ==  week);
+ 
       res.status(200).json({
         days: days,
         links: {
