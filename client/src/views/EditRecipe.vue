@@ -88,26 +88,11 @@
               </select>
             <input type="text" placeholder="Item" v-model="firstItem">
           </div>
-<!-- TODO fix duplicate key -->
           <div v-for="key in count" :key="key">
             <div class="form-inline">
-              <input type="number" size="20" placeholder="Amount" v-model="unitsArray[key]">
-              <input type="text" placeholder="Amount" v-model="itemsArray[key]">
-              <input type="number" placeholder="Amount" v-model="amountsArray[key]">
-<!--
-              <input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
-              <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
-                -->
-                <!-- <option value="grams">pcs</option> -->
-                <!--
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
-                <option value="ml">ml</option>
-                <option value="dl">dl</option>
-                <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="items['item'+key]" :id="key">
-              -->
+              <input type="number" size="20" placeholder="Amount" v-model="ingredientsObj[key].amount">
+              <input type="text" placeholder="Unit" v-model="ingredientsObj[key].unit">
+              <input type="text" placeholder="Item" v-model="ingredientsObj[key].item">
             </div>
           </div>
           <div class="controls">
@@ -115,6 +100,7 @@
             <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
           </div>
           </div>
+
         <div v-else>
           <ul>
             <li :recipe="recipe" v-for="ingredient in recipe.recipe[0].items"
@@ -122,6 +108,7 @@
             </li>
           </ul>
         </div>
+
       </div>
       <h4>Instructions</h4>
       <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction"></textarea>
@@ -195,28 +182,6 @@ export default {
 
         // for proper data binding of ingredients after edit
         this.ingredientsObj = this.recipe.recipe[0].items
-        // test
-        for (let i = 0; i < this.count; i++) {
-          this.itemsArray.push(this.ingredientsObj[i].item)
-          this.unitsArray.push(this.ingredientsObj[i].unit)
-          this.amountsArray.push(this.ingredientsObj[i].amount)
-        }
-        console.log(this.itemsArray)
-        // this.amounts.push({ amount: this.itemsObj[0].amount })
-        // this.units.push({ units: this.itemsObj[0].unit })
-        // this.item.push({ item: this.itemsObj[0].item })
-        // console.log(this.itemsObj[0].amount)
-
-        // const itemKey = Object.keys(this.items)
-        // const unitKey = Object.keys(this.units)
-        // const amKey = Object.keys(this.amounts)
-
-        // for (let i = 0; i < this.count; i++) {
-        //   this.amounts.push({ amount: this.itemObj[i].amount })
-        //   this.units.push({ units: this.itemObj[i].unit })
-        //   this.item.push({ item: this.itemObj[i].item })
-        // }
-        // console.log('---out')
       })
       .catch(error => {
         console.log(error.message)
@@ -230,6 +195,9 @@ export default {
       this.count--
     },
     saveChanges() {
+      //   object.arrayOfRecipes.arrayOfItemsObj = new array of itemsObj
+      this.recipe.recipe[0].items = this.itemsObj
+
       Api.patch('/profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
         name: this.recipe.recipe[0].name,
         category: this.selected,
