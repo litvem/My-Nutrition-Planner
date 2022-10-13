@@ -49,13 +49,14 @@ router.post(daysPath, checkAuth, function(req, res, next) {
 
 
 // Get all 
-router.get(daysPath, checkAuth,function(req,res,next){
+router.get(daysPath,function(req,res,next){
   var week = req.query.week;
   var year = req.query.year;
   var weekcalenders = req.query.weekcalenders
 
   User.findOne({_id:req.params.profileId})
   .populate('days')
+  .populate('recipes')
   .exec()
   .then(user =>{
     if(user === null){
@@ -64,12 +65,31 @@ router.get(daysPath, checkAuth,function(req,res,next){
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
+    if( (!week && year) || (week && !year) ){
+      return res.status(404).json({message: 'Need year and week'})
+    }
+    const weekDay = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] 
+    if(week && year) {
+      var filtered =   user.days.filter(days => days.year == year && days.week ==  week)
+                                    .sort((x,y)=>{
+                                      if(y.year !== x.year && y.week !==x.week){
+                                        return y.year - x.year || y.week - x.week;
+                                      }else{
+                                        return weekDay.indexOf(x.name) - weekDay.indexOf(y.name);
+                                      } 
+      })
 
-    if(week) {
-      var days =  user.days.filter(days => days.year == year && days.week ==  week);
+      
+      const weekdays = [{name: 'Monday'}, {name:'Tuesday' },{name:'Wednesday' }, {name:'Thursday' }, {name:'Friday' }, {name:'Saturday' }, {name:'Sunday' }]    
+
+      let weekdayNames = weekdays.map(day => day.name.toLowerCase())
+
+      for (const el of filtered) {
+          weekdays[weekdayNames.indexOf(el.name.toLowerCase())] = el
+      }
  
       res.status(200).json({
-        days: days,
+        days: weekdays,
         links: {
           rel: "self",
           type: "PATCH",

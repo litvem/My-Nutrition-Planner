@@ -18,7 +18,7 @@ var recipeSchema = new Schema({
             }, 
             amount: {type: Number},
             unit:{type: String,
-            enum:["grams","kg","ml", "dl","l"]}
+            enum:["grams","kg","ml", "dl","l","pcs"]}
             }]
       },
       userID:{type: String}

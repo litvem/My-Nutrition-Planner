@@ -4247,7 +4247,7 @@
 									"",
 									"pm.test('Number of days = ' + days.length, function () {",
 									"",
-									"    pm.expect(days.length).to.eql(2);",
+									"    pm.expect(days.length).to.eql(7);",
 									"});"
 								],
 								"type": "text/javascript"
