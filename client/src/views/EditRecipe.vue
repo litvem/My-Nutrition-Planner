@@ -1,11 +1,11 @@
 <template>
-<div>
-<div id ="background" class="container-fluid">
+<div class="EditRecipePage">
+  <div class="box-form">
 
   <div class="row">
     <div class="col">
 
-      <h1>Edit recipe</h1>
+      <h1 id="page-title">Edit recipe</h1>
 <!-- SAVE, CANCEL -->
       <button type="submit" class="btn btn-success" @click="saveChanges()">Save changes</button>
       <button type="submit" class="btn btn-danger" @click="cancelEdit()">Cancel</button>
@@ -272,6 +272,14 @@ export default {
 </script>
 
 <style scoped>
+.EditRecipePage {
+    background-image: url("../assets/edit-recipe-background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height: 110%;
+  }
+
   img {
         max-width: 350px;
         max-height: 350px;
