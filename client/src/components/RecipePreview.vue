@@ -17,7 +17,7 @@ export default {
   methods: {
     goToRecipePage() {
       this.$router.push(`/recipePage/${this.recipe._id}`)
-      this.$router.go()
+      // this.$router.go()
     }
   }
 }

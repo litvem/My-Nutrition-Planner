@@ -2,36 +2,39 @@
 <div class="EditRecipePage">
   <div class="box-form">
 
-  <div class="row">
-    <div class="col">
-
+    <b-row>
       <h1 id="page-title">Edit recipe</h1>
-<!-- SAVE, CANCEL -->
-      <button type="submit" class="btn btn-success" @click="saveChanges()">Save changes</button>
-      <button type="submit" class="btn btn-danger" @click="cancelEdit()">Cancel</button>
-
-      <!-- Save, cancel button warning when button is pressed that the changes will be lost -->
+    </b-row>
+    <!--- -->
+  <b-row>
+    <b-col id="left">
+      <h4>Recipe name</h4>
+    <!-- EDIT NAME -->
+      <b-row>
+        <b-col>
+          <div v-if="this.editName">
+            <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control"></b-form-input>
+          </div>
+          <div v-else>
+            <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control" :disabled=true></b-form-input>
+          </div>
+        </b-col>
+        <b-col>
+          <b-button id="edit-name" class="edit-button" type="submit" @click="toggleName">Edit</b-button>
+        </b-col>
+      </b-row>
       <br>
-    </div>
-
-  </div>
-  <div class="row">
-    <div class="col" id="left">
-
-      <h4>Edit recipe name</h4>
-<!-- EDIT NAME -->
-      <div v-if="this.editName">
-        <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control"></b-form-input>
-      </div>
-      <div v-else>
-        <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control" :disabled=true></b-form-input>
-      </div>
-
-      <b-button type="submit" variant="primary" @click="toggleName">Edit</b-button>
-
-      <h4>Change recipe image</h4>
+      <b-row>
+        <b-col>
+          <h4>Recipe image</h4>
+        </b-col>
+        <b-col>
+          <b-button id="edit-image" class="edit-button" type="submit" @click="toggleImage">Edit</b-button>
+        </b-col>
+      </b-row>
+      <br>
 <!-- EDIT IMAGE -->
-      <b-button type="submit" variant="primary" @click="toggleImage">Change</b-button>
+    <b-row>
       <div v-if="changeImage">
         <div class="mb-3">
           <label for="formFile" class="form-label">Select file</label>
@@ -41,90 +44,130 @@
       <div v-else>
        <img :src="recipe.recipe[0].image">
       </div>
-
-      <div>
-        <h4>Edit recipe category</h4>
-        <b-button type="submit" variant="primary" @click="toggleCategory">Edit</b-button>
+    </b-row>
+    <br>
+    <b-row>
+      <b-col>
+        <h4>Category</h4>
+      </b-col>
+      <b-col>
+        <b-button id="edit-cat" class="edit-button" type="submit" @click="toggleCategory">Edit</b-button>
+      </b-col>
+    </b-row>
+    <br>
 <!-- EDIT CATEGORY -->
+      <b-row>
         <div v-if="this.editCategory">
-          <b-form-group v-slot="{ ariaDescribedby }">
-            <b-form-radio-group
-            v-model="selected"
-            :options="options"
-            :aria-describedby="ariaDescribedby"
-            name="radios-stacked"
-            stacked>
-            </b-form-radio-group>
-          </b-form-group>
+          <b-card id="category-card">
+            <b-form-group v-slot="{ ariaDescribedby }">
+              <b-form-radio-group
+              v-model="selected"
+              :options="options"
+              :aria-describedby="ariaDescribedby"
+              name="radios-stacked"
+              stacked>
+              </b-form-radio-group>
+            </b-form-group>
+          </b-card>
         </div>
-        <div v-else>
+        <div v-else >
+          <b-card id="category-card-disabled">
            <b-form-group v-slot="{ ariaDescribedby }">
-            <b-form-radio-group
-            v-model="selected"
-            :options="disabledOptions"
-            :aria-describedby="ariaDescribedby"
-            name="radios-stacked"
-            stacked>
-            </b-form-radio-group>
-          </b-form-group>
+              <b-form-radio-group
+              v-model="selected"
+              :options="disabledOptions"
+              :aria-describedby="ariaDescribedby"
+              name="radios-stacked"
+              stacked>
+              </b-form-radio-group>
+            </b-form-group>
+          </b-card>
         </div>
-      </div>
-
-    </div>
-
-    <div class="col" id="right">
-      <div class="row">
-
-        <h4>Edit ingredients list</h4>
-        <b-button type="submit" variant="primary" @click="toggleIngredients">Edit</b-button>
+      </b-row>
+      <br>
+    </b-col>
+    <b-col id="right">
+      <b-row>
+        <b-col>
+          <h4>Ingredients</h4>
+        </b-col>
+        <b-col>
+          <b-button id="edit-ing" class="edit-button" type="submit" @click="toggleIngredients">Edit</b-button>
+        </b-col>
+      </b-row>
 <!-- EDIT INGREDIENTS -->
 <!-- TODO add pcs as option once backend enables it -->
-
+      <b-row>
         <div v-if="this.editIngredients">
+          <b-container>
           <div v-for="key in count" :key="key">
-            <div class="form-inline">
-              <!--{{key-1}} -->
-              <input type="number" size="20" placeholder="Amount" v-model="ingredientsObj[key-1].amount">
-              <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="ingredientsObj[key-1].unit"> -->
-                <!-- <option value="pcs">pcs</option> -->
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
-                <option value="ml">ml</option>
-                <option value="dl">dl</option>
-                <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="ingredientsObj[key-1].item">
-            </div>
+            <b-row>
+              <b-col>
+                <input type="number" size="20" placeholder="Amount" v-model="ingredientsObj[key-1].amount">
+              </b-col>
+              <b-col>
+                <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="ingredientsObj[key-1].unit"> -->
+                  <!-- <option value="pcs">pcs</option> -->
+                  <option value="grams">grams</option>
+                  <option value="kg">kg</option>
+                  <option value="ml">ml</option>
+                  <option value="dl">dl</option>
+                  <option value="l">l</option>
+                </select>
+              </b-col>
+              <b-col>
+                <input type="text" placeholder="Item" v-model="ingredientsObj[key-1].item">
+              </b-col>
+            </b-row>
           </div>
+          </b-container>
           <div class="controls">
             <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
             <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
           </div>
-          </div>
-
-        <div>
+        </div>
+        <div v-else>
           <ul>
             <li :recipe="recipe" v-for="ingredient in recipe.recipe[0].items"
             :key="ingredient.itemId">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.item}}
             </li>
           </ul>
         </div>
-
-      </div>
-      <h4>Instructions</h4>
-      <b-button type="submit" variant="primary" @click="toggleInstructions">Edit</b-button>
+      </b-row>
+      <br>
+      <b-row>
+        <b-col>
+         <h4>Instructions</h4>
+        </b-col>
+        <b-col>
+         <b-button id="edit-instructions" class="edit-button" type="submit"  @click="toggleInstructions">Edit</b-button>
+        </b-col>
+      </b-row>
+      <br>
 
 <!-- EDIT INSTRUCTIONS -->
-      <div v-if="editInstructions">
-        <textarea class="form-control" id="instructions" rows="10" v-model="instructionString"></textarea>
-      </div>
-      <div v-else>
-        <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction" disabled></textarea>
-      </div>
-    </div>
-  </div>
-  </div>
+      <b-row>
+        <div v-if="editInstructions">
+          <textarea class="form-control" id="instructions" rows="10" v-model="instructionString"></textarea>
+        </div>
+        <div v-else>
+          <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction" disabled></textarea>
+        </div>
+      </b-row>
+    </b-col>
 
+    </b-row>
+    <!-- SAVE, CANCEL -->
+        <b-row>
+          <b-col>
+            <button type="submit" class="btn btn-success" @click="saveChanges()">Save changes</button>
+          </b-col>
+          <b-col>
+            <button type="submit" class="btn btn-danger" @click="cancelEdit()">Cancel</button>
+          </b-col>
+        </b-row>
+
+  </div>
 </div>
 </template>
 
@@ -251,18 +294,23 @@ export default {
     },
     toggleName() {
       this.editName = true
+      document.getElementById('edit-name').disabled = true
     },
     toggleImage() {
       this.changeImage = true
+      document.getElementById('edit-image').disabled = true
     },
     toggleCategory() {
       this.editCategory = true
+      document.getElementById('edit-cat').disabled = true
     },
     toggleInstructions() {
       this.editInstructions = true
+      document.getElementById('edit-instructions').disabled = true
     },
     toggleIngredients() {
       this.editIngredients = true
+      document.getElementById('edit-instructions').disabled = true
     }
 
   }
@@ -278,11 +326,49 @@ export default {
     background-attachment: fixed;
     position: relative;
     height: 110%;
+    color: white;
   }
 
+  #page-title {
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: left;
+    margin-top: 4%;
+    margin-bottom: 2%;
+    width: 100%;
+    float: left;
+  }
+
+  .box-form{
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4%;
+    padding-bottom: 1%;
+    overflow: hidden;
+
+ }
+
   img {
-        max-width: 350px;
-        max-height: 350px;
-        align-items: center;
-    }
+    max-width: 350px;
+    max-height: 350px;
+    align-items: center;
+  }
+
+  .edit-button {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 10px;
+    display: inline-block;
+    box-shadow: 0px 4px 10px 0px #a6fa94a6;
+    background-image: linear-gradient(135deg, #70e68ecc 10%, #2c780377 100%);
+  }
+
+#category-card-disabled, #category-card {
+  background-color: #28281e96;
+  box-shadow: 1px 4px 4px 4px #fffffe3f;
+}
+
 </style>
