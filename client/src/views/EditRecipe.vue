@@ -27,18 +27,24 @@
         <b-form-input type="text" name="recipeName" v-model="recipe.recipe[0].name" class="form-control" :disabled=true></b-form-input>
       </div>
 
-      <b-button type="submit" variant="primary" @click="toggleName">Edit Name</b-button>
+      <b-button type="submit" variant="primary" @click="toggleName">Edit</b-button>
 
       <h4>Change recipe image</h4>
 <!-- EDIT IMAGE -->
-      <div class="mb-3">
-        <label for="formFile" class="form-label" :aria-disabled="true">Select file</label>
-        <input class="form-control" type="file" id="formFile">
+      <b-button type="submit" variant="primary" @click="toggleImage">Change</b-button>
+      <div v-if="changeImage">
+        <div class="mb-3">
+          <label for="formFile" class="form-label">Select file</label>
+          <input class="form-control" type="file" id="formFile">
+        </div>
+      </div>
+      <div v-else>
+       <img :src="recipe.recipe[0].image">
       </div>
 
       <div>
         <h4>Edit recipe category</h4>
-        <b-button type="submit" variant="primary" @click="toggleCategory">Edit Name</b-button>
+        <b-button type="submit" variant="primary" @click="toggleCategory">Edit</b-button>
 <!-- EDIT CATEGORY -->
         <div v-if="this.editCategory">
           <b-form-group v-slot="{ ariaDescribedby }">
@@ -70,7 +76,7 @@
       <div class="row">
 
         <h4>Edit ingredients list</h4>
-        <b-button type="submit" variant="primary" @click="toggleIngredients">Edit Name</b-button>
+        <b-button type="submit" variant="primary" @click="toggleIngredients">Edit</b-button>
 <!-- EDIT INGREDIENTS -->
 <!-- TODO add pcs as option once backend enables it -->
 
@@ -111,8 +117,15 @@
 
       </div>
       <h4>Instructions</h4>
-      <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction"></textarea>
-      <p>hey {{this.recipe.recipe[0].instruction}}</p>
+      <b-button type="submit" variant="primary" @click="toggleInstructions">Edit</b-button>
+
+<!-- EDIT INSTRUCTIONS -->
+      <div v-if="editInstructions">
+        <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction"></textarea>
+      </div>
+      <div v-else>
+        <textarea class="form-control" id="instructions" rows="10" v-model="this.recipe.recipe[0].instruction" disabled></textarea>
+      </div>
     </div>
   </div>
   </div>
@@ -132,6 +145,9 @@ export default {
       editName: false,
       editCategory: false,
       editIngredients: false,
+      editInstructions: false,
+      changeImage: false,
+
       selected: null,
       options: [
         { text: 'Breakfast', value: 'Breakfast' },
@@ -189,6 +205,7 @@ export default {
   },
   methods: {
     add() {
+      this.itemsObs.push({ amount: null, unit: null, item: null })
       this.count++
     },
     remove() {
@@ -220,21 +237,16 @@ export default {
       this.$router.push('/userHome')
     },
     toggleName() {
-      // this.recipeName = this.recipe.recipe[0].name
-      // this.editName = !this.editName
       this.editName = true
-      console.log('edit name ' + this.editName)
-      console.log(this.recipe.recipe[0].name)
     },
-    toggleImageURL() {
-
+    toggleImage() {
+      this.changeImage = true
     },
     toggleCategory() {
       this.editCategory = true
-      console.log('edit name ' + this.editCategory)
     },
     toggleInstructions() {
-
+      this.editInstructions = true
     },
     toggleIngredients() {
       this.editIngredients = true
@@ -247,5 +259,9 @@ export default {
 </script>
 
 <style scoped>
-
+  img {
+        max-width: 350px;
+        max-height: 350px;
+        align-items: center;
+    }
 </style>
