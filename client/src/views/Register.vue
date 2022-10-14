@@ -82,7 +82,7 @@ export default {
         password: this.password
       })
         .catch(error => {
-          this.message = error
+          console.error(error)
         })
       this.successAlert = true
     },

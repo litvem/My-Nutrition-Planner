@@ -12,7 +12,7 @@
               <form class="inputs">
                 <!--  username section-->
                 <div id="userInput" class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
-                  <input  type="text" ref="id" :disabled="!editUsername" :value="user.username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }">
+                  <input class="form-control" type="text" ref="id" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username" required>
                   <button class="btn btn-sm btn-success" @click="editUsername = !editUsername" v-if="!editUsername">Edit</button>
                 </div>
 
@@ -30,8 +30,8 @@
                   <button class="btn btn-default btn-success" @click="editPassword = !editPassword">Edit password</button>
                 </div>
                 <!-- Enter password-->
-                <div class="text-center mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <label for="Enter password" v-if="editPassword" class="label mt-1 mb-1 align-items-center gap-2">Enter Password</label>
+                <div class="form-control mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
+                  <label for="Enter password" v-if="editPassword" class="label mt-1 mb-1 align-items-center gap-2">Password</label>
                   <input type="password" v-model="password" v-if="editPassword" id="password" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
                     <div v-if="submitted && $v.password.$error" class="invalid-feedback">
                       <span v-if="!$v.password.required">Password is required</span>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <!-- Confirm password-->
-                <div class="text-center mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
+                <div class="form-control mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
                   <label for="confirmPassword" v-if="editPassword" class="label mt-1 mb-1 align-items-center gap-2">Confirm Password</label>
                   <input type="password" v-model="confirmPassword" v-if="editPassword" id="confirmPassword" name="confirmPassword" class="form-control" :class="{ 'is-invalid': submitted && $v.confirmPassword.$error }" />
                     <div v-if="submitted && $v.confirmPassword.$error" class="invalid-feedback">
@@ -47,12 +47,6 @@
                     <span v-else-if="!$v.confirmPassword.sameAsPassword">Passwords must match</span>
                     </div>
                 </div>
-
-                <div class="passwordButtons  d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <button class="btn btn-sm btn-success me-1" @click="changePassword" >Save</button>
-                  <button class="btn btn-sm btn-danger"  @click="editPassword = false">Cancel</button>
-                </div>
-
                 <!-- editPassword true-->
                 <!--  <div class="text-center mt-3 mb-3 align-items-center gap-2" v-if="editPassword">
                     <input class="form-control" type="password" ref="password">
@@ -77,6 +71,9 @@
 </template>
 
 <script>
+import { Api } from '@/Api'
+// import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+
 export default {
   name: 'profile',
   props: ['user'],
@@ -94,9 +91,34 @@ export default {
   },
   methods: {
     changeUsername() {
-
+      this.submitted = true
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }Api.patch('/profiles/' + this.user._id, {
+        username: this.username
+      })
+        .catch(error => {
+          this.message = error
+        })
+      this.successAlert = true
     }
+  },
+  changePassword() {
+    this.submitted = true
+    this.$v.$touch()
+    if (this.$v.$invalid) {
+      return
+    }Api.put('/profiles/' + this.user._id, {
+      username: this.username,
+      password: this.password
+    })
+      .catch(error => {
+        this.message = error
+      })
+    this.successAlert = true
   }
+
 }
 </script>
 
@@ -167,7 +189,7 @@ export default {
       }
   }
   .label{
-    color: #fff;
+          color: #fff;
   }
 
   @media(max-width: 768px) {
