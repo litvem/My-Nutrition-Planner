@@ -67,9 +67,9 @@ export default {
           this.itemsObj.push({ amount: this.amounts[amKey[i]], unit: this.units[unitKey[i]], item: this.items[itemKey[i]] })
         }
       }
-      // console.log(this.user.id)
-      console.log(localStorage.id)
+
       Api.post('/profiles/' + localStorage.id + '/shoppinglists', {
+        // TODO add year, week
         name: this.name,
         items: this.itemsObj
       },

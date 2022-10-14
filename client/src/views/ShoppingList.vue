@@ -6,16 +6,8 @@
         <b-button v-on:click="deleteShoppingLists()">Delete All</b-button>
 
       <br>
-    <div class="card">
-     <div class="card-body">
-        <b-card v-for="shoppingList in shoppingLists.shoppinglists"
-        :key="shoppingList"
-         >
-           <p>{{shoppingList.name}}</p>
-           <p>Year: {{shoppingList.year}} Week: {{shoppingList.week}}</p>
-
-        </b-card>
-     </div>
+    <div class="card" v-for="key in count" :key="key">
+      <SLPreview :shoppingList="shoppingLists.shoppingLists[key-1]"/>
    </div>
 </div>
 
@@ -23,13 +15,17 @@
 
 <script>
 import { Api } from '@/Api'
+import SLPreview from '../components/SLPreview'
 
 export default {
   name: 'shoppingList',
-
+  components: {
+    SLPreview
+  },
   data() {
     return {
       message: '',
+      count: '',
       shoppingLists: null
     }
   },
@@ -43,6 +39,9 @@ export default {
       .then(response => {
         this.shoppingLists = response.data
         console.log(response.data.message)
+        // is needed for proper data binding since key in count starts from 1
+        this.count = this.shoppingLists.shoppingLists.length + 1
+        console.log(this.count)
       })
       .catch(error => {
         console.log(error.response.status)
