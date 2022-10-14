@@ -3,7 +3,7 @@
     <div class="card">
       <img id="image" class="img" :src= "recipe.image" />
       <div class="content">
-        <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
+        <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}   {{recipe.category}}</h5>
         <h6>Category: {{ recipe.category }}</h6>
       </div>
     </div>
@@ -23,7 +23,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .card {
   border-radius: 3px;
   box-shadow: 1px 1px 5px 1px rgba(150, 255, 194, 0.267);
@@ -38,6 +38,7 @@ export default {
   margin-left: 30%;
   margin-right: 30%;
   z-index: 1;
+  //object-fit: cover
 }
 .content {
   text-align: center;

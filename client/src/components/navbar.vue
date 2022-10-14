@@ -11,7 +11,7 @@
           <span class="toggler-icon bottom-bar"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <div class="navbar-links ml-auto mb-2 mb-lg-0" v-if="!user">
+          <div class="navbar-links ml-auto mb-3 mb-lg-0" v-if="!user">
             <ul class="navbar-links">
               <li class="nav-item"><b-link class="link" :to="{ name: 'home' }">Login</b-link></li>
               <li class="nav-item"><b-link class="link" :to="{ name: 'register' }">Register</b-link></li>

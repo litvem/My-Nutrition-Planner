@@ -1,5 +1,5 @@
 <template>
-    <div class="splash">
+    <div class="test">
         <HomeAnimationWithVideo/>
     </div>
  </template>
@@ -7,7 +7,7 @@
 <script>
 import HomeAnimationWithVideo from './homeAnimationWithVideo.vue'
 export default {
-  name: 'splash',
+  name: 'test',
   components: { HomeAnimationWithVideo },
   methods: {
 
@@ -15,7 +15,8 @@ export default {
 }
 </script>
 
- <style scoped>
+ <style lang="scss" scoped>
+/*
 .fadeout {
   animation: fadeout 4s forwards;
 }
@@ -25,4 +26,5 @@ export default {
     visibility: hidden;
   }
 }
+*/
  </style>

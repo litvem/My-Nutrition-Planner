@@ -73,7 +73,7 @@ export default {
       })
         .then(response => {
           if (response.data.message === 'Authentication successful') {
-            localStorage.token = response.data.token
+            localStorage.token = response.data.token // two ways of storing in localstorage
             localStorage.setItem('id', response.data.id)
             this.$router.push('/userHome')
             this.$router.go(0)

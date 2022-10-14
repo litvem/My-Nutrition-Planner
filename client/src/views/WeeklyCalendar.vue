@@ -63,7 +63,8 @@
 
 <script>
 export default {
-  name: 'login'
+  name: 'weekCalender'
+
 }
 </script>
 
