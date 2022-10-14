@@ -91,7 +91,7 @@ export default {
       this.$router.push('/allPlans')
     },
     goToShoppingList() {
-      this.$router.push('/shoppingList')
+      this.$router.push('/shoppingLists')
     },
     filterRecipes(e) {
       const filter = this.category

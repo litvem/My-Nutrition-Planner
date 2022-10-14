@@ -13,6 +13,7 @@ import RecipePage from './views/RecipePage.vue'
 import test from './testingFolder/test.vue'
 import AllPlans from './views/AllPlans.vue'
 import EditRecipe from './views/EditRecipe.vue'
+import AddShoppingList from './views/AddShoppingList.vue'
 
 Vue.use(Router)
 
@@ -72,10 +73,21 @@ export default new Router({
       component: WeeklyCalendar
     },
     {
+      path: '/shoppingLists',
+      name: 'shoppingList',
+      component: ShoppingList
+    },
+    {
       path: '/shoppingList',
       name: 'shoppingList',
       component: ShoppingList
     },
+    {
+      path: '/addShoppingList',
+      name: 'add-shopping-list',
+      component: AddShoppingList
+    },
+
     {
       path: '/test',
       name: 'test',
