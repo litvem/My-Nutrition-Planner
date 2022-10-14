@@ -5,61 +5,46 @@
         <div class="form-holder">
           <div class="form-content">
             <div class="form-items">
-
               <h3>Profile</h3>
               <hr>
-
-              <form class="inputs">
-                <!--  username section-->
-                <div id="userInput" class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
-                  <input class="form-control" type="text" ref="id" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username" required>
-                  <button class="btn btn-sm btn-success" @click="editUsername = !editUsername" v-if="!editUsername">Edit</button>
-                </div>
-
-                <div class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editUsername">
-                  <button class="btn btn-sm btn-success me-1" @click="changeUsername" >Save</button> <!-- noll ställ editUsername-->
-                  <button class="btn btn-sm btn-danger"  @click="editUsername = false">Cancel</button>
-                </div>
-                <!-- warning-->
-                <div class="alert alert-warning" role="alert" v-if="usernNameExist">
-                  Username already exist! Please try again
-                </div>
-                <!-- password section-->
-
-                <div class="text-center mt-5 mb-2 align-items-center gap-2" v-if="!editPassword">
-                  <button class="btn btn-default btn-success" @click="editPassword = !editPassword">Edit password</button>
-                </div>
-                <!-- Enter password-->
-                <div class="form-control mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <label for="Enter password" v-if="editPassword" class="label mt-1 mb-1 align-items-center gap-2">Password</label>
-                  <input type="password" v-model="password" v-if="editPassword" id="password" name="password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
-                    <div v-if="submitted && $v.password.$error" class="invalid-feedback">
-                      <span v-if="!$v.password.required">Password is required</span>
-                      <span v-if="!$v.password.minLength">Password must be at least 3 characters</span>
-                    </div>
-                </div>
-                <!-- Confirm password-->
-                <div class="form-control mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <label for="confirmPassword" v-if="editPassword" class="label mt-1 mb-1 align-items-center gap-2">Confirm Password</label>
-                  <input type="password" v-model="confirmPassword" v-if="editPassword" id="confirmPassword" name="confirmPassword" class="form-control" :class="{ 'is-invalid': submitted && $v.confirmPassword.$error }" />
-                    <div v-if="submitted && $v.confirmPassword.$error" class="invalid-feedback">
-                      <span v-if="!$v.confirmPassword.required">Confirm Password is required</span>
+              <div id="userInput" class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
+                <input class="form-control" type="text" ref="id" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username" required>
+                <button class="btn btn-sm btn-success" @click="editUsername = !editUsername" v-if="!editUsername">Edit</button>
+              </div>
+              <div class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editUsername">
+                <button class="btn btn-sm btn-success me-1" @click="changeUsername" >Save</button> <!-- noll ställ editUsername-->
+                <button class="btn btn-sm btn-danger"  @click="editUsername = false">Cancel</button>
+              </div>
+              <!-- ???warning-->
+              <div class="alert alert-warning" role="alert" v-if="userNameExist">
+                Username already exist! Please try again.
+              </div>
+              <button class="btn btn-default btn-success" @click="editPassword = !editPassword">Edit password</button>
+              <form @submit.prevent="changePassword" v-if="editPassword">
+                <div class="password-edit" v-if="editPassword">
+                  <b-form-input id="newPassword" v-model="password" v-if="editPassword" placeholder="New password" class="form-control" :class="{ 'is-invalid': submitted && $v.password.$error }" />
+                  <div v-if="submitted && $v.password.$error" class="invalid-feedback">
+                    <span v-if="!$v.password.required">New password is required</span>
+                    <span v-if="!$v.password.minLength">Password must be at least 3 characters</span>
+                  </div>
+                  <b-form-input id="newPasswordConfirm" v-model="confirmPassword" v-if="editPassword" placeholder="Confirm password" class="form-control" :class="{ 'is-invalid': submitted && $v.confirmPassword.$error }" />
+                  <div v-if="submitted && $v.confirmPassword.$error" class="invalid-feedback">
+                    <span v-if="!$v.confirmPassword.required">Confirm password is required</span>
                     <span v-else-if="!$v.confirmPassword.sameAsPassword">Passwords must match</span>
-                    </div>
-                </div>
-                <!-- editPassword true-->
-                <!--  <div class="text-center mt-3 mb-3 align-items-center gap-2" v-if="editPassword">
-                    <input class="form-control" type="password" ref="password">
                   </div>
-
-                  <div class="text-center mt-3 mb-3 align-items-center gap-2" v-if="editPassword">
-                    <input class="form-control" type="password" ref="password">
+                  <!--alert to be displayed then username successfully changed-->
+                  <b-alert v-model="usernameChangedAlert" variant="success" dismissible>
+                    <h5>Your username has been updated.</h5>
+                  </b-alert>
+                  <!--alert to be displayed then password successfully changed-->
+                  <b-alert v-model="passwordChangedAlert" variant="success" dismissible>
+                    <h5>Your password has been updated.</h5>
+                  </b-alert>
                   </div>
-
                   <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                    <button class="btn btn-sm btn-success me-1" @click="save" >Save</button>
+                    <button class="btn btn-sm btn-success me-1" @click="changePassword" >Save</button>
                     <button class="btn btn-sm btn-danger"  @click="editPassword = false">Cancel</button>
-                </div> -->
+                  </div>
               </form>
             </div>
           </div>
@@ -67,63 +52,63 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
 import { Api } from '@/Api'
-// import { required, minLength, sameAs } from 'vuelidate/lib/validators'
+import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
   name: 'profile',
   props: ['user'],
-  data: function () {
+  data() {
     return {
       editUsername: false,
       editPassword: false,
-      usernNameExist: false,
+      userNameExist: false,
       username: '',
       password: '',
       confirmPassword: '',
-      submitted: false,
-      successAlert: false
+      usernameChangedAlert: false,
+      passwordChangedAlert: false,
+      submitted: false
     }
+  },
+  validations: {
+    password: { required, minLength: minLength(3) },
+    confirmPassword: { required, sameAsPassword: sameAs('password') }
   },
   methods: {
     changeUsername() {
-      this.submitted = true
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return
-      }Api.patch('/profiles/' + this.user._id, {
+      Api.patch('/profiles/' + this.user._id, {
         username: this.username
       })
         .catch(error => {
           this.message = error
         })
-      this.successAlert = true
-    }
-  },
-  changePassword() {
-    this.submitted = true
-    this.$v.$touch()
-    if (this.$v.$invalid) {
-      return
-    }Api.put('/profiles/' + this.user._id, {
-      username: this.username,
-      password: this.password
-    })
-      .catch(error => {
-        this.message = error
+      this.usernameChangedAlert = true
+    },
+    changePassword() {
+      this.submitted = true
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
+      Api.put('/profiles/' + this.user._id, {
+        username: this.username,
+        password: this.password
       })
-    this.successAlert = true
+        .catch(error => {
+          this.message = error
+        })
+      this.passwordChangedAlert = true
+    }
   }
-
 }
 </script>
 
 <style lang='scss' scoped>
-*, body {
+  *, body {
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -151,7 +136,7 @@ export default {
     align-items: center;
     padding: 200px; // increasing moved the content up and down
     right: 20%; // media remove
-}
+  }
 
   .form-holder .form-content {
     position: relative;
@@ -167,29 +152,29 @@ export default {
     align-items: center;
     padding: 60px;
 
-    .form-items {
-      border: 3px solid #fff;
-      padding: 40px;
-      display: inline-block;
-      width: 100%;
-      min-width: 540px;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      text-align: left;
-      -webkit-transition: all 0.4s ease;
-      transition: all 0.4s ease;
-    }
+  .form-items {
+    border: 3px solid #fff;
+    padding: 40px;
+    display: inline-block;
+    width: 100%;
+    min-width: 540px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    text-align: left;
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
     h3 {
       color: #fff;
       text-align: left;
       font-size: 40px;
       font-weight: 600;
       margin-bottom: 5px;
-      }
+    }
   }
-  .label{
-          color: #fff;
+  .label {
+    color: #fff;
   }
 
   @media(max-width: 768px) {
