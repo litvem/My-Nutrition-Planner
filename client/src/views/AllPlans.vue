@@ -44,9 +44,9 @@ export default {
     return {
       plans: null,
       addPlan: false,
-      name: 'Day',
+      name: 'none',
       options: [
-        { value: 'Day', text: 'Select day' },
+        { value: 'none', text: 'Select day' },
         { value: 'Monday', text: 'Monday' },
         { value: 'Tuesday', text: 'Tuesday' },
         { value: 'Wednesday', text: 'Wednesday' },
@@ -68,11 +68,8 @@ export default {
         this.plans = response.data
       })
       .catch(error => {
-        this.message = error.message
+        console.error(error)
       })
-    if (this.message === 'Request failed with status code 404') {
-      this.havePlans = 1
-    }
   },
   methods: {
     goToWeeklyPlan() {
@@ -82,18 +79,27 @@ export default {
       this.$router.go()
     },
     savePlan() {
-      Api.post('/profiles' + localStorage.id + '/days', {
+      if (this.name === 'none') {
+        this.name = 'Monday'
+      }
+
+      Api.post('/profiles/' + localStorage.id + '/days', {
         year: this.year,
         week: this.week,
         name: this.name
       },
-      { 
+      {
         headers: {
-        Authorization: 'Bearer' + localStorage.getItem('token')
-      }
-      }).catch(error => {
-      console.error(error)
+          Authorization: 'Bearer ' + localStorage.token
+        }
       })
+        .then(response => {
+          this.addPlan = false
+          this.$router.go()
+        })
+        .catch(error => {
+          console.error(error)
+        })
     },
     deleteAllPlans() {
       Api.delete('/profiles/' + localStorage.id + '/days', {
@@ -101,12 +107,15 @@ export default {
           Authorization: 'Bearer ' + localStorage.token
         }
       })
+        .then(response => {
+          console.log(response)
+        })
         .catch(error => {
           this.message = error
         })
       this.$router.go()
     }
-  }  
+  }
 }
 </script>
 
