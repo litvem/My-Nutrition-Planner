@@ -22,8 +22,9 @@
                 <button class="btn cancel-btn btn-sm"  @click="cancelUsernameEdit()">Cancel</button>
               </div>
               <!-- ???warning-->
-              <div class="alert alert-warning" role="alert" v-if="userNameExist">
-                Username already exist! Please try again.
+              <div class="alert alert-warning alert-dismissible fade show" id="user-exists-alert" role="alert" v-if="userNameExist" >
+                Username already exists! Please try again.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
 
 <!---------------------------------------PASSWORD-------------------------------------------------------------------------->
@@ -33,7 +34,7 @@
 
               <form @submit.prevent="changePassword" v-if="editPassword">
                 <div class="password-edit col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <b-form-input type="password" id="newPassword" v-model="password" v-if="editPassword" placeholder="password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2" :class="{ 'is-invalid': submitted && $v.password.$error }" />
+                  <b-form-input type="password" id="newPassword" v-model="password" v-if="editPassword" placeholder="Password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2" :class="{ 'is-invalid': submitted && $v.password.$error }" />
 
                   <div v-if="submitted && $v.password.$error" class="invalid-feedback">
                     <span v-if="!$v.password.required">New password is required</span>
@@ -45,27 +46,25 @@
                     <span v-if="!$v.confirmPassword.required">Confirm password is required</span>
                     <span v-else-if="!$v.confirmPassword.sameAsPassword">Passwords must match</span>
                   </div>
-
-                  <!--alert to be displayed then username successfully changed-->
-                 <b-alert v-model="usernameChangedAlert" variant="success" dismissible>
-                    <h5>Your username has been updated.</h5>
-                  </b-alert> -->
-
-                  <!--alert to be displayed then password successfully changed-->
-
-                <b-alert v-model="passwordChangedAlert" variant="success" dismissible>
-                    <h5>Your password has been updated.</h5>
-                  </b-alert> -->
                 </div>
-                <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <button class="btn save-btn btn-sm"  type="submit">Save</button>
-                  <button class="btn cancel-btn btn-sm"  @click="this.editPassword = false">Cancel</button>
-                </div>
+                <!--alert to be displayed then password successfully changed-->
+                <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </symbol>
+                <b-alert id="passwordChanged-alert" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                  </svg>
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#check-circle-fill"/></svg>
+                  <h5>Password changed.</h5>
+                </b-alert>
               </form>
-
+              <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
+                <button class="btn save-btn btn-sm"  type="submit" @click="showAlert">Save</button>
+                <button class="btn cancel-btn btn-sm"  @click="cancelPasswordEdit">Cancel</button>
+              </div>
             </div>
 
-            <div class="delete-box d-flex  mt-10 mb-2 align-items-center gap-2 justify-content-md-end"  v-if="user">
+            <div class="delete-box d-flex mt-10 mb-2 align-items-center gap-2 justify-content-md-end"  v-if="user">
                 <button class="btn delete-btn btn-sm">Delete account</button> <!-- <i class="bi bi-trash3-fill"></i>-->
                 <!-- This one is working tho <button class="btn btn-link"><i class="fas fa-user"></i> Log In</button> -->
             </div>
@@ -92,7 +91,8 @@ export default {
       password: '',
       editPassword: false,
       confirmPassword: '',
-      passwordChangedAlert: false,
+      dissmissSecs: 5,
+      dismissCountDown: 0,
       submitted: false
     }
   },
@@ -161,6 +161,13 @@ export default {
     cancelPasswordEdit() {
       this.editPassword = false
       this.passwordChangedAlert = false
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert() {
+      this.dismissCountDown = this.dissmissSecs
+      this.$router.go(0)
     }
   }
 }
@@ -274,6 +281,24 @@ export default {
       background-image: linear-gradient(135deg, #4fc96e 10%, #036920c8 100%);
     }
   }
+
+  #passwordChanged-alert {
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  h5 {
+    font-size: 17px;
+    margin-top: 3%;
+    font-weight: bold;
+  }
+
   .delete-box {
     margin-top: 10%;
     border: 3px solid #fff;
@@ -284,6 +309,12 @@ export default {
     transition: all 0.4s ease;
     border-radius: 10px;
     overflow: hidden;
+  }
+
+  #user-exists-alert {
+    margin-left: 4%;
+    margin-right: 2%;
+    margin-top: 3%;
   }
 
   .delete-btn {
@@ -314,7 +345,7 @@ export default {
     border: 2px solid currentColor;
     border-radius: 3rem;
     color: #fffffff0;
-    font-size: 80xp;
+    font-size: 80px;
     font-weight: bold;
     overflow: hidden;
     padding: 1rem 2rem;
