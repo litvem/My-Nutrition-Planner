@@ -74,11 +74,8 @@ export default {
         this.recipes = response.data.recipes
       })
       .catch(error => {
-        this.message = error.message
+        console.error(error)
       })
-    if (this.message === 'Request failed with status code 404') {
-      this.haveRecipes = 1
-    }
   },
   methods: {
     goToProfile() {

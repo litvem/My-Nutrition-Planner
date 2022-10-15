@@ -6,16 +6,19 @@
           <h1>My weekly plans</h1>
         </div>
         <div id="container-left">
-         <div class="list">
-          <b-row>
-            <b-col cols="12" lg="6" sm="12" v-for="plan in plans.weeklyCalenders" v-bind:key="plan._id">
+         <div class="list" >
+          <!-- HERE IS THE LOGIC FOR THE NO WEEK PLANS -->
+          <h4 v-show="plans.length === 0"> There are no Weekly Plans yet</h4>
+          <!-- AT LEAST 1 WEEK PLANS -->
+          <b-row v-show="plans.length > 0">
+            <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan._id">
               <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
             </b-col>
           </b-row>
         </div>
         <div class="buttons">
-          <button class="add-btn" v-on:click="addPlan = !addPlan">Add new plan</button>
-          <button class="delete-btn" v-on:click="deleteAllPlans">Delete all plans</button>
+          <button class="add-btn btn-sm" v-on:click="addPlan = !addPlan">Add new plan</button>
+          <button class="delete-btn btn-sm" v-on:click="deleteAllPlans">Delete all plans</button>
         </div>
         </div>
       </div>
@@ -42,7 +45,7 @@ export default {
   name: 'allPlans',
   data() {
     return {
-      plans: null,
+      plans: [],
       addPlan: false,
       name: 'none',
       options: [
@@ -65,7 +68,7 @@ export default {
     })
       .then(response => {
         console.log(response.data)
-        this.plans = response.data
+        this.plans = response.data.weeklyCalenders
       })
       .catch(error => {
         console.error(error)
@@ -131,6 +134,7 @@ export default {
   #container-main {
     min-height: 95vh;
     display: flex;
+    flex-direction: none;
   }
 
   .left {
@@ -197,6 +201,10 @@ export default {
     overflow: hidden;
     align-items: left;
     text-align: left;
+  }
+
+  h4{
+    color: #fff;
   }
 
   .plan-form {
@@ -312,22 +320,24 @@ export default {
   }
 
   @media(max-width: 768px) {
-    .list {
+    #container-main{
       width: 100%;
-      min-height: 60vh;
-      text-align: center;
+      min-height: 70vh;
+    }
+    .left {
+    width: 100%;
+    flex-direction: row;
+      .title {
+        position: relative;
+        align-content: center;
+        left: 20%;
+        display: initial;
+      }
     }
 
-    .title h1 {
-      text-align: center;
-      margin-top: 40%;
-      font-size: 35px;
-    }
+    h1{
+      font-size: 30px;
 
-    h5 {
-      width: 70%;
-      text-align: center;
-      margin-left: 5%;
     }
   }
   </style>
