@@ -251,7 +251,7 @@ export default {
     background-image: linear-gradient(135deg, #bb6605ca 10%, #442201c7 100%);
   }
 
-.save-plan {
+  .save-plan {
     margin-top: 0.7em;
     margin-bottom: 0.7em;
     margin-right: 0;
@@ -278,24 +278,24 @@ export default {
   }
 
   h5 {
-  margin-top: 0.7em;
-  margin-bottom: 0.7em;
-  margin-right: 0;
-  margin-left: 0;
-  float: center;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  padding: 12px 40px;
-  border-radius: 8px;
-  display: inline-block;
-  border: 0;
-  outline: 0;
-  box-shadow: 0px 4px 10px 0px #f7eca57c;
-  background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
-}
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    margin-right: 0;
+    margin-left: 0;
+    float: center;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px 40px;
+    border-radius: 8px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 10px 0px #f7eca57c;
+    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
+  }
 
-h5:hover {
+  h5:hover {
     color: rgb(66, 26, 1);
     text-decoration: underline;
     background-color: rgba(255, 152, 96, 0.345);
@@ -303,17 +303,7 @@ h5:hover {
   }
 
   @media(max-width: 768px) {
-    .box-form {
-      width: 100%;
-      z-index: 1;
-      justify-content: center;
-      align-items: center;
-    }
-    .box-form .title {
-      width: 100%;
-    }
-
-    .box-form .list {
+    .list {
       width: 100%;
       min-height: 60vh;
       text-align: center;
