@@ -6,11 +6,16 @@
         <b-button v-on:click="deleteShoppingLists()">Delete All</b-button>
 
       <br>
-    <div class="card">
+    <b-card>
       <div v-for="shoppinglist in shoppinglists" :key="shoppinglist._id">
-        <a href="" v-on:click="goToSLPage(shoppinglist._id)" id:key>{{shoppinglist.name}}</a>
+        <b-button v-b-toggle="'collapse' + shoppinglist._id">Week {{shoppinglist.week}}: {{shoppinglist.name}}</b-button>
+        <b-collapse :id="'collapse' + shoppinglist._id">
+          <b-card>
+            <b-form-checkbox v-for="item in shoppinglist.items" :key="item._id">{{item.amount}} {{item.unit}} {{item.item}}</b-form-checkbox>
+          </b-card>
+        </b-collapse>
       </div>
-   </div>
+    </b-card>
 </div>
 
 </template>
@@ -24,7 +29,8 @@ export default {
     return {
       message: '',
       count: 0,
-      shoppinglists: []
+      shoppinglists: [],
+      items: []
     }
   },
   beforeCreate() {
@@ -36,10 +42,11 @@ export default {
     })
       .then(response => {
         this.shoppinglists = response.data.shoppinglists
-        this.shoppinglists.forEach(sl => {
-          console.log(sl.name)
-        })
+        // this.shoppinglists.forEach(sl => {
+
+        // })
         console.log(this.shoppinglists)
+        console.log(this.shoppinglists[0].items)
         // is needed for proper data binding since key in count starts from 1
         this.count = this.shoppinglists.length + 1
         // console.log(this.shoppinglists[0])
