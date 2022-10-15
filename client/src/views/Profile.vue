@@ -9,7 +9,7 @@
               <hr>
               <!-- USERNAME-->
               <!-- username field-->
-              <div id="userNameInput" class="username col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
+              <div id="userNameInput" class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
                 <input class="form-control" type="text" v-if="!editUsername" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username">
                 <input type="text" v-if="editUsername" v-model="username" id="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
                 <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
                   <button class="btn save-btn btn-sm"  type="submit">Save</button>
-                  <button class="btn cancel-btn btn-sm"  @click="cancelPasswordEdit">Cancel</button>
+                  <button class="btn cancel-btn btn-sm"  @click="this.editPassword = false">Cancel</button>
                 </div>
               </form>
 
@@ -174,18 +174,18 @@ export default {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  .profile, body {
+  .profile {
     background-image: url("../assets/profile-background.jpg");
     background-size: cover;
     background-attachment: fixed;
-    position: absolute;
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
   }
   .form-body{
     flex-direction: row;
-    height: 100%;
+    min-height: 100%;
   }
   .form-holder {
     position: relative;
@@ -359,6 +359,7 @@ export default {
 
   @media(max-width: 768px) {
     .form-holder {
+      top: 5%;
       right: 0%; // media remove
     }
     .form-items {

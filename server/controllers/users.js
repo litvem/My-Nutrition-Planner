@@ -173,7 +173,15 @@ router.put(specificUserPath, checkAuth, function(req, res, next) {
   User.findById({_id: req.params.profileId})
   .exec()
   .then(user =>{
-    console.log(user)
+    if(user === null){
+      return res.status(401).json({message: userNotFound});   
+    }
+    if(req.body.username === ''){
+      return res.status(404).json({message: 'Username cannot be empty'});
+    }
+    if(req.body.password === ''){
+      return res.status(404).json({message: 'Password cannot be empty'});
+    }
     bcrypt.hash(req.body.password, 10, (err, hashPassword) => {
       if (err) {
         return res.status(500).json({
@@ -226,7 +234,10 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
   .exec()
   .then(user =>{
     if(user === null){
-      return res.status(401).json({'message': userNotFound});   
+      return res.status(401).json({message: userNotFound});   
+    }
+    if(req.body.username === ''){
+      return res.status(404).json({message: 'Username cannot be empty'});
     }
      User.find({ username: req.body.username })
     .exec()
@@ -264,6 +275,11 @@ router.patch(specificUserPath, checkAuth, function(req, res, next) {
       res.status(500).json({
         error: err
       });
+    });
+  })
+  .catch(err => {
+    res.status(500).json({
+      error: err
     });
   });
   

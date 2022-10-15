@@ -4,9 +4,9 @@
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view :user="user" :key="$route.fullPath"/>
-        <AppFooter/>
       </div>
     </div>
+    <AppFooter/>
   </div>
 </template>
 
