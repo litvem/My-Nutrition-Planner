@@ -3,17 +3,32 @@
   <h2>Create new shopping list</h2>
   <div class="wrapper">
     <input type="text" size="50" placeholder="Name" v-model="name">
+    <input type="number" size="50" placeholder="Week Number" v-model="week">
+    <input type="number" size="50" placeholder="Year" v-model="year">
+
     <br>
     <div>
       <div class="form-inline">
         <input type="number" placeholder="Amount" v-model="firstAmount">
-        <input type="text" placeholder="Unit" v-model="firstUnit">
-        <input type="text" placeholder="Item" v-model="firstItem">
+          <select class="form-select" aria-label="Unit" v-model="firstUnit" :id="key">
+                <option value="grams">grams</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
+                <option value="dl">dl</option>
+                <option value="l">l</option>
+          </select>
+          <input type="text" placeholder="Item" v-model="firstItem">
       </div>
-      <div v-for="key in count" :key="key">
+      <div v-for="key in this.count" :key="key">
         <div class="form-inline">
           <input type="number" size="50" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
-          <input type="text" size="25" placeholder="Unit" v-model="units['unit'+key]" :id="key">
+          <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
+                <option value="grams">grams</option>
+                <option value="kg">kg</option>
+                <option value="ml">ml</option>
+                <option value="dl">dl</option>
+                <option value="l">l</option>
+          </select>
           <input type="text" size="50" placeholder="Item" v-model="items['item'+key]" :id="key">
         </div>
       </div>
@@ -45,7 +60,10 @@ export default {
       amounts: {},
       units: {},
       items: {},
-      itemsObj: []
+      itemsObj: [],
+      week: null,
+      year: null,
+      name: ''
     }
   },
   methods: {
@@ -69,7 +87,9 @@ export default {
       }
 
       Api.post('/profiles/' + localStorage.id + '/shoppinglists', {
-        // TODO add year, week
+        profileId: localStorage.id,
+        week: this.week,
+        year: this.year,
         name: this.name,
         items: this.itemsObj
       },

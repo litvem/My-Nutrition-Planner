@@ -6,8 +6,10 @@
         <b-button v-on:click="deleteShoppingLists()">Delete All</b-button>
 
       <br>
-    <div class="card" v-for="key in count" :key="key">
-      <SLPreview :shoppingList="shoppingLists.shoppingLists[key-1]"/>
+    <div class="card">
+      <div v-for="shoppinglist in shoppinglists" :key="shoppinglist._id">
+        <a href="" v-on:click="goToSLPage(shoppinglist._id)" id:key>{{shoppinglist.name}}</a>
+      </div>
    </div>
 </div>
 
@@ -15,18 +17,14 @@
 
 <script>
 import { Api } from '@/Api'
-import SLPreview from '../components/SLPreview'
 
 export default {
   name: 'shoppingList',
-  components: {
-    SLPreview
-  },
   data() {
     return {
       message: '',
-      count: '',
-      shoppingLists: null
+      count: 0,
+      shoppinglists: []
     }
   },
   beforeCreate() {
@@ -37,17 +35,20 @@ export default {
       }
     })
       .then(response => {
-        this.shoppingLists = response.data
-        console.log(response.data.message)
+        this.shoppinglists = response.data.shoppinglists
+        this.shoppinglists.forEach(sl => {
+          console.log(sl.name)
+        })
+        console.log(this.shoppinglists)
         // is needed for proper data binding since key in count starts from 1
-        this.count = this.shoppingLists.shoppingLists.length + 1
-        console.log(this.count)
+        this.count = this.shoppinglists.length + 1
+        // console.log(this.shoppinglists[0])
       })
       .catch(error => {
-        console.log(error.response.status)
-        if (error.response.status === 404) {
+        console.log(error)
+        if (error.response.status !== 'undefined' && error.response.status === 404) {
           console.log('404 error found')
-          // TODO add 404 page
+          //    TODO add 404 page
           this.$router.push('/addShoppingList')
         }
       })
@@ -55,6 +56,9 @@ export default {
   methods: {
     goToAddShoppingList() {
       this.$router.push('/addShoppingList')
+    },
+    goToSLPage(ID) {
+      this.$router.push(`/shoppingLists/${ID}`)
     },
     deleteShoppingLists() {
       Api.delete('/profiles/' + localStorage.id + '/shoppingLists', {
