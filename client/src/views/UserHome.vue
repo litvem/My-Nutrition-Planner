@@ -4,10 +4,6 @@
       <div class="form-container">
         <div class="menu">
           <h1>Home</h1>
-          <br>
-          <button class="btn" v-on:click="goToAddRecipe">Add recipe</button>
-          <button class="btn" v-on:click="goToWeeklyPlans">Weekly plans</button>
-          <button class="btn" v-on:click="goToShoppingList">Shopping list</button>
           <div class="filter">
             <h2>Choose recipe category:</h2>
             <div class="category" aria-label="Default select example">
@@ -25,7 +21,15 @@
                    />
               </b-col>
             </b-row>
-            <b-row v-else><p>No recipes created yet</p></b-row>
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+              <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+              </symbol>
+            </svg>
+            <div class="alert d-flex align-items-center" role="alert" id="no-recipes-alert" v-show="recipes.length === 0">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                You have no recipes yet.
+            </div>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
               <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
                 <RecipePreview
@@ -160,9 +164,21 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: center;
-    margin-top: 20%;
-    margin-bottom: 1%;
+    margin-top: 17%;
+    margin-bottom: 0;
     width: 100%;
+  }
+
+  #no-recipes-alert {
+    margin-left: 30%;
+    margin-right: 35%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    color: rgb(78, 6, 0);
+    background-color: rgba(250, 189, 185, 0.917);
+    box-shadow: 0px 4px 10px 0px #fb68688e;
   }
 
   .filter {
@@ -188,24 +204,6 @@ export default {
     width: 30%;
   }
 
-  .btn {
-    margin-top: 0.7em;
-    margin-bottom: 0.7em;
-    margin-right: 1em;
-    margin-left: 1em;
-    float: center;
-    align-self: auto;
-    color: #fff;
-    font-size: 16px;
-    padding: 12px 35px;
-    border-radius: 50px;
-    display: inline-block;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #a6fa94a6;
-    background-image: linear-gradient(135deg, #70e68e 10%, #2c7803a6 100%);
-  }
-
   .search-btn {
     margin-top: 0.7em;
     margin-bottom: 0.7em;
@@ -222,9 +220,12 @@ export default {
     outline: 0;
     box-shadow: 0px 4px 10px 0px #ff7d038e;
     background-image: linear-gradient(135deg, #f9a352ca 10%, #ff5500c7 100%);
-
     &:hover {
     color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 4px 10px 0px #f9c3918e;
+    background-image: linear-gradient(135deg, #f17603ca 10%, #682301d1 100%);
     }
   }
 
@@ -244,10 +245,13 @@ export default {
     outline: 0;
     box-shadow: 0px 4px 10px 0px #ed51518e;
     background-image: linear-gradient(135deg, #f88686ca 10%, #ff0000c7 100%);
-  }
-
-  .delete-btn:hover {
+    &:hover {
     color: #fff;
+    font-weight: bold;
+    text-decoration: underline;
+    box-shadow: 0px 4px 10px 0px #ff67678e;
+    background-image: linear-gradient(135deg, #d80404ca 10%, #490202c7 100%);
+    }
   }
 
   .filter .category {
