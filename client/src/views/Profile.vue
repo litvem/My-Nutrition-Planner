@@ -32,26 +32,22 @@
               <button class="btn editPassword-btn" @click="editPassword = !editPassword">Edit password</button>
               </div>
 
-              <form @submit.prevent="changePassword" v-if="editPassword">
+              <form v-if="editPassword">
                 <div class="password-edit col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                  <b-form-input type="password" id="newPassword" v-model="password" v-if="editPassword" placeholder="Password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2" :class="{ 'is-invalid': submitted && $v.password.$error }" />
+                  <b-form-input type="password" id="newPassword" v-model="password" v-if="editPassword" placeholder="Password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2"/>
 
-                  <div v-if="submitted && $v.password.$error" class="invalid-feedback">
-                    <span v-if="!$v.password.required">New password is required</span>
-                    <span v-if="!$v.password.minLength">Password must be at least 3 characters</span>
-                  </div>
-
-                  <b-form-input id="newPasswordConfirm" type="password" v-model="confirmPassword" v-if="editPassword" placeholder="Confirm password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2" :class="{ 'is-invalid': submitted && $v.confirmPassword.$error }" />
-                  <div v-if="submitted && $v.confirmPassword.$error" class="invalid-feedback">
-                    <span v-if="!$v.confirmPassword.required">Confirm password is required</span>
-                    <span v-else-if="!$v.confirmPassword.sameAsPassword">Passwords must match</span>
-                  </div>
+                  <b-form-input id="newPasswordConfirm" type="password" v-model="confirmPassword" v-if="editPassword" placeholder="Confirm password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2"/>
                 </div>
+                <div class="alert alert-warning alert-dismissible fade show" id="user-exists-alert" role="alert" v-show="!passwordValid" >
+                  Passwords don't match! Please try again.
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
                 <!--alert to be displayed then password successfully changed-->
                 <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
                 </symbol>
-                <b-alert id="passwordChanged-alert" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged">
+                <b-alert id="passwordChanged-alert" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged" v-if="passwordValid">
                   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
                   </svg>
                   <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#check-circle-fill"/></svg>
@@ -59,7 +55,7 @@
                 </b-alert>
               </form>
               <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
-                <button class="btn save-btn btn-sm"  type="submit" @click="showAlert">Save</button>
+                <button class="btn save-btn btn-sm" @click="changePassword">Save</button>
                 <button class="btn cancel-btn btn-sm"  @click="cancelPasswordEdit">Cancel</button>
               </div>
             </div>
@@ -77,7 +73,6 @@
 
 <script>
 import { Api } from '@/Api'
-import { required, minLength, sameAs } from 'vuelidate/lib/validators'
 
 export default {
   name: 'profile',
@@ -89,16 +84,12 @@ export default {
       usernameChangedAlert: false,
       username: '',
       password: '',
-      editPassword: false,
       confirmPassword: '',
+      editPassword: false,
+      passwordValid: true,
       dissmissSecs: 5,
-      dismissCountDown: 0,
-      submitted: false
+      dismissCountDown: 0
     }
-  },
-  validations: {
-    password: { required, minLength: minLength(3) },
-    confirmPassword: { required, sameAsPassword: sameAs('password') }
   },
   methods: {
     changeUsername() {
@@ -127,32 +118,31 @@ export default {
         })
     },
     changePassword() {
-      console.log(this.password)
-      this.submitted = true
-      this.$v.$touch()
-      if (this.$v.$invalid) {
-        return
-      }
-
-      Api.put('/profiles/' + localStorage.id, {
-        username: this.user.username,
-        password: this.password
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      })
-        .then(response => {
-          console.log(response)
-          if (response.data.status === 200) {
-            localStorage.token = response.data.token
-            this.editPassword = false
+      if (this.password !== this.confirmPassword) {
+        this.passwordValid = false
+      } else {
+        this.passwordValid = true
+        Api.put('/profiles/' + localStorage.id, {
+          username: this.user.username,
+          password: this.password
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
           }
         })
-        .catch(error => {
-          this.message = error
-        })
+          .then(response => {
+            console.log(response)
+            if (response.data.status === 200) {
+              localStorage.token = response.data.token
+              this.editPassword = false
+            }
+          })
+          .catch(error => {
+            this.message = error
+          })
+        this.showAlert()
+      }
     },
     cancelUsernameEdit() {
       this.editUsername = false
@@ -313,7 +303,7 @@ export default {
 
   #user-exists-alert {
     margin-left: 4%;
-    margin-right: 2%;
+    margin-right: 3%;
     margin-top: 3%;
   }
 
@@ -345,7 +335,7 @@ export default {
     border: 2px solid currentColor;
     border-radius: 3rem;
     color: #fffffff0;
-    font-size: 80px;
+    font-size: 15px;
     font-weight: bold;
     overflow: hidden;
     padding: 1rem 2rem;
