@@ -18,24 +18,24 @@ const userNotFound = "User not found";
 
 router.post('/api/profiles/signup',function(req, res,next) {
   User.find({ username: req.body.username })
-    .exec()
-    .then(username => {
-      if (username.length >= 1) {
-        return res.status(409).json({
-          message: "Username already exists"
-        });
-      } else {
+  .exec()
+  .then(username => {
+    if (username.length >= 1) {
+      return res.status(409).json({
+        message: "Username already exists"
+      });
+    } else {
 
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
-          if (err) {
-            return res.status(500).json({
-              error: err
-            });
-          } else {
+      bcrypt.hash(req.body.password, 10, (err, hash) => {
+        if (err) {
+          return res.status(500).json({
+            error: err
+          });
+        } else {
           const user = new User({
-          username: req.body.username,
-          password: hash
-        });
+            username: req.body.username,
+            password: hash
+          });
 
           user.save()
           .then(newUser => {
@@ -62,11 +62,13 @@ router.post('/api/profiles/signup',function(req, res,next) {
               error: err
             });
           });
+
         }
       });
     }
   });
 });
+
 
 router.post("/api/profiles/login", (req, res, next) => {
   User.findOne({ username: req.body.username })

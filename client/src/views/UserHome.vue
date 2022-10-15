@@ -18,7 +18,7 @@
           </div>
           <div class="recipesHolder">
             <b-row id="allRecipes" v-if="this.category==='Category options'" >
-              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in recipes.recipes">
+              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in recipes">
                 <RecipePreview
                   :recipe="recipe"
                   :image="recipe.image"
@@ -27,7 +27,7 @@
             </b-row>
             <b-row v-else><p>No recipes created yet</p></b-row>
             <b-row id="filteredRecipes" v-if="this.category!=='Category options'">
-              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes.recipes">
+              <b-col cols="12" sm="4" md="3" :key="recipe._id" v-for="recipe in filteredRecipes">
                 <RecipePreview
                 :recipe="recipe"/>
               </b-col>
@@ -58,12 +58,12 @@ export default {
         { value: 'Dinner', text: 'Dinner' },
         { value: 'Snack', text: 'Snack' }
       ],
-      recipes: null,
-      filteredRecipes: null,
+      recipes: [],
+      filteredRecipes: [],
       category: 'Category options'
     }
   },
-  beforeCreate() {
+  mounted() {
     Api.get('/profiles/' + localStorage.id + '/recipes', {
 
       headers: {
@@ -71,7 +71,7 @@ export default {
       }
     })
       .then(response => {
-        this.recipes = response.data
+        this.recipes = response.data.recipes
       })
       .catch(error => {
         this.message = error.message
@@ -107,7 +107,7 @@ export default {
         })
           .then(response => {
             console.log(response)
-            this.filteredRecipes = response.data
+            this.filteredRecipes = response.data.recipes
             this.filteredRecipes.forEach((recipe) => console.log(recipe.name))
           })
           .catch(error => {
@@ -130,7 +130,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .UserHome {
     background-image: url("../assets/user-home-background.jpg");
     background-size: cover;
@@ -225,10 +225,10 @@ export default {
     outline: 0;
     box-shadow: 0px 4px 10px 0px #ff7d038e;
     background-image: linear-gradient(135deg, #f9a352ca 10%, #ff5500c7 100%);
-  }
 
-  .search-btn:hover {
+    &:hover {
     color: #fff;
+    }
   }
 
   .delete-btn {
