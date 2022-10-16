@@ -11,6 +11,7 @@
       <div class="form-inline">
         <input type="number" placeholder="Amount" v-model="firstAmount">
           <select class="form-select" aria-label="Unit" v-model="firstUnit" :id="key">
+                <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
