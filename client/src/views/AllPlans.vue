@@ -19,8 +19,11 @@
               </div>
           </b-row>
           <b-row v-show="plans.length > 0">
-            <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan._id">
-              <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
+            <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan.week&&plan.year">
+              <div id="single-plan-display">
+                <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan"></button>
+              </div>
             </b-col>
           </b-row>
         </div>
@@ -94,7 +97,6 @@ export default {
       if (this.name === 'none') {
         this.name = 'Monday'
       }
-
       Api.post('/profiles/' + localStorage.id + '/days', {
         year: this.year,
         week: this.week,
@@ -120,6 +122,20 @@ export default {
       Api.delete('/profiles/' + localStorage.id + '/days', {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+      this.$router.go()
+    },
+    deleteThisPlan() {
+      Api.delete('/profiles/' + localStorage.id + `/days?${this.day.week}&${this.day.year}`, {
+        headers: {
+          Authorization: 'Bearer' + localStorage.token
         }
       })
         .then(response => {
@@ -195,6 +211,35 @@ export default {
     overflow: hidden;
     align-items: left;
     text-align: left;
+  }
+
+  #single-plan-display {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 10px 0px #f7eca57c;
+    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
+  }
+
+  h5 {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    float: center;
+    font-weight: bold;
+    padding: 10px 40px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    &:hover {
+      color: rgb(41, 16, 0);
+      text-decoration: underline;
+    }
   }
 
   #alert-holder {
@@ -325,30 +370,6 @@ export default {
       text-decoration: underline;
       box-shadow: 0px 4px 10px 0px #f89f9f8e;
       background-image: linear-gradient(135deg, #ad1a03d2 10%, #470000 100%);
-    }
-  }
-
-  h5 {
-    margin-top: 0.7em;
-    margin-bottom: 0.7em;
-    margin-right: 0;
-    margin-left: 0;
-    float: center;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 12px 40px;
-    border-radius: 8px;
-    display: inline-block;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #f7eca57c;
-    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
-    &:hover {
-      color: rgb(66, 26, 1);
-      text-decoration: underline;
-      background-color: rgba(255, 152, 96, 0.345);
-      box-shadow: 0px 4px 10px 0px #482601a0;
     }
   }
 
