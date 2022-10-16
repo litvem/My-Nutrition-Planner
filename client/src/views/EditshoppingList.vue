@@ -82,7 +82,11 @@ export default {
     saveShoppingList() {
       if (this.editName === true && this.editList === false) {
         Api.put('/profiles/' + localStorage.id + '/shoppingLists/' + this.$route.params.id, {
-          shoppinglist: this.shoppinglist
+          profileId: localStorage.id,
+          name: this.shoppinglist[0].name,
+          week: this.shoppinglist[0].week,
+          day: this.shoppinglist[0].day,
+          items: this.shoppinglist[0].items
         },
         {
           headers: {
