@@ -77,6 +77,9 @@ export default {
     })
       .then(response => {
         this.shoppinglists = response.data.shoppinglists
+        this.shoppinglists.forEach(sl => {
+          console.log(sl.name)
+        })
       })
       .catch(error => {
         console.log(error)

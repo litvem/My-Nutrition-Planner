@@ -69,7 +69,9 @@ export default {
         this.shoppinglist = response.data.shoppinglist
         this.count = this.shoppinglist.length
         this.shoppinglist.forEach(sl => {
-          console.log(sl.name)
+          sl.items.forEach(item => {
+            console.log(item.unit)
+          })
         })
       })
   },
@@ -97,11 +99,19 @@ export default {
         // TODO check if array has elements
         Api.patch('/profiles/' + localStorage.id + '/shoppingLists/' + this.$route.params.id, {
           profileId: localStorage.id,
-          shoppinglist: this.shoppinglist
+          name: this.shoppinglist[0].name,
+          week: this.shoppinglist[0].week,
+          day: this.shoppinglist[0].day,
+          items: this.shoppinglist[0].items
         },
         {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+          if (response.status === 200) {
+            alert('Shoppinglist was edited with succes!')
+            this.$router.push('/shoppingLists')
           }
         })
       }
