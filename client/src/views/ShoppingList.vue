@@ -113,7 +113,8 @@ export default {
     background-size: cover;
     background-attachment: fixed;
     position: relative;
-    height: 200%;
+    min-height: 93vh;
+    height: 110%;
   }
 
   #page-title {
@@ -149,7 +150,6 @@ export default {
     }
     #shopping-lists-background {
       padding: 3%;
-      margin-bottom: 30px;
       background-color: rgba(0, 0, 0, 0.84);
     }
     .shopping-list-card {

@@ -116,6 +116,7 @@ export default {
     background-size: cover;
     background-attachment: fixed;
     position: relative;
+    min-height: 93vh;
     height: 200%;
   }
 </style>
