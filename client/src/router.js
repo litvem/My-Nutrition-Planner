@@ -14,7 +14,7 @@ import test from './testingFolder/test.vue'
 import AllPlans from './views/AllPlans.vue'
 import EditRecipe from './views/EditRecipe.vue'
 import AddShoppingList from './views/AddShoppingList.vue'
-import ShoppingListPage from './views/ShoppingListPage.vue'
+import EditshoppingList from './views/EditshoppingList.vue'
 
 Vue.use(Router)
 
@@ -79,9 +79,9 @@ export default new Router({
       component: ShoppingList
     },
     {
-      path: '/shoppingLists/:id',
-      name: 'shoppingList',
-      component: ShoppingListPage
+      path: '/editShoppingList/:id',
+      name: 'edit-shopping-list',
+      component: EditshoppingList
     },
     {
       path: '/addShoppingList',
