@@ -1,10 +1,10 @@
 <template>
-  <div class = "Welcomeview navbar-expand-md">
+  <div class = "Welcomeview sm">
      <div class="animation">
         <TextAnimation/>
      </div>
      <section>
-        <div class="contentBx navbar-expand-md">
+        <div class="contentBx sm">
            <div class="welcome-text">
                <h2>Looking for a place to store your favourite recipes? <br />
                Make weekly shopping easier?<br />
@@ -14,7 +14,7 @@
                <hr />
               </div>
            </div>
-        <div class="loginBx navbar-expand-md">
+        <div class="loginBx sm">
            <div class="login-form">
               <h3>Login</h3>
               <hr />
@@ -126,10 +126,9 @@ section{
 section .contentBx{
     background-color:rgba(30, 30, 31, 0.486);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
     margin-left: -10%;
 }
 
@@ -228,6 +227,7 @@ section .loginBx .login-form p {
   section .contentBx{
     margin-top: 5%;
     margin-left: -2%;
+    flex-direction: column;
 }
   section .contentBx .welcome-text h2{
     font-size: 20px;
