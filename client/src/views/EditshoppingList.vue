@@ -92,6 +92,13 @@ export default {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
           }
+        }).then(response => {
+          if (response.status === 200) {
+            alert('Shoppinglist name was edited with succes!')
+            this.$router.push('/shoppingLists')
+          }
+        }).catch(error => {
+          console.log(error)
         })
         // TODO catch
       } else if (this.editList === true) {

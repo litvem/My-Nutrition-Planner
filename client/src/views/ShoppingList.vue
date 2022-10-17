@@ -105,6 +105,16 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    deleteSpecificSL(id) {
+      Api.delete('/profiles/' + localStorage.id + '/shoppingLists/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+      this.$router.go(0)
     }
   }
 }
@@ -129,7 +139,7 @@ export default {
     width: 100%;
     text-align: center;
   }
-  #page.title h2 {
+  #page-title h2 {
     box-shadow: 0px 4px 10px 0px black;
   }
 

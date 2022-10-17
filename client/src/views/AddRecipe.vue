@@ -1,5 +1,6 @@
 <template>
-<div id ="background" class="container-fluid">
+<div class="addSL" >
+  <div class="container-fluid">
 
   <div class="row">
     <div class="col">
@@ -78,6 +79,7 @@
       <h4>Instructions</h4>
       <textarea class="form-control" id="instructions" rows="10" v-model="instructions"></textarea>
     </div>
+  </div>
   </div>
   </div>
 
@@ -163,8 +165,13 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        color:black
-    }
+  .addSL {
+    background-image: url("../assets/shopping-lists-background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 93vh;
+    height: 200%;
+  }
 
 </style>
