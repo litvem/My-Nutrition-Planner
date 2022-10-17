@@ -20,8 +20,7 @@ router.post(daysPath, checkAuth, function(req, res, next) {
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
 
     if(checkDay.length > 0) {
-      console.log(checkDay)
-      res.status(404).json({message:"Day already exist"});
+      res.status(409).json({message:"Day already exist"});
     } else {
       var day = new Day(req.body);
       day.save()

@@ -1,6 +1,11 @@
 <template>
   <div class="AllPlans">
-    <div id="container-main">
+      <!--   ALERTS TODO -- code to check already implemented just add alerts
+    1. week is less than 0 or bigger than 52
+    2. year is less than current year
+    3. if the current week plan already exist
+  -->
+    <div id="container-main"  v-if="user">
       <div class="left">
         <div class="title">
           <h1>My weekly plans</h1>
@@ -19,10 +24,10 @@
               </div>
           </b-row>
           <b-row v-show="plans.length > 0">
-            <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan.week&&plan.year">
+            <b-col cols="12" lg="6" sm="12" v-for="(plan,index) in plans" v-bind:key="index">
               <div id="single-plan-display">
-                <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
-                <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan"></button>
+                <h5 v-on:click="goToWeeklyPlan(index)">Week {{plan.week}}  Year {{plan.year}}</h5>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan(index)"></button>
               </div>
             </b-col>
           </b-row>
@@ -35,14 +40,14 @@
       </div>
       <div class="right">
         <div class="plan-form" v-if="addPlan">
-          <label for="day-name" v-if="addPlan">Day: </label>
+   <!--        <label for="day-name" v-if="addPlan">Day: </label>
           <div class="name" v-if="addPlan">
             <b-form-select v-model="name" :options="options" v-if="addPlan"></b-form-select>
-          </div>
+          </div>  SEE DESCRIPTION IN SCRIPT!-->
           <label for="week-number" v-if="addPlan">Week number:</label>
-          <b-form-input id="week" v-model="week" v-if="addPlan"/>
+          <b-form-input id="week" v-model="week" type="number" placeholder="Enter week" v-if="addPlan"/>
           <label for="year" v-if="addPlan">Year:</label>
-          <b-form-input id="year" v-model="year" v-if="addPlan" />
+          <b-form-input id="year" v-model="year" type="number" placeholder="Enter year" v-if="addPlan" />
           <button class="save-plan" v-on:click="savePlan" v-if="addPlan">Save</button>
           <button class="cancel-form" @click="cancelSavePlan">Cancel</button>
         </div>
@@ -53,13 +58,20 @@
 
 <script>
 import { Api } from '@/Api'
+
 export default {
   name: 'allPlans',
+  props: ['user'],
   data() {
     return {
       plans: [],
       addPlan: false,
-      name: 'none',
+      week: '',
+      year: '',
+      name: 'none'/* ,
+      <<<  Since we are creating only a week, we basically dont need to specify a day, only if we are able to add
+          some kind of source that allows the user to insert recipes directly here.
+           -- leaving as a comment in case we will use it.<<<<<<<<<<<<<<<<<
       options: [
         { value: 'none', text: 'Select day' },
         { value: 'Monday', text: 'Monday' },
@@ -69,7 +81,7 @@ export default {
         { value: 'Friday', text: 'Friday' },
         { value: 'Saturday', text: 'Saturday' },
         { value: 'Sunday', text: 'Sunday' }
-      ]
+      ] */
     }
   },
   mounted() {
@@ -79,7 +91,6 @@ export default {
       }
     })
       .then(response => {
-        console.log(response.data)
         this.plans = response.data.weeklyCalenders
       })
       .catch(error => {
@@ -87,20 +98,31 @@ export default {
       })
   },
   methods: {
-    goToWeeklyPlan() {
-      localStorage.setItem('week', this.plans.week)
-      localStorage.setItem('year', this.plans.year)
+    goToWeeklyPlan(index) {
+      localStorage.week = this.plans[index].week
+      localStorage.year = this.plans[index].year
       this.$router.push('/weeklyCalendar')
       this.$router.go()
     },
     savePlan() {
+      /* console.log(this.user)
       if (this.name === 'none') {
         this.name = 'Monday'
+      } */
+      const currentYear = new Date().getFullYear()
+      console.log(currentYear + 1)
+
+      if (this.week < 0 || this.week > 52) {
+        // show alert for wrong week number
       }
-      Api.post('/profiles/' + localStorage.id + '/days', {
+      if (this.year < currentYear || this.year < (currentYear + 1)) {
+        // show alert the year is in the past, it can be this or next year only
+      }
+      Api.post('/profiles/' + this.user.id + '/days', {
         year: this.year,
         week: this.week,
-        name: this.name
+        name: 'Monday'
+        /*  name: this.name */
       },
       {
         headers: {
@@ -113,13 +135,17 @@ export default {
         })
         .catch(error => {
           console.error(error)
+          if (error.response.status === 409) {
+            // this.weekCalenderExist = true -- and then do the alert as in profile
+            // or add alert here
+          }
         })
     },
     cancelSavePlan() {
       this.addPlan = false
     },
     deleteAllPlans() {
-      Api.delete('/profiles/' + localStorage.id + '/days', {
+      Api.delete('/profiles/' + this.user.id + '/days', {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }
@@ -132,10 +158,10 @@ export default {
         })
       this.$router.go()
     },
-    deleteThisPlan() {
-      Api.delete('/profiles/' + localStorage.id + `/days?${this.day.week}&${this.day.year}`, {
+    deleteThisPlan(index) {
+      Api.delete('/profiles/' + this.user.id + '/days?week=' + this.plans[index].week + '&year=' + this.plans[index].year, {
         headers: {
-          Authorization: 'Bearer' + localStorage.token
+          Authorization: 'Bearer ' + localStorage.token
         }
       })
         .then(response => {

@@ -3,7 +3,7 @@
 		"_postman_id": "e452767a-13b3-40d9-a057-c84a22b25e6b",
 		"name": "server",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "23239685"
+		"_exporter_id": "15823420"
 	},
 	"item": [
 		{
@@ -4025,7 +4025,7 @@
 									"",
 									"pm.test(\"Correct status code\",",
 									"    function(){",
-									"    pm.response.to.have.status(404);",
+									"    pm.response.to.have.status(409);",
 									"});",
 									"",
 									"pm.test(\"Correct day response\", function () {",
