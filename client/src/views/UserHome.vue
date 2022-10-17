@@ -289,6 +289,7 @@ export default {
       margin-right: 5%;
     }
     .menu h1 {
+      margin-top: 60%;
       font-size: 35px;
     }
     .btn {
@@ -308,5 +309,30 @@ export default {
     width: 100%;
     font-size: 10px;
     }
+    .recipesHolder {
+      min-height: 50vh;
+    }
+
+    #alert-holder {
+    align-items: center;
+    justify-content: center;
+    margin-top: 3%;
+    margin-left: 7%;
+    margin-right: 0;
   }
+
+  #no-recipes-alert {
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    color: rgb(78, 6, 0);
+    background-color: rgba(250, 189, 185, 0.917);
+    box-shadow: 0px 4px 10px 0px #fb68688e;
+    border-radius: 8px;
+    display: inline-block;
+    padding: 10px 25px;
+    border: 0;
+    outline: 0;
+  }
+}
 </style>

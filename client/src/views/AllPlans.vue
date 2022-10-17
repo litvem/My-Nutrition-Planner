@@ -27,18 +27,15 @@
             </b-col>
           </b-row>
         </div>
+      </div>
+    <!--buttons 'Add plan' and 'Delete all' + form to add plan-->
+    <div class="content">
+      <div class="buttons-and-form">
         <div class="buttons">
           <button class="add-btn btn-sm" v-on:click="addPlan = !addPlan">Add new plan</button>
           <button class="delete-btn btn-sm" v-on:click="deleteAllPlans">Delete all plans</button>
         </div>
-        </div>
-      </div>
-      <div class="right">
         <div class="plan-form" v-if="addPlan">
-        <!-- <label for="day-name" v-if="addPlan">Day: </label>
-          <div class="name" v-if="addPlan">
-            <b-form-select v-model="name" :options="options" v-if="addPlan"></b-form-select>
-          </div>  SEE DESCRIPTION IN SCRIPT!-->
           <label for="week-number" v-if="addPlan">Week number:</label>
           <b-form-input id="week" v-model="week" type="number" placeholder="Enter week" v-if="addPlan"/>
           <label for="year" v-if="addPlan">Year:</label>
@@ -196,34 +193,16 @@ export default {
     min-height: 60vh;
   }
 
-  #container-main {
-    min-height: 95vh;
+  .content {
     display: flex;
-    flex-direction: none;
+    flex-direction: row;
+    min-height: 70vh;
   }
-
-  .left {
-    width: 61%;
-  }
-
-  .left .title {
-    height: 100%;
+  .title {
     display: flex;
     width: 100%;
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: center;
-    padding: 5%;
-  }
-
-  .left .title {
-    width: 100%;
-    height: 40%;
-    padding: 4%;
+    padding: 3%;
     padding-bottom: 1%;
-    overflow: hidden;
-    align-items: center;
-    text-align: center;
   }
 
   h1 {
@@ -232,22 +211,14 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: left;
-    margin-top: 25%;
+    margin-top: 13%;
     margin-bottom: 1%;
     width: 100%;
   }
 
-  #container-left {
-    display: flex;
-  }
-  .list {
-    width: 85%;
-    min-height: 66vh;
-    padding: 4%;
-    padding-top: 1%;
-    overflow: hidden;
-    align-items: left;
-    text-align: left;
+  .alert-holder .alert {
+    margin-left: 3%;
+    margin-right: 65%;
   }
 
   #single-plan-display {
@@ -284,15 +255,16 @@ export default {
     margin-right: 25%;
   }
 
-  .buttons {
-    width: 25%;
+  .buttons-and-form .buttons {
+    display: flex;
+    flex-direction: column;
   }
 
   .add-btn {
-    margin-top: 1.5em;
-    margin-bottom: 0.7em;
-    margin-right: 1em;
-    margin-left: 1em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 0;
     float: center;
     align-self: auto;
     color: black;
@@ -300,6 +272,7 @@ export default {
     padding: 12px 25px;
     border-radius: 50px;
     display: inline-block;
+    width: fit-content;
     border: 0;
     outline: 0;
     box-shadow: 0px 4px 10px 0px #d0fba08e;
@@ -314,10 +287,10 @@ export default {
   }
 
   .delete-btn {
-    margin-top: 0.7em;
-    margin-bottom: 0.7em;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
     margin-right: 0;
-    margin-left: 1em;
+    margin-left: 0;
     float: center;
     align-self: auto;
     color: black;
@@ -325,6 +298,7 @@ export default {
     padding: 12px 25px;
     border-radius: 50px;
     display: inline-block;
+    width: fit-content;
     border: 0;
     outline: 0;
     box-shadow: 0px 4px 10px 0px #f9a3548e;
@@ -338,11 +312,7 @@ export default {
     }
   }
 
-  .right {
-    width: 39%;
-  }
-
-  .plan-form{
+  .plan-form {
     background-color: rgba(255, 255, 255, 0.468);
     margin-top: 57%;
     margin-left: 10%;
@@ -351,7 +321,6 @@ export default {
     width: 80%;
     padding: 13px 20px;
     border-radius: 8px;
-    display: inline-block;
     border: 0;
     outline: 0;
     box-shadow: 0px 4px 10px 0px #bcff0375;
@@ -361,10 +330,10 @@ export default {
   }
 
   .save-plan {
-    margin-top: 0.7em;
+    margin-top: 1em;
     margin-bottom: 0.7em;
     margin-right: 0;
-    margin-left: 1em;
+    margin-left: 0.3em;
     float: center;
     align-self: auto;
     color: black;
@@ -386,7 +355,7 @@ export default {
   }
 
   .cancel-form {
-    margin-top: 0.7em;
+    margin-top: 1em;
     margin-bottom: 0.7em;
     margin-right: 0;
     margin-left: 1em;
@@ -409,26 +378,94 @@ export default {
       background-image: linear-gradient(135deg, #ad1a03d2 10%, #470000 100%);
     }
   }
+  .all-existing-plans {
+    width: 100%;
+    display: inline-block;
+    padding-left: 1%;
+  }
 
   @media(max-width: 768px) {
-    #container-main{
-      width: 100%;
-      min-height: 70vh;
-    }
-    .left {
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+  }
+  .title {
+    padding-bottom: 3%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    font-size: 40px;
+    margin-top: 40%;
+    //margin-left: 15%;
+    padding-left: 17%;
+    padding-right: 10%;
+  }
+  .alert-holder .alert {
+    margin-left: 17%;
+    margin-right: 17%;
+  }
+  .buttons-and-form {
     width: 100%;
+  }
+
+  .buttons-and-form .buttons {
     flex-direction: row;
-      .title {
-        position: relative;
-        align-content: center;
-        left: 20%;
-        display: initial;
-      }
-    }
+    width: 100%;
+    margin-left: 20%;
+  }
 
-    h1 {
-      font-size: 30px;
+  #single-plan-display {
+    margin-right: 10%;
+    margin-left: 5%;
+    justify-content: left;
+    width: 50%;
+  }
 
-    }
+  .btn-close {
+    margin-left: 15%;
+    margin-right: 5%;
+  }
+
+  .add-btn {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 8%;
+  }
+
+  .delete-btn {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 3%;
+  }
+
+  .plan-form{
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 40%;
+    width: 80%;
+  }
+
+  .all-existing-plans {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1%;
+  }
+
+  #single-plan-display {
+    margin-left: 11%;
+    width: 77%;
+  }
+
+  h5 {
+    margin-left: 20%;
+    padding: 10px 30px;
+  }
   }
   </style>

@@ -28,20 +28,20 @@ export default {
 </script>
 
 <style scoped>
-section{
+section {
  height: 100vh;
 }
 
-h1{
- font-family:Georgia, 'Times New Roman', Times, serif;
+h1 {
+ font-family: Verdana, Arial, Helvetica, sans-serif;
  margin: 0;
  padding:0;
- position:absolute;
- top:-17%;
+ position: absolute;
+ top: -17%;
  left: 40%;
  font-weight: 600;
  transform: translate(-50%);
- width:100%;
+ width: 100%;
  text-align: center;
  color: rgb(242, 246, 239);
  border-bottom: 1px solid rgba(17, 209, 26, 0.793);
@@ -119,8 +119,7 @@ animation-delay: 4s;
 }
 
 @media(max-width: 1200px){
-
-   h1{
+   h1 {
       top:-24%;
       margin-left: -3%;
       font-size: 2.6em;
@@ -128,10 +127,13 @@ animation-delay: 4s;
 }
 
 @media(max-width: 768px){
-   h1{
+  section {
+  height: 80vh;
+  }
+  h1 {
     top:-18%;
     margin-left: 8%;
-    font-size: 2.2em;
+    font-size: 2.0em;
    }
 }
 </style>
