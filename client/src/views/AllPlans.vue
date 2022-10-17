@@ -1,10 +1,5 @@
 <template>
   <div class="AllPlans">
-      <!--   ALERTS TODO -- code to check already implemented just add alerts
-    1. week is less than 0 or bigger than 52
-    2. year is less than current year
-    3. if the current week plan already exist
-  -->
     <div id="container-main"  v-if="user">
       <div class="left">
         <div class="title">
@@ -40,7 +35,7 @@
       </div>
       <div class="right">
         <div class="plan-form" v-if="addPlan">
-   <!--        <label for="day-name" v-if="addPlan">Day: </label>
+        <!-- <label for="day-name" v-if="addPlan">Day: </label>
           <div class="name" v-if="addPlan">
             <b-form-select v-model="name" :options="options" v-if="addPlan"></b-form-select>
           </div>  SEE DESCRIPTION IN SCRIPT!-->
@@ -50,6 +45,21 @@
           <b-form-input id="year" v-model="year" type="number" placeholder="Enter year" v-if="addPlan" />
           <button class="save-plan" v-on:click="savePlan" v-if="addPlan">Save</button>
           <button class="cancel-form" @click="cancelSavePlan">Cancel</button>
+          <!--alert if week if less that 0 and greater that 52-->
+          <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              The week number should be greater that 0 and less than 52.
+            </div>
+            <!--alert if year is less that current and greater that next year-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Select between current or next year.
+            </div>
+            <!--alert if weekly calendar already exists-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weeklyCalendarAlreadyExists">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Weekly plan for selected week already exists.
+            </div>
         </div>
       </div>
     </div>
@@ -68,7 +78,10 @@ export default {
       addPlan: false,
       week: '',
       year: '',
-      name: 'none'/* ,
+      name: 'none',
+      weekOutsideOfRange: false,
+      yearLessThanCurrent: false,
+      weeklyCalendarAlreadyExists: false/* ,
       <<<  Since we are creating only a week, we basically dont need to specify a day, only if we are able to add
           some kind of source that allows the user to insert recipes directly here.
            -- leaving as a comment in case we will use it.<<<<<<<<<<<<<<<<<
@@ -105,44 +118,44 @@ export default {
       this.$router.go()
     },
     savePlan() {
-      /* console.log(this.user)
-      if (this.name === 'none') {
-        this.name = 'Monday'
-      } */
       const currentYear = new Date().getFullYear()
       console.log(currentYear + 1)
 
-      if (this.week < 0 || this.week > 52) {
-        // show alert for wrong week number
+      if (this.week < 1 || this.week > 52) {
+        this.weekOutsideOfRange = true
+        // this.$router.go()
+        return
       }
-      if (this.year < currentYear || this.year < (currentYear + 1)) {
-        // show alert the year is in the past, it can be this or next year only
-      }
-      Api.post('/profiles/' + this.user.id + '/days', {
-        year: this.year,
-        week: this.week,
-        name: 'Monday'
-        /*  name: this.name */
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.token
-        }
-      })
-        .then(response => {
-          this.addPlan = false
-          this.$router.go()
-        })
-        .catch(error => {
-          console.error(error)
-          if (error.response.status === 409) {
-            // this.weekCalenderExist = true -- and then do the alert as in profile
-            // or add alert here
+      if (this.year < currentYear || this.year > (currentYear + 1)) { // !!issue with year validation
+        this.yearLessThanCurrent = true
+        // this.$router.go()
+      } else {
+        Api.post('/profiles/' + this.user.id + '/days', {
+          year: this.year,
+          week: this.week,
+          name: 'Monday'
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.token
           }
         })
+          .then(response => {
+            this.addPlan = false
+            this.$router.go()
+          })
+          .catch(error => {
+            console.error(error)
+            if (error.response.status === 409) {
+              this.weeklyCalendarAlreadyExists = true
+            // this.$router.go()
+            }
+          })
+      }
     },
     cancelSavePlan() {
       this.addPlan = false
+      this.$router.go()
     },
     deleteAllPlans() {
       Api.delete('/profiles/' + this.user.id + '/days', {
