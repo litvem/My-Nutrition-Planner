@@ -19,8 +19,10 @@
     <!--buttons 'Add plan' and 'Delete all' + form to add plan-->
     <div class="content">
       <div class="buttons-and-form">
-        <button class="add-btn btn-sm" v-on:click="addPlan = !addPlan">Add new plan</button>
-        <button class="delete-btn btn-sm" v-on:click="deleteAllPlans">Delete all plans</button>
+        <div class="buttons">
+          <button class="add-btn btn-sm" v-on:click="addPlan = !addPlan">Add new plan</button>
+          <button class="delete-btn btn-sm" v-on:click="deleteAllPlans">Delete all plans</button>
+        </div>
         <div class="plan-form" v-if="addPlan">
           <label for="week-number" v-if="addPlan">Week number:</label>
           <b-form-input id="week" v-model="week" v-if="addPlan"/>
@@ -32,12 +34,14 @@
       </div>
       <!--display all existing plans-->
       <div class="all-existing-plans">
-        <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan._id" v-show="plans.length > 0">
-          <div id="single-plan-display">
-            <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
-            <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan"></button>
-          </div>
-        </b-col>
+        <b-row>
+          <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan._id" v-show="plans.length > 0">
+            <div id="single-plan-display">
+              <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
+              <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan"></button>
+            </div>
+          </b-col>
+      </b-row>
       </div>
     </div>
   </div>
@@ -144,7 +148,6 @@ export default {
     min-height: 70vh;
   }
   .title {
-    background-color: rgba(249, 103, 5, 0.27);
     display: flex;
     width: 100%;
     padding: 3%;
@@ -162,23 +165,23 @@ export default {
     width: 100%;
   }
 
-  .alert-holder {
-    background-color: rgba(224, 5, 249, 0.27);
-  }
-
   .alert-holder .alert {
     margin-left: 3%;
     margin-right: 65%;
   }
 
   .buttons-and-form {
-    background-color: rgba(151, 249, 5, 0.27);
     display: flex;
     flex-direction: column;
     width: 40%;
     padding-left: 2%;
     padding-right: 2%;
     align-items: center;
+  }
+
+  .buttons-and-form .buttons {
+    display: flex;
+    flex-direction: column;
   }
 
   .add-btn {
@@ -299,9 +302,9 @@ export default {
     }
   }
   .all-existing-plans {
-    background-color: rgba(5, 74, 249, 0.27);
     width: 100%;
     display: inline-block;
+    padding-left: 1%;
   }
 
   #single-plan-display {
@@ -310,7 +313,7 @@ export default {
     margin-right: 0;
     margin-left: 0;
     padding-right: 5%;
-    width: 70%;
+    width: 95%;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -318,7 +321,7 @@ export default {
     border: 0;
     outline: 0;
     box-shadow: 0px 4px 10px 0px #f7eca57c;
-    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
+    background-image: linear-gradient(135deg, #7f7b038c 10%, #47390249 100%);
   }
 
   h5 {
@@ -340,27 +343,36 @@ export default {
   }
 
   @media(max-width: 768px) {
-
-    .title {
+  .content {
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+  }
+  .title {
     padding-bottom: 3%;
+    align-items: center;
+    justify-content: center;
   }
 
   h1 {
-    font-size: 35px;
-    margin-top: 30%;
-    margin-bottom: 1%;
-    margin-left: 5%;
+    font-size: 40px;
+    margin-top: 40%;
+    //margin-left: 15%;
+    padding-left: 17%;
+    padding-right: 10%;
   }
-
-  .alert-holder {
-    background-color: rgba(224, 5, 249, 0.27);
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-
   .alert-holder .alert {
-    margin-left: 5%;
-    margin-right: 40%;
+    margin-left: 17%;
+    margin-right: 17%;
+  }
+  .buttons-and-form {
+    width: 100%;
+  }
+
+  .buttons-and-form .buttons {
+    flex-direction: row;
+    width: 100%;
+    margin-left: 20%;
   }
 
   #single-plan-display {
@@ -376,12 +388,17 @@ export default {
   }
 
   .add-btn {
-    margin-bottom: 1.5em;
-    margin-left: 10%;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 8%;
   }
 
   .delete-btn {
-    margin-bottom: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 3%;
   }
 
   .plan-form{
@@ -390,79 +407,23 @@ export default {
     margin-right: 10%;
     height: 40%;
     width: 80%;
-    padding: 25px 25px;
-    border-radius: 8px;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #bcff0375;
-    color: rgb(71, 41, 2);
-    font-size: 16px;
-    font-weight: bold;
   }
 
-  .save-plan {
-    margin-top: 1em;
-    margin-bottom: 0.7em;
-    margin-right: 0;
-    margin-left: 0.3em;
-    float: center;
-    align-self: auto;
-    color: black;
-    font-size: 16px;
-    padding: 12px 25px;
-    border-radius: 50px;
+  .all-existing-plans {
     display: inline-block;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #85db0d8e;
-    background-image: linear-gradient(135deg, #eff886a3 10%, #a6ff0080 100%);
-    &:hover {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: underline;
-      box-shadow: 0px 4px 10px 0px #4324018e;
-      background-image: linear-gradient(135deg, #9fad03e9 10%, #304903de 100%);
-    }
+    align-items: center;
+    justify-content: center;
+    padding-left: 1%;
   }
 
-  .cancel-form {
-    margin-top: 1em;
-    margin-bottom: 0.7em;
-    margin-right: 0;
-    margin-left: 1em;
-    float: center;
-    align-self: auto;
-    color: black;
-    font-size: 16px;
-    padding: 12px 25px;
-    border-radius: 50px;
-    display: inline-block;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #db7e0d8e;
-    background-image: linear-gradient(135deg, #f8a486a3 10%, #ff330080 100%);
-    &:hover {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: underline;
-      box-shadow: 0px 4px 10px 0px #f89f9f8e;
-      background-image: linear-gradient(135deg, #ad1a03d2 10%, #470000 100%);
-    }
+  #single-plan-display {
+    margin-left: 11%;
+    width: 77%;
   }
 
   h5 {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    float: center;
-    font-weight: bold;
+    margin-left: 20%;
     padding: 10px 30px;
-    color: #fff;
-    font-size: 17px;
-    font-weight: bold;
-    &:hover {
-      color: rgb(41, 16, 0);
-      text-decoration: underline;
-    }
   }
   }
   </style>
