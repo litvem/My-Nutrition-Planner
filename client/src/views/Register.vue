@@ -30,7 +30,7 @@
                 </div>
                 <div class="form-group">
                   <hr>
-                  <button class="btn register-btn" v-on:click="handleSubmit()">Register</button>
+                  <button class="btn register-btn">Register</button>
                   <hr>
                   <div>
                   <b-alert v-model="successAlert" variant="success">

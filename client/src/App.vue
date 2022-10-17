@@ -4,9 +4,9 @@
     <div class="auth-wrapper">
       <div class="auth-inner">
         <router-view :user="user" :key="$route.fullPath"/>
-        <AppFooter/>
       </div>
     </div>
+    <AppFooter/>
   </div>
 </template>
 
@@ -27,22 +27,26 @@ export default {
       user: null
     }
   },
-  created() {
-    const id = localStorage.getItem('id')
-    const token = localStorage.getItem('token')
+  mounted() {
+    if (localStorage.getItem('token') === null) {
+      this.$router.push('/')
+    } else {
+      const id = localStorage.getItem('id')
+      const token = localStorage.getItem('token')
 
-    Api.get('/profiles/' + id, {
+      Api.get('/profiles/' + id, {
 
-      headers: {
-        Authorization: 'Bearer ' + token
-      }
-    })
-      .then(response => {
-        this.user = response.data
+        headers: {
+          Authorization: 'Bearer ' + token
+        }
       })
-      .catch(error => {
-        console.log(error)
-      })
+        .then(response => {
+          this.user = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
   }
 }
 </script>
