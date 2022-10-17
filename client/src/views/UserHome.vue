@@ -2,7 +2,7 @@
   <div class="UserHome">
     <div class="box-form">
       <div class="form-container">
-        <div class="menu">
+        <div class="menu"  v-show="user">
           <h1>Home</h1>
           <div class="filter">
             <h2>Choose recipe category:</h2>
@@ -39,6 +39,9 @@
               </b-col>
             </b-row>
           </div>
+<!--           <div class="loading"   v-show="!user">
+            <Loader/>
+          </div> -->
         </div>
       </div>
     </div>
@@ -48,12 +51,14 @@
 <script>
 import { Api } from '@/Api'
 import RecipePreview from '../components/RecipePreview.vue'
+/* import Loader from '../components/loader.vue' */
 
 export default {
   name: 'userHome',
   props: ['user'],
   components: {
-    RecipePreview
+    RecipePreview/* ,
+    Loader */
   },
   data() {
     return {

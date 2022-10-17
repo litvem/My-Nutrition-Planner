@@ -168,8 +168,8 @@ router.put(specificDaysPath,checkAuth, function (req, res, next) {
     }
 
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
-    if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
+    if(checkDay.length === 0) {
+      return res.status(404).json({message: 'This day does not exist'}); 
     }
 
 /*     if(!req.body.name || !req.body.week || !req.body.year || !req.body.recipes ){
