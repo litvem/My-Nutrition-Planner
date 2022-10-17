@@ -123,12 +123,10 @@ export default {
 
       if (this.week < 1 || this.week > 52) {
         this.weekOutsideOfRange = true
-        // this.$router.go()
         return
       }
-      if (this.year < currentYear || this.year > (currentYear + 1)) { // !!issue with year validation
+      if (this.year < currentYear || this.year > (currentYear + 1)) {
         this.yearLessThanCurrent = true
-        // this.$router.go()
       } else {
         Api.post('/profiles/' + this.user.id + '/days', {
           year: this.year,
