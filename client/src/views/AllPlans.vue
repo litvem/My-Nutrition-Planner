@@ -347,7 +347,7 @@ export default {
     margin-top: 57%;
     margin-left: 10%;
     margin-right: 10%;
-    height: 40%;
+    height: fit-content;
     width: 80%;
     padding: 13px 20px;
     border-radius: 8px;
