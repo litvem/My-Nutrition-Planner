@@ -107,7 +107,7 @@
               </b-col>
               <b-col>
                 <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="ingredientsObj[key-1].unit"> -->
-                  <!-- <option value="pcs">pcs</option> -->
+                  <option value="pcs">pcs</option>
                   <option value="grams">grams</option>
                   <option value="kg">kg</option>
                   <option value="ml">ml</option>

@@ -109,7 +109,7 @@ export default {
       console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
     },
     editRecipe() {
-      this.$router.push(`/editRecipe/${this.recipeId}`)
+      this.$router.push(`/editRecipe/${this.$route.params.id}`)
     },
 
     deleteRecipe() {
