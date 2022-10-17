@@ -4025,7 +4025,7 @@
 									"",
 									"pm.test(\"Correct status code\",",
 									"    function(){",
-									"    pm.response.to.have.status(404);",
+									"    pm.response.to.have.status(409);",
 									"});",
 									"",
 									"pm.test(\"Correct day response\", function () {",
@@ -4268,7 +4268,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days?week=2&year=2022",
+							"raw": "{{host}}/api/profiles/:profileId/days?week=3&year=2023",
 							"host": [
 								"{{host}}"
 							],
@@ -4281,11 +4281,11 @@
 							"query": [
 								{
 									"key": "week",
-									"value": "2"
+									"value": "3"
 								},
 								{
 									"key": "year",
-									"value": "2022"
+									"value": "2023"
 								}
 							],
 							"variable": [
@@ -5915,7 +5915,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/profiles/:profileId/days?week=2",
+							"raw": "{{host}}/api/profiles/:profileId/days?week=2&year=2022",
 							"host": [
 								"{{host}}"
 							],
@@ -5929,6 +5929,10 @@
 								{
 									"key": "week",
 									"value": "2"
+								},
+								{
+									"key": "year",
+									"value": "2022"
 								}
 							],
 							"variable": [

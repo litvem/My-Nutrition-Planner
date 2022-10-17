@@ -1,19 +1,31 @@
 <template>
   <div class="AllPlans">
-    <!--title-->
-    <div class="title">
-      <h1>My weekly plans</h1>
-    </div>
-    <!--alert if no recipes-->
-    <div class="alert-holder" v-show="plans.length === 0">
-      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-        </symbol>
-      </svg>
-        <div class="alert alert-warning d-flex align-items-center" role="alert">
-          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            You have no Weekly plans yet.
+    <div id="container-main"  v-if="user">
+      <div class="left">
+        <div class="title">
+          <h1>My weekly plans</h1>
+        </div>
+        <div id="container-left">
+         <div class="list" >
+            <b-row id="alert-holder" v-show="plans.length === 0">
+              <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </symbol>
+              </svg>
+              <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                  You have no Weekly plans yet.
+              </div>
+          </b-row>
+          <b-row v-show="plans.length > 0">
+            <b-col cols="12" lg="6" sm="12" v-for="(plan,index) in plans" v-bind:key="index">
+              <div id="single-plan-display">
+                <h5 v-on:click="goToWeeklyPlan(index)">Week {{plan.week}}  Year {{plan.year}}</h5>
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan(index)"></button>
+              </div>
+            </b-col>
+          </b-row>
         </div>
       </div>
     <!--buttons 'Add plan' and 'Delete all' + form to add plan-->
@@ -25,23 +37,27 @@
         </div>
         <div class="plan-form" v-if="addPlan">
           <label for="week-number" v-if="addPlan">Week number:</label>
-          <b-form-input id="week" v-model="week" v-if="addPlan"/>
+          <b-form-input id="week" v-model="week" type="number" placeholder="Enter week" v-if="addPlan"/>
           <label for="year" v-if="addPlan">Year:</label>
-          <b-form-input id="year" v-model="year" v-if="addPlan" />
+          <b-form-input id="year" v-model="year" type="number" placeholder="Enter year" v-if="addPlan" />
           <button class="save-plan" v-on:click="savePlan" v-if="addPlan">Save</button>
-          <button class="cancel-form" v-if="addPlan" v-on:click="cancelSavePlan">Cancel</button>
-          </div>
-      </div>
-      <!--display all existing plans-->
-      <div class="all-existing-plans">
-        <b-row>
-          <b-col cols="12" lg="6" sm="12" v-for="plan in plans" v-bind:key="plan._id" v-show="plans.length > 0">
-            <div id="single-plan-display">
-              <h5 v-on:click="goToWeeklyPlan()">Week {{plan.week}}  Year {{plan.year}}</h5>
-              <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan"></button>
+          <button class="cancel-form" @click="cancelSavePlan">Cancel</button>
+          <!--alert if week if less that 0 and greater that 52-->
+          <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              The week number should be greater that 0 and less than 52.
             </div>
-          </b-col>
-      </b-row>
+            <!--alert if year is less that current and greater that next year-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Select between current or next year.
+            </div>
+            <!--alert if weekly calendar already exists-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weeklyCalendarAlreadyExists">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Weekly plan for selected week already exists.
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -49,13 +65,23 @@
 
 <script>
 import { Api } from '@/Api'
+
 export default {
   name: 'allPlans',
+  props: ['user'],
   data() {
     return {
       plans: [],
       addPlan: false,
+      week: '',
+      year: '',
       name: 'none',
+      weekOutsideOfRange: false,
+      yearLessThanCurrent: false,
+      weeklyCalendarAlreadyExists: false/* ,
+      <<<  Since we are creating only a week, we basically dont need to specify a day, only if we are able to add
+          some kind of source that allows the user to insert recipes directly here.
+           -- leaving as a comment in case we will use it.<<<<<<<<<<<<<<<<<
       options: [
         { value: 'none', text: 'Select day' },
         { value: 'Monday', text: 'Monday' },
@@ -65,7 +91,7 @@ export default {
         { value: 'Friday', text: 'Friday' },
         { value: 'Saturday', text: 'Saturday' },
         { value: 'Sunday', text: 'Sunday' }
-      ]
+      ] */
     }
   },
   mounted() {
@@ -75,7 +101,6 @@ export default {
       }
     })
       .then(response => {
-        console.log(response.data)
         this.plans = response.data.weeklyCalenders
       })
       .catch(error => {
@@ -83,40 +108,66 @@ export default {
       })
   },
   methods: {
-    goToWeeklyPlan() {
-      localStorage.setItem('week', this.plans.week)
-      localStorage.setItem('year', this.plans.year)
+    goToWeeklyPlan(index) {
+      localStorage.week = this.plans[index].week
+      localStorage.year = this.plans[index].year
       this.$router.push('/weeklyCalendar')
       this.$router.go()
     },
     savePlan() {
-      if (this.name === 'none') {
-        this.name = 'Monday'
-      }
+      const currentYear = new Date().getFullYear()
+      console.log(currentYear + 1)
 
-      Api.post('/profiles/' + localStorage.id + '/days', {
-        year: this.year,
-        week: this.week,
-        name: this.name
-      },
-      {
+      if (this.week < 1 || this.week > 52) {
+        this.weekOutsideOfRange = true
+        return
+      }
+      if (this.year < currentYear || this.year > (currentYear + 1)) {
+        this.yearLessThanCurrent = true
+      } else {
+        Api.post('/profiles/' + this.user.id + '/days', {
+          year: this.year,
+          week: this.week,
+          name: 'Monday'
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.token
+          }
+        })
+          .then(response => {
+            this.addPlan = false
+            this.$router.go()
+          })
+          .catch(error => {
+            console.error(error)
+            if (error.response.status === 409) {
+              this.weeklyCalendarAlreadyExists = true
+            // this.$router.go()
+            }
+          })
+      }
+    },
+    cancelSavePlan() {
+      this.addPlan = false
+      this.$router.go()
+    },
+    deleteAllPlans() {
+      Api.delete('/profiles/' + this.user.id + '/days', {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }
       })
         .then(response => {
-          this.addPlan = false
-          this.$router.go()
+          console.log(response)
         })
         .catch(error => {
           console.error(error)
         })
+      this.$router.go()
     },
-    cancelSavePlan() {
-      this.addPlan = false
-    },
-    deleteAllPlans() {
-      Api.delete('/profiles/' + localStorage.id + '/days', {
+    deleteThisPlan(index) {
+      Api.delete('/profiles/' + this.user.id + '/days?week=' + this.plans[index].week + '&year=' + this.plans[index].year, {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }
@@ -170,13 +221,38 @@ export default {
     margin-right: 65%;
   }
 
-  .buttons-and-form {
+  #single-plan-display {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-right: 0;
+    margin-left: 0;
+    border-radius: 8px;
     display: flex;
-    flex-direction: column;
-    width: 40%;
-    padding-left: 2%;
-    padding-right: 2%;
     align-items: center;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 10px 0px #f7eca57c;
+    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
+  }
+
+  h5 {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    float: center;
+    font-weight: bold;
+    padding: 10px 40px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    &:hover {
+      color: rgb(41, 16, 0);
+      text-decoration: underline;
+    }
+  }
+
+  #alert-holder {
+    margin-left: 1%;
+    margin-right: 25%;
   }
 
   .buttons-and-form .buttons {
@@ -238,11 +314,12 @@ export default {
 
   .plan-form {
     background-color: rgba(255, 255, 255, 0.468);
-    margin-left: 5%;
-    margin-right: 5%;
-    height: 35vh;
-    width: 90%;
-    padding: 25px 25px;
+    margin-top: 57%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: fit-content;
+    width: 80%;
+    padding: 13px 20px;
     border-radius: 8px;
     border: 0;
     outline: 0;
@@ -305,41 +382,6 @@ export default {
     width: 100%;
     display: inline-block;
     padding-left: 1%;
-  }
-
-  #single-plan-display {
-    margin-top: 0.7em;
-    margin-bottom: 0.7em;
-    margin-right: 0;
-    margin-left: 0;
-    padding-right: 5%;
-    width: 95%;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #f7eca57c;
-    background-image: linear-gradient(135deg, #7f7b038c 10%, #47390249 100%);
-  }
-
-  h5 {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    float: center;
-    font-weight: bold;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 100px;
-    color: #fff;
-    font-size: 17px;
-    font-weight: bold;
-    &:hover {
-      color: rgb(41, 16, 0);
-      text-decoration: underline;
-    }
   }
 
   @media(max-width: 768px) {
