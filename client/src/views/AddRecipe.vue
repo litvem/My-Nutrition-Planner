@@ -1,10 +1,10 @@
 <template>
-<div class="addRecipe" >
+<div class="addRecipe">
   <div class="container-fluid">
 
   <div class="row">
     <div class="col">
-      <h1>Create new recipe</h1>
+      <h1 id="page-title">Create new recipe</h1>
       <br>
     </div>
 
@@ -18,9 +18,6 @@
       <div class="mb-3">
         <label for="formFile" class="form-label">Select file</label>
         <input class="form-control" type="file" id="formFile">
-
-        <input type="text" name="imgURL" class="form-control" placeholder="Add image URL" v-model="pictureURL">
-
       </div>
 
       <div>
@@ -42,40 +39,42 @@
     <div class="col" id="right">
       <div class="row">
         <h4>Ingredients list</h4>
-        <br>
-        <br>
         <div class="card-body">
-            <div class="form-inline">
-              <input type="number" placeholder="Amount" v-model="firstAmount">
-              <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="firstUnit">
+          <div class="form-inline">
+              <b-form-input type="number" size="20" placeholder="Amount" v-model="firstAmount"></b-form-input>
+              <b-form-select class="form-select" aria-label="Unit" v-model="firstUnit" :id="key">
                 <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
                 <option value="dl">dl</option>
                 <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="firstItem">
-          </div>
-
+              </b-form-select>
+              <b-form-input type="text" placeholder="Item" v-model="firstItem"></b-form-input>
+            </div>
           <div v-for="key in count" :key="key">
             <div class="form-inline">
-              <input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
-              <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
+              <b-form-input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key"></b-form-input>
+              <b-form-select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
                 <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
                 <option value="dl">dl</option>
                 <option value="l">l</option>
-              </select>
-              <input type="text" placeholder="Item" v-model="items['item'+key]" :id="key">
+              </b-form-select>
+              <b-form-input type="text" placeholder="Item" v-model="items['item'+key]" :id="key"></b-form-input>
             </div>
           </div>
-    <div class="controls">
-      <a href="#" id="add_more_fields" @click="add"><i class="fa fa-plus"></i> Add Item</a>
-      <a href="#" id="remove_fields"  @click="remove"><i class="fa fa-plus"></i> Remove Item</a>
-    </div>
+          <div class="d-flex justify-content-start">
+            <b-button-group style="margin-top: 5px;">
+              <b-button variant="info" class="menu-button"  @click="add">
+                <b-icon icon="plus"></b-icon> Add item</b-button>
+              <br>
+              <b-button variant="danger" class="menu-button" @click="remove">
+                <b-icon icon="x"></b-icon> Remove Item</b-button>
+            </b-button-group>
+          </div>
     </div>
       </div>
       <h4>Instructions</h4>
@@ -108,11 +107,10 @@ export default {
       items: {},
       itemsObj: [],
       firstAmount: null,
-      firstUnit: 'grams',
-      firstItem: 'item',
+      firstUnit: '',
+      firstItem: '',
       recipeName: '',
-      instructions: '',
-      pictureURL: ''
+      instructions: ''
     }
   },
   methods: {
@@ -145,8 +143,7 @@ export default {
         name: this.recipeName,
         category: this.selected,
         items: this.itemsObj,
-        instruction: this.instructions,
-        imagePath: this.pictureURL
+        instruction: this.instructions
       },
       {
         headers: {
@@ -168,12 +165,23 @@ export default {
 
 <style scoped>
   .addRecipe {
-    background-image: url("../assets/shopping-lists-background.jpg");
+    background-image: url("../assets/edit-recipe-background.jpg");
     background-size: cover;
     background-attachment: fixed;
     position: relative;
-    min-height: 93vh;
-    height: 200%;
+    min-height: 90vh;
+    height: 120%;
+    color: white;
+  }
+
+    #page-title {
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    width: 100%;
+    text-align: center;
   }
 
 </style>
