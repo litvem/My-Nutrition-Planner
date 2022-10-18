@@ -172,10 +172,12 @@ router.put(specificDaysPath,checkAuth, function (req, res, next) {
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
-
+    if( (!week && year) || (week && !year) ){
+      return res.status(404).json({message: 'Need year and week'})
+    }
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
     if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
+      return res.status(409).json({message: 'This day already exist'}); 
     }
 
     Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
@@ -202,9 +204,12 @@ router.patch(specificDaysPath,checkAuth, function (req, res, next) {
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
+    if( (!week && year) || (week && !year) ){
+      return res.status(404).json({message: 'Need year and week'})
+    }
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
     if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
+      return res.status(409).json({message: 'This day already exist'}); 
     }
 
     Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
@@ -251,7 +256,9 @@ router.patch(daysPath,checkAuth, function (req, res, next) {
     });
     
     return res.status(200).json({
-      message: 'Succesful update'
+      message: 'Succesful update',
+      newWeek: newWeek,
+      newYear: newYear
     });  
     } 
   }) 
@@ -299,6 +306,7 @@ router.delete(specificDaysPath,checkAuth, function(req, res, next) {
 router.delete(daysPath, checkAuth, function(req, res, next) {
 
   var week = req.query.week;
+  var year = req.query.year;
 
   User.findOne({_id:req.params.profileId})
   .populate('days')
@@ -311,7 +319,7 @@ router.delete(daysPath, checkAuth, function(req, res, next) {
     }
     if(week){
       var filtered = user.days.filter(day =>{
-        return day.week == week
+        return day.week === week && day.year === year
       }) 
 
       Day.deleteMany({ "_id":{ $in: filtered} }, function(err){

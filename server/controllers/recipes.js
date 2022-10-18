@@ -64,8 +64,7 @@ router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, 
         name: req.body.name,
         category: req.body.category,
         image: `${basePath}${fileName}`,
-        imagePath: req.file.path, 
-        tag: req.body.tag,
+        imagePath: req.file.path,
         instruction: req.body.instruction,
         items:req.body.items
       });
@@ -89,7 +88,6 @@ router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, 
           category: req.body.category,
           image: defaultImage,
           imagePath: defaultImagePath,
-          tag: req.body.tag,
           instruction: req.body.instruction,
           items:req.body.items
         });

@@ -4,12 +4,11 @@
       <div class="form-body">
         <div class="form-holder">
           <div class="form-content">
-            <div class="form-items" v-if="user">
+            <div class="form-items sm" v-if="user">
               <h3> {{user.username}}'s Profile</h3>
-              <hr>
               <!-- USERNAME-->
               <!-- username field-->
-              <div id="userNameInput" class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
+              <div id="userNameInput" class="username col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
                 <input class="form-control" type="text" v-if="!editUsername" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username">
                 <input type="text" v-if="editUsername" v-model="username" id="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
                 <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
@@ -17,7 +16,7 @@
                 <button class="btn edit-btn btn-sm" @click="editUsername = !editUsername" v-if="!editUsername">Edit</button> <!-- <i class="bi bi-pencil-square"></i>  -->
               </div>
               <!-- save or cancel-->
-              <div class="username col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editUsername">
+              <div class="username col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editUsername">
                 <button class="btn save-btn btn-sm " @click="changeUsername">Save</button>
                 <button class="btn cancel-btn btn-sm"  @click="cancelUsernameEdit()">Cancel</button>
               </div>
@@ -28,12 +27,12 @@
               </div>
 
 <!---------------------------------------PASSWORD-------------------------------------------------------------------------->
-              <div class="text-center mt-5 mb-2 align-items-center gap-2" v-if="!editPassword">
+              <div class="text-center sm mt-5 mb-2 align-items-center gap-2" v-if="!editPassword">
               <button class="btn editPassword-btn" @click="editPassword = !editPassword">Edit password</button>
               </div>
 
               <form v-if="editPassword">
-                <div class="password-edit col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
+                <div class="password-edit col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
                   <b-form-input type="password" id="newPassword" v-model="password" v-if="editPassword" placeholder="Password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2"/>
 
                   <b-form-input id="newPasswordConfirm" type="password" v-model="confirmPassword" v-if="editPassword" placeholder="Confirm password" class="form-control flex-row mt-2 mb-2 align-items-center gap-2"/>
@@ -54,7 +53,7 @@
                   <h5>Password changed.</h5>
                 </b-alert>
               </form>
-              <div class="password col-md-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
+              <div class="password col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2" v-if="editPassword">
                 <button class="btn save-btn btn-sm" @click="changePassword">Save</button>
                 <button class="btn cancel-btn btn-sm"  @click="cancelPasswordEdit">Cancel</button>
               </div>
@@ -359,7 +358,7 @@ export default {
     left: 0;
     top: 0;
     transform: translate(-100%, 0) rotate(10deg);
-    transform-origin: top left;
+    transform-origin: center;
     transition: .2s transform ease-out;
     will-change: transform;
     z-index: -1;
@@ -371,7 +370,7 @@ export default {
     &:hover{
     border: 2px solid transparent;
     color: rgb(255, 255, 255);
-    transform: scale(1.05);
+    transform: scale(1.02);
     will-change: transform;
     font-weight: bold;
     }
@@ -380,22 +379,26 @@ export default {
 
   @media(max-width: 768px) {
     .form-holder {
-      top: 5%;
+      top: -5%;
       right: 0%; // media remove
     }
-    .form-items {
-      border: 3px solid #fff;
-      padding: 10px;
-      display: inline-block;
-      width: 80%;
-      max-width: 200px;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      text-align: left;
-      -webkit-transition: all 0.4s ease;
-      transition: all 0.4s ease;
-      flex-direction: column;
+    .form-holder .form-content{
+
+    }
+    .form-holder .form-content .form-items {
+    border: 3px solid #fff;
+    padding: 40px;
+    display: grid;
+    width: 100%;
+    min-width: 350px;
+    border-radius: 10px;
+    text-align: left;
+    transition: all 0.4s ease;
+}
+    h3 {
+      font-size: 20px;
+      font-weight: 200;
+      margin-bottom: 5px;
     }
   }
 

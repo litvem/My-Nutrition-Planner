@@ -7,10 +7,11 @@
       <div class="form-body sm">
         <div class="form-holder sm">
           <div class="form-content sm">
+            <!-- EDIT YEAR -->
             <div class="form-items sm" v-if="user">
               <div class="editWeeks row-sm-3 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
-                <label for="week">Week: </label>
-                <input class="form-control" type="text" v-if="!editWeek" :disabled="!editWeek" :class="{view: !editWeek}" :value="days[0].week">
+                <label  for="week">Week: </label>
+                <input class="form-control" type="text" v-if="!editWeek" :disabled="!editWeek" :class="{view: !editWeek}" :value="currentWeek">
                 <input type="text" v-if="editWeek" v-model="week" id="thisWeek" name="week" class="form-control"/>
                 <button class="btn edit-btn btn-sm" @click="editWeek = !editWeek" v-if="!editWeek">Edit</button>
               </div>
@@ -19,40 +20,41 @@
                 <button class="btn cancel-btn btn-sm"  @click="editWeek=false">Cancel</button>
               </div>
             </div>
+            <!-- EDIT YEAR -->
             <div class="form-items sm" v-if="user">
-              <div class="editWeeks row-sm-3 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
-                <label for="week">Year: </label>
-                <input class="form-control" type="text" v-if="!editYear" :disabled="!editYear" :class="{view: !editYear}" :value="days[0].year">
-                <input type="text" v-if="editYear" v-model="year" id="thisYear" name="year" class="form-control"/>
+              <div class="editWeeks row-sm-3 d-flex flex-row mt-2 mb-2 ml-2 align-items-center gap-2">
+                <label id="year" for="week"> Year: </label>
+                <input class="form-control" type="text" v-if="!editYear" :disabled="!editYear" :class="{view: !editYear}" :value="currentYear">
+                <input type="text" v-if="editYear" v-model="year" id="editYear" name="year" class="form-control"/>
                 <button class="btn edit-btn btn-sm" @click="editYear = !editYear" v-if="!editYear">Edit</button>
               </div>
               <div class="editWeeks col-sm-12 d-flex flex-row mt-2 mb-2 ml-5 align-items-center gap-2" v-if="editYear">
                 <button class="btn save-btn btn-sm " @click="changeYear()">Save</button>
                 <button class="btn cancel-btn btn-sm"  @click="editYear=false">Cancel</button>
-        <!--alert if week if less that 0 and greater that 52-->
-                <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
-                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    The week number should be greater that 0 and less than 52.
-                </div>
-        <!--alert if year is less that current and greater that next year-->
-                <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
-                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    Select between current or next year.
-                </div>
-        <!--alert if weekly calendar already exists-->
-                <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekCalExist">
-                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                    Weekly plan for selected week already exists.
-                </div>
               </div>
+            </div>
+            <!--alert if week if less that 0 and greater that 52-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                The week number should be greater that 0 and less than 52.
+            </div>
+        <!--alert if year is less that current and greater that next year-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                Select between current or next year.
+            </div>
+        <!--alert if weekly calendar already exists-->
+            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekCalExist">
+              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                Weekly plan for selected week already exists.
             </div>
           </div>
         </div>
       </div>
-      <div class="calendar md">
-        <div class="weekDays md">
+      <div class="calendar sm">
+        <div class="weekDays ">
 <!---------------MÅNDAG----------->
-          <div class="day mon ">
+          <div class="day" >
             <div class="day-week">
               <p class="dayName ">Mon</p>
             </div>
@@ -65,7 +67,7 @@
             </div>
           </div>
 <!---------------TISDAG----------->
-            <div class="day tues">
+            <div class="day">
               <div class="day-week">
                 <p class="dayName">Tues</p>
               </div>
@@ -78,7 +80,7 @@
               </div>
             </div>
 <!---------------ONSDAG----------->
-          <div class="day wed">
+          <div class="day">
             <div class="day-week">
               <p class="dayName">Wed</p>
             </div>
@@ -91,7 +93,7 @@
               </div>
             </div>
 <!---------------TORSDAG----------->
-          <div class="day thurs">
+          <div class="day">
             <div class="day-week">
               <p class="dayName">Thurs</p>
             </div>
@@ -104,11 +106,11 @@
               </div>
             </div>
 <!---------------FREDAG----------->
-          <div class="day fri">
+          <div class="day">
             <div class="day-week">
               <p class="dayName">Fri</p>
             </div>
-            <div class="daysRecipe"  v-if=fridayRecipes.length > 0">
+            <div class="daysRecipe"  v-if="fridayRecipes.length > 0">
               <div class="events" v-for="friRecipes in fridayRecipes" v-bind:key="friRecipes._id">
                 <div class="event start-10 end-12 recipeCard">
                   <p class="recipe">{{friRecipes.name}} </p>
@@ -117,7 +119,7 @@
             </div>
           </div>
 <!---------------LORDAG----------->
-          <div class="day thurs">
+          <div class="day">
             <div class="day-week">
               <p class="dayName">Sat</p>
             </div>
@@ -130,7 +132,7 @@
               </div>
             </div>
 <!---------------SÖNDAG----------->
-          <div class="day thurs">
+          <div class="day">
             <div class="day-week">
               <p class="dayName">Sun</p>
             </div>
@@ -167,6 +169,8 @@ export default {
       yearLessThanCurrent: false,
       weekCalExist: false,
       days: [],
+      currentWeek: '',
+      currentYear: '',
       week: null,
       year: null,
       mondayRecipes: [],
@@ -183,9 +187,6 @@ export default {
     if (localStorage.getItem('week') === null || localStorage.getItem('year') === null) {
       this.$router.push('/allPlans')
     } else {
-      this.week = localStorage.week
-      this.year = localStorage.year
-
       Api.get('/profiles/' + localStorage.id + '/days?week=' + localStorage.week + '&year=' + localStorage.year, {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
@@ -204,11 +205,13 @@ export default {
         })
         .then(() => {
           const weekDays = this.days
-          for (const el of weekDays) {
-            if (el._id !== 'none') {
-              this.daysID.push(el._id)
+          for (const day of weekDays) {
+            if (day._id !== 'none') {
+              this.daysID.push(day._id)
             }
           }
+          this.currentWeek = localStorage.week
+          this.currentYear = localStorage.year
           /* console.log('dayID:' + this.daysID)
           console.log('result:' + this.daysID.length) */
           console.log('mounted ' + this.days[0].week)
@@ -222,7 +225,6 @@ export default {
   methods: {
     changeWeek() {
       console.log(' edit ' + this.week)
-      console.log(' edit ' + this.year)
       console.log(' edit ' + this.daysID)
 
       this.editWeek = false
@@ -242,23 +244,24 @@ export default {
           Authorization: 'Bearer ' + localStorage.token
         }
       })
-        .then(() => {
-          this.editWeek = false
-          this.editYear = false
-          localStorage.week = this.week
-          localStorage.year = this.year
-          this.$router.go()
+        .then(response => {
+          if (response.data.status === 200) {
+            this.editWeek = false
+            this.editYear = false
+            localStorage.setItem('week', response.data.newWeek)
+            localStorage.setItem('year', response.data.newYear)
+            // this.$router.go()
+          }
         })
         .catch(error => {
           console.error(error)
           if (error.response.status === 409) {
             this.weekCalExist = true
-          // this.$router.go()
+            this.$router.go()
           }
         })
     },
     changeYear() {
-      console.log(' edit ' + this.week)
       console.log(' edit ' + this.year)
       console.log(' edit ' + this.daysID)
 
@@ -277,13 +280,15 @@ export default {
           Authorization: 'Bearer ' + localStorage.token
         }
       })
-        .then(() => {
-          this.editWeek = false
-          this.editYear = false
-          localStorage.week = this.week
-          localStorage.year = this.year
-          this.$router.go()
-          console.log('in the patch')
+        .then(response => {
+          console.log(' edited ' + this.currentWeek)
+          console.log(' edited ' + this.currentWeek)
+          if (response.data.status === 200) {
+            this.editWeek = false
+            this.editYear = false
+            localStorage.setItem('week', response.data.newWeek)
+            localStorage.setItem('year', response.data.newYear)
+          }
         })
         .catch(error => {
           console.error(error)
@@ -304,7 +309,7 @@ export default {
     text-rendering: optimizeLegibility;
   }
 .weeklyCal {
-   background-image: url("../assets/weekDays.jpg");
+  background-image: url("../assets/weekDays.jpg");
   background-size: cover;
   background-attachment: fixed;
   position: relative;
@@ -320,6 +325,9 @@ export default {
     color: #ffffff;
     font-size: 4em;
     font-weight: bold;
+    @media(max-width: 600px){
+      font-size: 3em;
+    }
     }
   }
 }
@@ -350,6 +358,9 @@ export default {
     margin-top: 2%;
     padding: 10px;
     flex-direction:row ;
+    @media(max-width: 600px){
+      display: block;
+    }
 
   .form-items {
    // border: 3px solid #fff;
@@ -361,9 +372,10 @@ export default {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
    // border-radius: 10px;
-    text-align: left;
+    text-align: cen;
     -webkit-transition: all 0.4s ease;
     transition: all 0.4s ease;
+
   }
 
 label{
@@ -371,6 +383,9 @@ label{
   font-size: 1.5em;
   margin-right: 2%;
   margin-left:10%;
+  @media(max-width: 600px){
+    font-size: 1.2em;
+  }
 }
 .form-control{
   width: 15%;
@@ -401,6 +416,12 @@ label{
   }
 }
 
+.alert{
+  margin-left: 3%;
+  margin-right: 65%;
+
+}
+
 // CALENDER LAYOUT
 .row .calendar {
   display: grid;
@@ -412,6 +433,9 @@ label{
     grid-column: 2;
     gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .day{
+    min-height: 200px !important;
   }
   .day-week {
     display: flex;
@@ -427,12 +451,13 @@ label{
   .events {
     display: grid;
     border-radius: 5px;
+    padding: 5px;
   }
 
   .event {
     border: 3px solid #0f8a13;
     border-radius: 5px;
-    padding: 0.5rem;
+    padding: 1 rem;
     margin: 0 0.8rem;
     margin-top:5%;
     background: rgba(254, 254, 254, 0.38);
@@ -498,6 +523,15 @@ label{
     .dayName{
       margin-left: 20%;; // CHANGE TEXT g
     }
+
+    .days{
+      border: 0px solid #ffffff00;
+    }
+  }
+
+  .dayName{
+    font-size: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.793);
   }
   .events{
  /*    padding-block: 2px; */
@@ -507,6 +541,7 @@ label{
     text-justify: center;
 
   }
+
 }
 
 }
