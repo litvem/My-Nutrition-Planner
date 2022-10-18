@@ -1,5 +1,6 @@
 <template>
-<div id ="background" class="container-fluid">
+<div class="addRecipe" >
+  <div class="container-fluid">
 
   <div class="row">
     <div class="col">
@@ -47,6 +48,7 @@
             <div class="form-inline">
               <input type="number" placeholder="Amount" v-model="firstAmount">
               <select class="form-select" aria-label="Unit" aria-placeholder="Unit" v-model="firstUnit">
+                <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
@@ -60,6 +62,7 @@
             <div class="form-inline">
               <input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key">
               <select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
+                <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
                 <option value="ml">ml</option>
@@ -78,6 +81,7 @@
       <h4>Instructions</h4>
       <textarea class="form-control" id="instructions" rows="10" v-model="instructions"></textarea>
     </div>
+  </div>
   </div>
   </div>
 
@@ -163,8 +167,13 @@ export default {
 </script>
 
 <style scoped>
-    h1 {
-        color:black
-    }
+  .addRecipe {
+    background-image: url("../assets/shopping-lists-background.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 93vh;
+    height: 200%;
+  }
 
 </style>
