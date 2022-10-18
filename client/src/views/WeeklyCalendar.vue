@@ -10,8 +10,8 @@
             <!-- EDIT YEAR -->
             <div class="form-items sm" v-if="user">
               <div class="editWeeks row-sm-3 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
-                <label  for="week">Week: </label>
-                <input class="form-control" type="text" v-if="!editWeek" :disabled="!editWeek" :class="{view: !editWeek}" :value="currentWeek">
+                <label id="week" for="week">Week: </label>
+                <input class="form-control" type="text" v-if="!editWeek" :disabled="!editWeek" :class="{view: !editWeek}" :value="this.$route.params.week">
                 <input type="text" v-if="editWeek" v-model="week" id="thisWeek" name="week" class="form-control"/>
                 <button class="btn edit-btn btn-sm" @click="editWeek = !editWeek" v-if="!editWeek">Edit</button>
               </div>
@@ -23,31 +23,34 @@
             <!-- EDIT YEAR -->
             <div class="form-items sm" v-if="user">
               <div class="editWeeks row-sm-3 d-flex flex-row mt-2 mb-2 ml-2 align-items-center gap-2">
-                <label id="year" for="week"> Year: </label>
-                <input class="form-control" type="text" v-if="!editYear" :disabled="!editYear" :class="{view: !editYear}" :value="currentYear">
-                <input type="text" v-if="editYear" v-model="year" id="editYear" name="year" class="form-control"/>
-                <button class="btn edit-btn btn-sm" @click="editYear = !editYear" v-if="!editYear">Edit</button>
+                <label id="year" for="Year"> Year: </label>
+                <input class="form-control" type="text" v-if="!editYear" :disabled="!editYear" :class="{view: !editYear}" :value="this.$route.params.year">
+                <input type="text" v-if="editYear" v-model="year" id="thisYear" name="year" class="form-control"/>
+                <button class="btn edit-btn btn-sm" @click="editYear = !editYear" v-if="!editYear">&nbsp;Edit</button>
               </div>
               <div class="editWeeks col-sm-12 d-flex flex-row mt-2 mb-2 ml-5 align-items-center gap-2" v-if="editYear">
                 <button class="btn save-btn btn-sm " @click="changeYear()">Save</button>
-                <button class="btn cancel-btn btn-sm"  @click="editYear=false">Cancel</button>
+                <button class="btn cancel-btn btn-sm"  @click="editYear=!editYear">Cancel</button>
               </div>
             </div>
-            <!--alert if week if less that 0 and greater that 52-->
-            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                The week number should be greater that 0 and less than 52.
-            </div>
-        <!--alert if year is less that current and greater that next year-->
-            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                Select between current or next year.
-            </div>
-        <!--alert if weekly calendar already exists-->
-            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekCalExist">
-              <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                Weekly plan for selected week already exists.
-            </div>
+          </div>
+                      <!--alert if week if less that 0 and greater that 52-->
+          <div class="alert alert-warning d-flex align-items-center" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0"
+          @dismiss-count-down="countDownChanged" role="alert" v-if="weekOutsideOfRange">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              The week number should be greater that 0 and less than 52.
+          </div>
+      <!--alert if year is less that current and greater that next year-->
+          <div class="alert alert-warning d-flex align-items-center" :show="dismissCountDown"  variant="success" @dismissed="dismissCountDown=0"
+          @dismiss-count-down="countDownChanged" role="alert" v-if="yearLessThanCurrent">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Select between current or next year.
+          </div>
+      <!--alert if weekly calendar already exists-->
+          <div class="alert alert-warning d-flex align-items-center" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0"
+          @dismiss-count-down="countDownChanged"  role="alert" v-if="weekCalExist">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+              Weekly plan for selected week already exists.
           </div>
         </div>
       </div>
@@ -61,7 +64,9 @@
              <div class="daysRecipe"  v-if="mondayRecipes.length > 0">
               <div class="events" v-for="monRecipes in mondayRecipes" v-bind:key="monRecipes._id">
                 <div class="event start-10 end-12 recipeCard">
+                  <b-icon icon="trash"></b-icon>
                   <p class="recipe">{{monRecipes.name}}</p>
+
                 </div>
               </div>
             </div>
@@ -74,6 +79,7 @@
                <div class="daysRecipe"  v-if="tuesdayRecipes.length > 0">
                 <div class="events" v-for="tuesRecipes in tuesdayRecipes" v-bind:key="tuesRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{tuesRecipes.name}} </p>
                   </div>
                 </div>
@@ -87,6 +93,7 @@
              <div class="daysRecipe"  v-if="wednesdayRecipes.length > 0">
                 <div class="events" v-for="wedRecipes in wednesdayRecipes" v-bind:key="wedRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{wedRecipes.name}} </p>
                   </div>
                 </div>
@@ -100,6 +107,7 @@
              <div class="daysRecipe"  v-if="thursdayRecipes.length > 0">
                 <div class="events" v-for="thursRecipes in thursdayRecipes" v-bind:key="thursRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{thursRecipes.name}} </p>
                   </div>
                 </div>
@@ -110,7 +118,7 @@
             <div class="day-week">
               <p class="dayName">Fri</p>
             </div>
-            <div class="daysRecipe"  v-if="fridayRecipes.length > 0">
+            <div class="daysRecipe" v-if="fridayRecipes.length > 0">
               <div class="events" v-for="friRecipes in fridayRecipes" v-bind:key="friRecipes._id">
                 <div class="event start-10 end-12 recipeCard">
                   <p class="recipe">{{friRecipes.name}} </p>
@@ -126,7 +134,9 @@
               <div class="daysRecipe" v-if="saturdayRecipes.length > 0">
                 <div class="events" v-for="satRecipes in saturdayRecipes" v-bind:key="satRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{satRecipes.name}} </p>
+
                   </div>
                 </div>
               </div>
@@ -159,7 +169,7 @@
 import { Api } from '@/Api'
 
 export default {
-  name: 'profile',
+  name: 'weeklyCalendar',
   props: ['user'],
   data() {
     return {
@@ -168,11 +178,11 @@ export default {
       weekOutsideOfRange: false,
       yearLessThanCurrent: false,
       weekCalExist: false,
+      dissmissSecs: 3,
+      dismissCountDown: 0,
       days: [],
-      currentWeek: '',
-      currentYear: '',
-      week: null,
-      year: null,
+      week: '',
+      year: '',
       mondayRecipes: [],
       tuesdayRecipes: [],
       wednesdayRecipes: [],
@@ -184,87 +194,66 @@ export default {
     }
   },
   mounted() {
-    if (localStorage.getItem('week') === null || localStorage.getItem('year') === null) {
-      this.$router.push('/allPlans')
-    } else {
-      Api.get('/profiles/' + localStorage.id + '/days?week=' + localStorage.week + '&year=' + localStorage.year, {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.token
+    Api.get('/profiles/' + localStorage.id + '/days?week=' + this.$route.params.week + '&year=' + this.$route.params.year, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.token
+      }
+    })
+      .then(response => {
+        this.days = response.data.days
+
+        this.mondayRecipes = this.days[0].recipes
+        this.tuesdayRecipes = this.days[1].recipes
+        this.wednesdayRecipes = this.days[2].recipes
+        this.thursdayRecipes = this.days[3].recipes
+        this.fridayRecipes = this.days[4].recipes
+        this.saturdayRecipes = this.days[5].recipes
+        this.sundayRecipes = this.days[6].recipes
+      })
+      .then(() => {
+        const weekDays = this.days
+        for (const day of weekDays) {
+          if (day._id !== 'none') {
+            this.daysID.push(day._id)
+          }
         }
       })
-        .then(response => {
-          this.days = response.data.days
-
-          this.mondayRecipes = this.days[0].recipes
-          this.tuesdayRecipes = this.days[1].recipes
-          this.wednesdayRecipes = this.days[2].recipes
-          this.thursdayRecipes = this.days[3].recipes
-          this.fridayRecipes = this.days[4].recipes
-          this.saturdayRecipes = this.days[5].recipes
-          this.sundayRecipes = this.days[6].recipes
-        })
-        .then(() => {
-          const weekDays = this.days
-          for (const day of weekDays) {
-            if (day._id !== 'none') {
-              this.daysID.push(day._id)
-            }
-          }
-          this.currentWeek = localStorage.week
-          this.currentYear = localStorage.year
-          /* console.log('dayID:' + this.daysID)
-          console.log('result:' + this.daysID.length) */
-          console.log('mounted ' + this.days[0].week)
-          console.log('mounted ' + this.days[0].year)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
+      .catch(error => {
+        console.error(error)
+      })
+      // }
   },
   methods: {
     changeWeek() {
-      console.log(' edit ' + this.week)
-      console.log(' edit ' + this.daysID)
-
-      this.editWeek = false
-
       if (this.week < 1 || this.week > 52) {
         this.weekOutsideOfRange = true
-        return
+      } else {
+        Api.patch('/profiles/' + localStorage.id + '/days', {
+          year: this.$route.params.year,
+          week: this.week,
+          weekdays: this.daysID
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.token
+          }
+        })
+          .then(response => {
+            if (response.data.status === 200) {
+              this.editWeek = false
+              this.editYear = false
+              this.$router.push(`/weeklyCalendar/${this.$route.params.year}/${this.week}`)
+            }
+          })
+          .catch(error => {
+            console.error(error)
+            if (error.response.status === 409) {
+              this.weekCalExist = true
+            }
+          })
       }
-
-      Api.patch('/profiles/' + localStorage.id + '/days', {
-        year: localStorage.year,
-        week: this.week,
-        weekdays: this.daysID
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.token
-        }
-      })
-        .then(response => {
-          if (response.data.status === 200) {
-            this.editWeek = false
-            this.editYear = false
-            localStorage.setItem('week', response.data.newWeek)
-            localStorage.setItem('year', response.data.newYear)
-            // this.$router.go()
-          }
-        })
-        .catch(error => {
-          console.error(error)
-          if (error.response.status === 409) {
-            this.weekCalExist = true
-            this.$router.go()
-          }
-        })
     },
     changeYear() {
-      console.log(' edit ' + this.year)
-      console.log(' edit ' + this.daysID)
-
       const currentYear = new Date().getFullYear()
       if (this.year < currentYear || this.year > (currentYear + 1)) {
         this.yearLessThanCurrent = true
@@ -272,7 +261,7 @@ export default {
 
       Api.patch('/profiles/' + localStorage.id + '/days', {
         year: this.year,
-        week: localStorage.week,
+        week: this.$route.params.week,
         weekdays: this.daysID
       },
       {
@@ -286,17 +275,23 @@ export default {
           if (response.data.status === 200) {
             this.editWeek = false
             this.editYear = false
-            localStorage.setItem('week', response.data.newWeek)
-            localStorage.setItem('year', response.data.newYear)
+            this.$router.push(`/weeklyCalendar/${this.year}/${this.$route.params.week}`)
           }
         })
         .catch(error => {
           console.error(error)
           if (error.response.status === 409) {
             this.weekCalExist = true
-            this.$router.go()
           }
         })
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert() {
+      this.dismissCountDown = this.dissmissSecs
+      this.weekCalExist = false
+      this.$router.go(0)
     }
   }
 }
@@ -433,6 +428,7 @@ label{
     grid-column: 2;
     gap: 5px;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
   }
   .day{
     min-height: 200px !important;
@@ -461,15 +457,18 @@ label{
     margin: 0 0.8rem;
     margin-top:5%;
     background: rgba(254, 254, 254, 0.38);
-  }
+}
 
   .recipe {
     color: rgb(0, 0, 0);
     text-align: center;
-    font-weight: 600;
-    margin-bottom: 0.25rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+    z-index: -10;
+    }
   }
-}
 
 .space,
 .day-week {

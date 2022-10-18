@@ -21,7 +21,7 @@
               <ul class="navbar-links">
               <li><b-link class="link" :to="{ name: 'addRecipe' }">AddRecipe</b-link></li>
               <li><b-link class="link" :to="{ name: 'allPlans' }">WeeklyPlans</b-link></li>
-              <li><b-link class="link" :to="{ name: 'shoppingLists' }">ShoppingList</b-link></li>
+              <li><b-link class="link" :to="{ name: 'shoppingList' }">ShoppingList</b-link></li>
               <li><b-link class="link" :to="{ name: 'profile' }">Profile</b-link></li>
               <li><a href="/" @click="handleLogOut()" class="link">Logout</a></li>
 

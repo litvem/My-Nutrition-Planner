@@ -60,7 +60,7 @@
             </div>
 
             <div class="delete-box d-flex mt-10 mb-2 align-items-center gap-2 justify-content-md-end"  v-if="user">
-                <button class="btn delete-btn btn-sm">Delete account</button> <!-- <i class="bi bi-trash3-fill"></i>-->
+                <button class="btn delete-btn btn-sm"><b-icon icon="trash"></b-icon>&nbsp;&nbsp;&nbsp;Delete account</button> <!-- <i class="bi bi-trash3-fill"></i>-->
                 <!-- This one is working tho <button class="btn btn-link"><i class="fas fa-user"></i> Log In</button> -->
             </div>
           </div>
@@ -349,7 +349,8 @@ export default {
   @media(max-width: 768px) {
     .form-body{
     flex-direction: row;
-    min-height: 97vh;
+    min-height: 80vh;
+
   }
     .form-holder {
       top: 5%;
@@ -360,14 +361,21 @@ export default {
     }
     .form-holder .form-content .form-items {
     border: 3px solid #fff;
+    margin-top:-20%;
     padding: 40px;
     display: grid;
     width: 100%;
-    min-width: 350px;
     border-radius: 10px;
     text-align: left;
     transition: all 0.4s ease;
-}
+      @media(max-width: 575px){
+        margin-top:-50%;
+        min-width: 330px;
+        margin-left: 5%;
+        margin-right: 5%;
+      }
+    }
+
     h3 {
       font-size: 20px;
       font-weight: 200;

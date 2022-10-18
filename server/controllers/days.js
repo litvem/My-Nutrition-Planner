@@ -92,7 +92,7 @@ router.get(daysPath,function(req,res,next){
           weekdays[weekdayNames.indexOf(el.name.toLowerCase())] = el
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         days: weekdays,
         links: {
           rel: "self",
@@ -194,7 +194,7 @@ router.put(specificDaysPath,checkAuth, function (req, res, next) {
   }) 
 });
 
-// patch
+// patch -  unique
 router.patch(specificDaysPath,checkAuth, function (req, res, next) {
   User.findById(req.params.profileId)
   .then(user =>{
@@ -208,8 +208,10 @@ router.patch(specificDaysPath,checkAuth, function (req, res, next) {
       return res.status(404).json({message: 'Need year and week'})
     }
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
+
     if(checkDay.length > 0) {
-      return res.status(409).json({message: 'This day already exist'}); 
+      console.log(checkDay)
+      return res.status(409).json({message:"Day already exist"});
     }
 
     Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
@@ -240,15 +242,15 @@ router.patch(daysPath,checkAuth, function (req, res, next) {
       return res.status(404).json({message: 'Day not found'})
     }
     if( (!newWeek && newYear) || (newWeek && !newYear) ){
-      return res.status(404).json({message: 'Need year and week'})
+      return res.status(404).json({message: 'Year and week are needed'})
     }
 
-    var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week)
-    if(checkDay.length > 0) {
-      return res.status(409).json({message: 'This day already exist'}); 
+    var checkDay =  user.days.filter(days => days.year == req.body.year && days.week == req.body.week)
+    console.log(checkDay.length)
+    if(checkDay.length === 0) {
+      console.log(checkDay)
+      return res.status(409).json({message:"Day already exist"});
     }
-    console.log(newYear)
-    console.log(newWeek)
 
     if(newWeek && newYear){
     Day.updateMany({ "_id":{ $in: req.body.weekdays} },{$set:{week: newWeek, year: newYear}}, function(err){
