@@ -84,7 +84,8 @@ export default {
       recipe: null,
       year: '',
       day: '',
-      weekNumber: ''
+      weekNumber: '',
+      allDays: []
     }
   },
   methods: {
@@ -106,8 +107,22 @@ export default {
           alert('Warning: Recipe was not added to plan!')
         }
       }).catch(error => {
-        if (error.status === 409) {
-          // Api.patch()
+        // TODO test patch
+        if (error.responseHttpStatus === 409) {
+          Api.get('/profiles/' + localStorage.id + '/days', {
+            headers: {
+              Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+          }).then(response => {
+            this.allDays = response.data.weeklyCalenders
+            console.log(this.allDays)
+            this.allDays.forEach(day => {
+              if (day.name === this.name && day.week === this.week && day.year === this.year) {
+                console.log('patch')
+                // Api.patch()
+              }
+            })
+          })
         }
       })
     }
