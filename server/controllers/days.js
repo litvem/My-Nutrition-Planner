@@ -20,8 +20,7 @@ router.post(daysPath, checkAuth, function(req, res, next) {
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
 
     if(checkDay.length > 0) {
-      console.log(checkDay)
-      res.status(404).json({message:"Day already exist"});
+      res.status(409).json({message:"Day already exist"});
     } else {
       var day = new Day(req.body);
       day.save()
@@ -265,22 +264,23 @@ router.delete(specificDaysPath,checkAuth, function(req, res, next) {
 router.delete(daysPath, checkAuth, function(req, res, next) {
 
   var week = req.query.week;
+  var year = req.query.year;
 
   User.findOne({_id:req.params.profileId})
   .populate('days')
-  .then( user =>{
+  .then( user => {
     if(user === null){
       return res.status(404).json({message: 'User not found'}); 
     }
     if(user.days.length === 0){
       return res.status(404).json({message: 'Days not found'})
     }
-    if(week){
-      var filtered = user.days.filter(day =>{
-        return day.week == week
+    if(week && year){
+      var filtered = user.days.filter(day => {
+        return day.week == week && day.year == year
       }) 
 
-      Day.deleteMany({ "_id":{ $in: filtered} }, function(err){
+      Day.deleteMany({ "_id":{ $in: filtered} }, function(err) {
         if(err) return next(err);
       });
 

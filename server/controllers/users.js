@@ -149,7 +149,7 @@ router.get(specificUserPath, checkAuth, function(req,res,next){
     res.status(200).json({
       // nrOfUsers:users.length, 
       username: user.username,
-      userId: user._id,
+      id: user._id,
       recipes:user.recipes,
       shoppinglists: user.shoppinglists,
       days: user.days,

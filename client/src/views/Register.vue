@@ -164,14 +164,19 @@ export default {
   }
 
   @media(max-width: 768px) {
+
+    .box-form .left {
+      width: 100%;
+      min-height: 90vh;
+    }
+    h1 {
+      margin-top: 50%;
+    }
     .box-form .form-container {
       width: 100%;
       z-index: 1;
       justify-content: center;
       align-items: center;
-      }
-    .box-form .left {
-      width: 100%;
     }
   }
 </style>
