@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     addToDay() {
-      Api.post('profiles/' + localStorage.id + '/days', {
+      Api.post('/profiles/' + localStorage.id + '/days', {
         year: this.year,
         name: this.day,
         week: this.weekNumber,
@@ -104,10 +104,15 @@ export default {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
+      }).then(response => {
+        if (response.status === 201) {
+          alert('Recipe was added to plan in week ' + this.weekNumber)
+        } else if (response.status === 404) {
+          alert('Warning: Recipe was not added to plan!')
+        }
       }).catch(error => {
-        alert('Warning: Recipe not added to day ' + error)
+        alert('Warning: Recipe was not added to plan! ' + error)
       })
-      console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
     },
     editRecipe() {
       this.$router.push(`/editRecipe/${this.$route.params.id}`)
@@ -115,15 +120,19 @@ export default {
 
     deleteRecipe() {
       localStorage.setItem('recipeID', this.recipe.recipe[0]._id)
-      Api.delete('profiles/' + localStorage.id + '/recipes/' + localStorage.recipeID, {
+      Api.delete('/profiles/' + localStorage.id + '/recipes/' + localStorage.recipeID, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
+      }).then(response => {
+        if (response.status === 201) {
+          alert('Recipe was sucesfully deleted!')
+          this.$router.push('/userHome')
+          return this.$router.go()
+        }
       }).catch(error => {
-        alert('Warning: ' + error)
+        alert('Warning: Could not delete recipe' + error)
       })
-      this.$router.push('/userHome')
-      return this.$router.go()
     }
   }
 }

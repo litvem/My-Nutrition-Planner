@@ -280,6 +280,7 @@ export default {
             }
           })
             .catch(error => {
+              alert('Recipe was not edited!')
               console.log(error)
             })
         } else {

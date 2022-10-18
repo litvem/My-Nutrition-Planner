@@ -176,7 +176,7 @@ export default {
         console.log(response)
         console.log(response.data.recipeCreated._id)
 
-        if (response.status === 200 || response.status === 201) {
+        if (response.status === 201) {
           if (this.formData !== null) {
             Api.patch('/profiles/' + localStorage.id + '/recipes/' + response.data.recipeCreated._id, this.formData, {
               headers: this.formHeaders
@@ -186,15 +186,15 @@ export default {
               }).catch(error => {
                 console.log(error)
               })
+
+            alert('Recipe was succesfully created!')
+            this.$router.push('/userHome')
           }
         }
       })
         .catch(error => {
           if (error) {
             alert('Warning: Recipe was not created!' + error)
-          } else {
-            alert('Recipe was succesfully created!')
-            this.$router.push('/userHome')
           }
         })
     }
