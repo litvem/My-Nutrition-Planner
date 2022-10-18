@@ -59,6 +59,7 @@ export default {
   text-align: center;
   color: rgba(255, 254, 254, 0.9);
 }
+
 body {
   min-height: 88vh;
   display: grid;

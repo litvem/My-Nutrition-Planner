@@ -126,10 +126,9 @@ section{
 section .contentBx{
     background-color:rgba(30, 30, 31, 0.486);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
     margin-left: -10%;
 }
 
@@ -232,6 +231,7 @@ section .loginBx .login-form p {
   section .contentBx{
     margin-top: 5%;
     margin-left: -2%;
+    flex-direction: column;
     height: 60%;
 }
   section .contentBx .welcome-text h2{

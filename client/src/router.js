@@ -2,15 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Register from './views/Register.vue'
-import ForgotPassword from './views/ForgotPassword.vue'
 import UserHome from './views/UserHome.vue'
 import Profile from './views/Profile.vue'
-import EditProfile from './views/EditProfile.vue'
 import AddRecipe from './views/AddRecipe.vue'
 import WeeklyCalendar from './views/WeeklyCalendar.vue'
 import ShoppingList from './views/ShoppingList.vue'
 import RecipePage from './views/RecipePage.vue'
-import test from './testingFolder/test.vue'
 import AllPlans from './views/AllPlans.vue'
 import EditRecipe from './views/EditRecipe.vue'
 import AddShoppingList from './views/AddShoppingList.vue'
@@ -33,11 +30,6 @@ export default new Router({
       component: Register
     },
     {
-      path: '/forgotPassword',
-      name: 'forgotPassword',
-      component: ForgotPassword
-    },
-    {
       path: '/userHome',
       name: 'userHome',
       component: UserHome
@@ -46,11 +38,6 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: Profile
-    },
-    {
-      path: '/editProfile',
-      name: 'editProfile',
-      component: EditProfile
     },
     {
       path: '/addRecipe',
@@ -67,9 +54,8 @@ export default new Router({
       name: 'edit-recipe',
       component: EditRecipe
     },
-
     {
-      path: '/weeklyCalendar',
+      path: '/weeklyCalendar/:year/:week',
       name: 'weeklyCalendar',
       component: WeeklyCalendar
     },
@@ -87,12 +73,6 @@ export default new Router({
       path: '/addShoppingList',
       name: 'add-shopping-list',
       component: AddShoppingList
-    },
-
-    {
-      path: '/test',
-      name: 'test',
-      component: test
     },
     {
       path: '/allPlans',

@@ -4,6 +4,7 @@ var router = express.Router();
 var Day = require('../models/day');
 const User = require('../models/user');
 const checkAuth = require('../middleware/check-auth');
+const { response } = require('express');
 
 var daysPath = '/api/profiles/:profileId/days';
 var specificDaysPath = '/api/profiles/:profileId/days/:dayId';
@@ -20,6 +21,7 @@ router.post(daysPath, checkAuth, function(req, res, next) {
     var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
 
     if(checkDay.length > 0) {
+      console.log(checkDay)
       res.status(409).json({message:"Day already exist"});
     } else {
       var day = new Day(req.body);
@@ -55,7 +57,7 @@ router.get(daysPath,function(req,res,next){
 
   User.findOne({_id:req.params.profileId})
   .populate('days')
-  .populate('recipes')
+  .populate({path: 'days',  populate:{path: 'recipes'}})
   .exec()
   .then(user =>{
     if(user === null){
@@ -79,15 +81,18 @@ router.get(daysPath,function(req,res,next){
       })
 
       
-      const weekdays = [{name: 'Monday'}, {name:'Tuesday' },{name:'Wednesday' }, {name:'Thursday' }, {name:'Friday' }, {name:'Saturday' }, {name:'Sunday' }]    
+      const weekdays = [{name: 'Monday', recipes:[], _id:'none'}, {name:'Tuesday', recipes:[], _id:'none' },
+                      {name:'Wednesday', recipes:[], _id:'none'  }, {name:'Thursday', recipes:[], _id:'none'  },
+                      {name:'Friday', recipes:[], _id:'none'  }, {name:'Saturday', recipes:[], _id:'none'  }, 
+                      {name:'Sunday', recipes:[], _id:'none'  }]    
 
       let weekdayNames = weekdays.map(day => day.name.toLowerCase())
 
       for (const el of filtered) {
           weekdays[weekdayNames.indexOf(el.name.toLowerCase())] = el
       }
- 
-      res.status(200).json({
+
+      return res.status(200).json({
         days: weekdays,
         links: {
           rel: "self",
@@ -122,6 +127,7 @@ router.get(daysPath,function(req,res,next){
     res.status(500).json({
       error: err
     });
+    
   });  
 });
 
@@ -165,31 +171,26 @@ router.put(specificDaysPath,checkAuth, function (req, res, next) {
     if(user === null){
       return res.status(404).json({message: 'Not found'}); 
     }
+    var day = user.days.find(day => day._id == req.params.dayId)
+    if(day){
+      Day.findById(dayId)
+      .then(day =>{
+        day.name = req.body.name;
+        day.week = req.body.week;
+        day.year = req.body.year;
+        day.recipes = req.body.recipes;
+        day.save();
 
-    var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
-    if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
-    }
-
-/*     if(!req.body.name || !req.body.week || !req.body.year || !req.body.recipes ){
-      return res.status(400 ).json({message: ''}); 
-    } */
-  
-    Day.findById(dayId)
-    .then(day =>{
-      day.name = req.body.name;
-      day.week = req.body.week;
-      day.year = req.body.year;
-      day.recipes = req.body.recipes;
-      day.save();
-
-      return res.status(200).json({updatedDay: day});  
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+        return res.status(200).json({updatedDay: day});  
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
       });
-    });
+    }else{
+      return res.status(404).json({message: 'Day not found'})
+    }  
   }) 
 });
 
@@ -203,25 +204,58 @@ router.patch(specificDaysPath,checkAuth, function (req, res, next) {
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
-
-    var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
-    if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
-    }
-
-    Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
-    .then(day =>{
-      return res.status(200).json({
-        updatedDay: day
-      });  
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+    var day = user.days.find(day => day._id == req.params.dayId)
+    if(day){
+      Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
+      .then(day =>{
+        return res.status(200).json({
+          updatedDay: day
+        });  
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
       });
-    });
+
+    }else {
+      return res.status(404).json({message: 'Day not found'})
+    }
   }) 
 });
+
+
+// patch-  ALL DAYS IN A SPECIFIC WEEK 
+router.patch(daysPath,checkAuth, function (req, res, next) {
+  var newWeek = req.body.week;
+  var newYear = req.body.year;
+
+  User.findById(req.params.profileId)
+  .then(user =>{
+    if(user === null){
+      return res.status(404).json({message: 'User not found'}); 
+    }
+    if(user.days.length === 0){
+      return res.status(404).json({message: 'Day not found'})
+    }
+    if( (!newWeek && newYear) || (newWeek && !newYear) ){
+      return res.status(404).json({message: 'Year and week are needed'})
+    }
+
+    if(newWeek && newYear){
+    Day.updateMany({ "_id":{ $in: req.body.weekdays} },{$set:{week: newWeek, year: newYear}}, function(err){
+      if(err) return next(err);
+    });
+    
+    return res.status(200).json({
+      message: 'Succesful update',
+      newWeek: newWeek,
+      newYear: newYear
+    });  
+    } 
+  }) 
+});
+
 
 // deleting specific
 router.delete(specificDaysPath,checkAuth, function(req, res, next) {

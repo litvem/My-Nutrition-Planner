@@ -1,24 +1,24 @@
 <template>
   <div class="RecipePage">
     <div class="title">
-        <h1 :recipe="recipe">{{recipe.recipe[0].name}}</h1>
+        <h1 :recipe="recipe">{{recipe[0].name}}</h1>
       </div>
     <div class="main-content">
       <div id="image-category">
-        <img id="image" :recipe="recipe" :src="recipe.recipe[0].image" />
-        <h5>Category: {{recipe.recipe[0].category}}</h5>
+        <img id="image" :recipe="recipe" :src="recipe[0].image" />
+        <h5>Category: {{recipe[0].category}}</h5>
       </div>
       <div class="ingredients-instructions-buttons">
         <div class="ingredients-list">
           <h4>Ingredients</h4>
             <ul>
-              <li :recipe="recipe" v-for="ingredient in recipe.recipe[0].items"
+              <li :recipe="recipe" v-for="ingredient in recipe[0].items"
                   :key="ingredient.itemId">{{ingredient.amount}} {{ingredient.unit}} {{ingredient.item}}</li>
               </ul>
         </div>
         <div class="instructions-text">
           <h4>Instructions</h4>
-          <p :recipe="recipe">{{recipe.recipe[0].instruction}}</p>
+          <p :recipe="recipe">{{recipe[0].instruction}}</p>
         </div>
         <div class="buttons">
           <b-button v-b-toggle.collapse-1 class="submit-button">Add to plan</b-button>
@@ -72,7 +72,8 @@ export default {
     })
       .then(response => {
         console.log(response.data)
-        this.recipe = response.data
+        this.recipe = response.data.recipe
+        console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe[0].name + ' ' + this.recipe[0].items + ' ' + this.recipe[0].instruction + ' ' + this.recipe[0].category)
       })
       .catch(error => {
         console.log(error.message)
@@ -88,7 +89,7 @@ export default {
   },
   methods: {
     addToDay() {
-      Api.post('profiles/' + localStorage.id + '/days', {
+      Api.post('/profiles/' + localStorage.id + '/days', {
         year: this.year,
         name: this.day,
         week: this.weekNumber,
@@ -101,7 +102,7 @@ export default {
       }).catch(error => {
         alert('Warning: Recipe not added to day ' + error)
       })
-      console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe.recipe[0].name + ' ' + this.recipe.recipe[0].items + ' ' + this.recipe.recipe[0].instruction + ' ' + this.recipe.recipe[0].category)
+      console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe[0].name + ' ' + this.recipe[0].items + ' ' + this.recipe[0].instruction + ' ' + this.recipe[0].category)
       this.$router.go()
     },
     editRecipe() {
