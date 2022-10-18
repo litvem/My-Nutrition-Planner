@@ -94,25 +94,29 @@ export default {
   },
   methods: {
     addToDay() {
-      Api.post('/profiles/' + localStorage.id + '/days', {
-        year: this.year,
-        name: this.day,
-        week: this.weekNumber,
-        recipes: this.recipe.recipe[0]
-      },
-      {
-        headers: {
-          Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-      }).then(response => {
-        if (response.status === 201) {
-          alert('Recipe was added to plan in week ' + this.weekNumber)
-        } else if (response.status === 404) {
-          alert('Warning: Recipe was not added to plan!')
-        }
-      }).catch(error => {
-        alert('Warning: Recipe was not added to plan! ' + error)
-      })
+      if (this.year < 0 || this.week < 1 || this.name === null) {
+        Api.post('/profiles/' + localStorage.id + '/days', {
+          year: this.year,
+          name: this.day,
+          week: this.weekNumber,
+          recipes: this.recipe.recipe[0]
+        },
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        }).then(response => {
+          if (response.status === 201) {
+            alert('Recipe was added to plan in week ' + this.weekNumber)
+          } else if (response.status === 404) {
+            alert('Warning: Recipe was not added to plan!')
+          }
+        }).catch(error => {
+          alert('Warning: Recipe was not added to plan! ' + error)
+        })
+      } else {
+        alert('Could not add to plan! Please fill in all the fields!')
+      }
     },
     editRecipe() {
       this.$router.push(`/editRecipe/${this.$route.params.id}`)
