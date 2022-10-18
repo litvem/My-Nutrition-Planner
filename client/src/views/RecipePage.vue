@@ -89,50 +89,48 @@ export default {
   },
   methods: {
     addToDay() {
-      if (this.year < 0 || this.week < 1 || this.name === null) {
-        Api.post('/profiles/' + localStorage.id + '/days', {
-          year: this.year,
-          name: this.day,
-          week: this.weekNumber,
-          recipes: this.recipe.recipe[0]
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-          }
-        }).then(response => {
-          if (response.status === 201) {
-            alert('Recipe was added to plan in week ' + this.weekNumber)
-          } else if (response.status === 404) {
-            alert('Warning: Recipe was not added to plan!')
-          }
-        }).catch(error => {
-          alert('Warning: Recipe was not added to plan! ' + error)
-        })
-      } else {
-        alert('Could not add to plan! Please fill in all the fields!')
-      }
-    },
-    editRecipe() {
-      this.$router.push(`/editRecipe/${this.$route.params.id}`)
-    },
-
-    deleteRecipe() {
-      localStorage.setItem('recipeID', this.recipe.recipe[0]._id)
-      Api.delete('/profiles/' + localStorage.id + '/recipes/' + localStorage.recipeID, {
+      Api.post('/profiles/' + localStorage.id + '/days', {
+        year: this.year,
+        name: this.day,
+        week: this.weekNumber,
+        recipes: this.recipe.recipe[0]
+      },
+      {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
       }).then(response => {
         if (response.status === 201) {
-          alert('Recipe was sucesfully deleted!')
-          this.$router.push('/userHome')
-          return this.$router.go()
+          alert('Recipe was added to plan in week ' + this.weekNumber)
+        } else if (response.status === 404) {
+          alert('Warning: Recipe was not added to plan!')
         }
       }).catch(error => {
-        alert('Warning: Could not delete recipe' + error)
+        if (error.status === 409) {
+          // Api.patch()
+        }
       })
     }
+  },
+  editRecipe() {
+    this.$router.push(`/editRecipe/${this.$route.params.id}`)
+  },
+
+  deleteRecipe() {
+    localStorage.setItem('recipeID', this.recipe.recipe[0]._id)
+    Api.delete('/profiles/' + localStorage.id + '/recipes/' + localStorage.recipeID, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }).then(response => {
+      if (response.status === 201) {
+        alert('Recipe was sucesfully deleted!')
+        this.$router.push('/userHome')
+        return this.$router.go()
+      }
+    }).catch(error => {
+      alert('Warning: Could not delete recipe' + error)
+    })
   }
 }
 
