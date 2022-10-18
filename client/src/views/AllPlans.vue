@@ -1,31 +1,19 @@
 <template>
   <div class="AllPlans">
-    <div id="container-main"  v-if="user">
-      <div class="left">
-        <div class="title">
-          <h1>My weekly plans</h1>
-        </div>
-        <div id="container-left">
-         <div class="list" >
-            <b-row id="alert-holder" v-show="plans.length === 0">
-              <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </symbol>
-              </svg>
-              <div class="alert alert-warning d-flex align-items-center" role="alert">
-                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-                  You have no Weekly plans yet.
-              </div>
-          </b-row>
-          <b-row v-show="plans.length > 0">
-            <b-col cols="12" lg="6" sm="12" v-for="(plan,index) in plans" v-bind:key="index">
-              <div id="single-plan-display">
-                <h5 v-on:click="goToWeeklyPlan(index)">Week {{plan.week}}  Year {{plan.year}}</h5>
-                <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan(index)"></button>
-              </div>
-            </b-col>
-          </b-row>
+    <!--title-->
+    <div class="title">
+      <h1>My weekly plans</h1>
+    </div>
+    <!--alert if no recipes-->
+    <div class="alert-holder" v-show="plans.length === 0">
+      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+        </symbol>
+      </svg>
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+          <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+            You have no Weekly plans yet.
         </div>
       </div>
     <!--buttons 'Add plan' and 'Delete all' + form to add plan-->
@@ -37,27 +25,37 @@
         </div>
         <div class="plan-form" v-if="addPlan">
           <label for="week-number" v-if="addPlan">Week number:</label>
-          <b-form-input id="week" v-model="week" type="number" placeholder="Enter week" v-if="addPlan"/>
+          <b-form-input id="week" v-model="week" v-if="addPlan"/>
           <label for="year" v-if="addPlan">Year:</label>
-          <b-form-input id="year" v-model="year" type="number" placeholder="Enter year" v-if="addPlan" />
+          <b-form-input id="year" v-model="year" v-if="addPlan" />
           <button class="save-plan" v-on:click="savePlan" v-if="addPlan">Save</button>
-          <button class="cancel-form" @click="cancelSavePlan">Cancel</button>
-          <!--alert if week if less that 0 and greater that 52-->
+          <button class="cancel-form" v-if="addPlan" v-on:click="cancelSavePlan">Cancel</button>
           <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weekOutsideOfRange">
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-              The week number should be greater that 0 and less than 52.
-            </div>
-            <!--alert if year is less that current and greater that next year-->
-            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
+            The week number should be greater that 0 and less than 52.
+          </div>
+          <!--alert if year is less that current and greater that next year-->
+          <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="yearLessThanCurrent">
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-              Select between current or next year.
-            </div>
-            <!--alert if weekly calendar already exists-->
-            <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weeklyCalendarAlreadyExists">
+            Select between current or next year.
+          </div>
+          <!--alert if weekly calendar already exists-->
+          <div class="alert alert-warning d-flex align-items-center" role="alert" v-if="weeklyCalendarAlreadyExists">
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-              Weekly plan for selected week already exists.
-            </div>
+            Weekly plan for selected week already exists.
+          </div>
         </div>
+      </div>
+      <!--display all existing plans-->
+      <div class="all-existing-plans">
+        <b-row v-show="plans.length > 0">
+          <b-col cols="12" lg="6" sm="12" v-for="(plan, index) in plans" v-bind:key="index">
+            <div id="single-plan-display">
+              <h5 v-on:click="goToWeeklyPlan(index)">Week {{plan.week}}  Year {{plan.year}}</h5>
+              <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="deleteThisPlan(index)"></button>
+            </div>
+          </b-col>
+        </b-row>
       </div>
     </div>
   </div>
@@ -75,23 +73,9 @@ export default {
       addPlan: false,
       week: '',
       year: '',
-      name: 'none',
       weekOutsideOfRange: false,
       yearLessThanCurrent: false,
-      weeklyCalendarAlreadyExists: false/* ,
-      <<<  Since we are creating only a week, we basically dont need to specify a day, only if we are able to add
-          some kind of source that allows the user to insert recipes directly here.
-           -- leaving as a comment in case we will use it.<<<<<<<<<<<<<<<<<
-      options: [
-        { value: 'none', text: 'Select day' },
-        { value: 'Monday', text: 'Monday' },
-        { value: 'Tuesday', text: 'Tuesday' },
-        { value: 'Wednesday', text: 'Wednesday' },
-        { value: 'Thursday', text: 'Thursday' },
-        { value: 'Friday', text: 'Friday' },
-        { value: 'Saturday', text: 'Saturday' },
-        { value: 'Sunday', text: 'Sunday' }
-      ] */
+      weeklyCalendarAlreadyExists: false
     }
   },
   mounted() {
@@ -143,7 +127,6 @@ export default {
             console.error(error)
             if (error.response.status === 409) {
               this.weeklyCalendarAlreadyExists = true
-            // this.$router.go()
             }
           })
       }
@@ -167,7 +150,7 @@ export default {
       this.$router.go()
     },
     deleteThisPlan(index) {
-      Api.delete('/profiles/' + this.user.id + '/days?week=' + this.plans[index].week + '&year=' + this.plans[index].year, {
+      Api.delete('/profiles/' + localStorage.id + '/days?week=' + this.plans[index].week + '&year=' + this.plans[index].year, {
         headers: {
           Authorization: 'Bearer ' + localStorage.token
         }
@@ -193,11 +176,6 @@ export default {
     min-height: 60vh;
   }
 
-  .content {
-    display: flex;
-    flex-direction: row;
-    min-height: 70vh;
-  }
   .title {
     display: flex;
     width: 100%;
@@ -221,50 +199,32 @@ export default {
     margin-right: 65%;
   }
 
-  #single-plan-display {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    margin-right: 0;
-    margin-left: 0;
-    border-radius: 8px;
+  .content {
     display: flex;
+    flex-direction: row;
+    min-height: 70vh;
+  }
+
+  .buttons-and-form {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    padding-left: 2%;
+    padding-right: 2%;
     align-items: center;
-    border: 0;
-    outline: 0;
-    box-shadow: 0px 4px 10px 0px #f7eca57c;
-    background-image: linear-gradient(135deg, #fcf4035c 10%, #ffcd0449 100%);
-  }
-
-  h5 {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
-    float: center;
-    font-weight: bold;
-    padding: 10px 40px;
-    color: #fff;
-    font-size: 20px;
-    font-weight: bold;
-    &:hover {
-      color: rgb(41, 16, 0);
-      text-decoration: underline;
-    }
-  }
-
-  #alert-holder {
-    margin-left: 1%;
-    margin-right: 25%;
   }
 
   .buttons-and-form .buttons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    margin-bottom: 3%;
   }
 
   .add-btn {
     margin-top: 1em;
     margin-bottom: 0.5em;
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
     float: center;
     align-self: auto;
     color: black;
@@ -287,10 +247,10 @@ export default {
   }
 
   .delete-btn {
-    margin-top: 0.5em;
-    margin-bottom: 1em;
-    margin-right: 0;
-    margin-left: 0;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    margin-right: 0.5em;
+    margin-left: 0.5em;
     float: center;
     align-self: auto;
     color: black;
@@ -314,12 +274,11 @@ export default {
 
   .plan-form {
     background-color: rgba(255, 255, 255, 0.468);
-    margin-top: 57%;
-    margin-left: 10%;
-    margin-right: 10%;
+    margin-left: 5%;
+    margin-right: 5%;
     height: fit-content;
-    width: 80%;
-    padding: 13px 20px;
+    width: 100%;
+    padding: 25px 25px;
     border-radius: 8px;
     border: 0;
     outline: 0;
@@ -380,8 +339,42 @@ export default {
   }
   .all-existing-plans {
     width: 100%;
-    display: inline-block;
     padding-left: 1%;
+  }
+
+  #single-plan-display {
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    margin-right: 0;
+    margin-left: 0;
+    padding-right: 5%;
+    width: 90%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 10px 0px #f7eca57c;
+    background-image: linear-gradient(135deg, #fcf404c3 10%, #6a5502ef 100%);
+  }
+
+  h5 {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    float: center;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 100px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: bold;
+    &:hover {
+      color: rgb(41, 16, 0);
+      text-decoration: underline;
+    }
   }
 
   @media(max-width: 768px) {
@@ -397,9 +390,8 @@ export default {
   }
 
   h1 {
-    font-size: 40px;
+    font-size: 35px;
     margin-top: 40%;
-    //margin-left: 15%;
     padding-left: 17%;
     padding-right: 10%;
   }
