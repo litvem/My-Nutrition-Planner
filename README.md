@@ -61,28 +61,28 @@ Open the `server` and `client` in separate VSCode workspaces or open the combine
 
 ### Purpose
 
-**MyNutritionPlanner** allows users to add their favourite recipes, schedule them for each day of the week and get an auto generated shopping list for better and easier grocery shopping. Along with extra features of manually modifying the shopping list and browsing the history of them **MyNutritionPlanner** becomes an irreplaceable food shopping tool that allows users to save time and money while eating favourite home made dishes.
+**MyNutritionPlanner** allows users to add their favourite recipes, schedule them for each day of the week and put together a shopping list for better and easier grocery shopping. Along with extra features of modifying the shopping list and browsing the history of them.  **MyNutritionPlanner** becomes an irreplaceable food shopping tool that allows users to save time and money while eating favourite home made dishes.
 
 
 ### Pages
 
-* **Welcome:** The page displays welcome message and has two buttons allowing a new user to register and an already existing user to sign in. In case if the user has forgotten the password, there is a "Forgot password" link at the bottom of the page that allows the user to reset password using their secret question.
-* **Registration:** The page prompts the user to fill in five fields (email, user name, password, secret question, answer) and the buttons "Add icon" (allowing user to optionally add profile image) and "Register" (to confirm and complete registration).
-* **Forgot password:** This page displays the secret question that user set up upon registartion and the field for user to input the answer to the question and "Submit" button.
-* **User home page:** The page contains buttons "Profile", "Recipes", "Weekly calendar", "Shopping list" and "History" that allow the user to navigate within the website/application.
+* **Welcome:** The page displays welcome message and has two buttons allowing a new user to register and an already existing user to sign in.
+* **Registration:** The page prompts the user to fill in three fields (user name, password, confirm password) and the button "Register" (to confirm and complete registration). Upon successful registration the user gets notified about it and prompted to sign in.
+* **User home page:** The page contains all the recipes that have been created by the user or notification if no recipes exist, along with the drop-down category search bar and Button to delete all recipes. By clicking on any existing recipe the user gets redirected to the Recipe page.
+* **Recipe page:** The page displays the recipe name, image, ingredients and instructions along with buttons to add the recipe to the weekly plan, edit or remove it.
+* **Edit recipe:** The page allows the user to modify all the fields of the recipe and save it or cancel the changes.
+* **Add recipe:** The page contains the fields that the user can fill in with the contents and quantities of the ingredients and buttons "Add image" (allowing the user to add dish image to the recipe) and "Save" (to save new recipe).
+* **All plans:** The page contains all the existing weekly plans or notification message that no plans have been created yet, along with two buttons to add new plans or delete all existing plans. By clicking on one of the existing plans, the user is redirected to the Weekly plan page.
+* **Weekly plan:** The page displays all the recipes scheduled for this particular week, each recipe has a button to be removed from the day it has been scheduled to.
+* **Shopping lists:** The page contains all the saved shopping lists along with two buttons to add a new shopping list or delete all of them.
+* **Shopping list:** The page contains a form where the user can fill the shopping list name, week number and year, along with a list of items and their quantities. ‘Save list’ button allows the user to save the shopping list.
 * **Profile:** The page contains information provided by the user upon registration and has buttons "Edit" (allowing the user to change the profile information) and "Save" (to save the changes).
-* **Recipes:** The page has buttons "Add new recipe" (allowing the user to add new recipe) and "All recipes" (to review all existing recipes).
-* **Add new recipe:** The page contains the fields that the user can fill in with the contents and quantities of the ingredients and buttons "Add image" (allowing the user to add dish image to the recipe) and "Save" (to save new recipe).
-* **All recipes:** The page contains a list of all saved recipes and allows the user to browse and review them.
-* **Saved recipe:** The page displays the dish image, list of ingredients and their quantities and buttons "Edit" (allowing the user to modify the recipe) and "Delete" (to remove the recipe).
-* **Weekly calendar:** The page displays the number of calendar week and seven small windows for each day with "+" button in each window allowing the user to add saved recipes to each day of the week. Also this page has a "Generate shopping list" button that allows the user to save all scheduled meals for the week and create a preliminary shopping list according to scheduled recipes.
-* **Shopping list:** The page contains a list of items and their quantities according to the last saved weekly calendar along with the buttons "Add another item" (allowing the user to add item manually to the list) and "Save changes" (to save modified shopping list).
-* **History:** The page has a list with links to all previously saved shopping lists and allows the user to review it by clicking on the link for every list.
+
 
 ### Entity-Relationship (ER) Diagram
 
 ![ER Diagram](./images/er_diagram.png)
 
-## Teaser (MS3)
+## Teaser
 
 ![Teaser](./images/teaser.png)
