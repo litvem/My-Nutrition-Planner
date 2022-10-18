@@ -63,19 +63,14 @@
             </div>
              <div class="daysRecipe"  v-if="mondayRecipes.length > 0">
               <div class="events" v-for="monRecipes in mondayRecipes" v-bind:key="monRecipes._id">
-                <div class="event start-10 end-12 recipeCard container">
-                  <b-row align-h="start">
-                    <b-col cols="1">
-                      <b-icon icon="trash"></b-icon>
-                    </b-col>
-                    <b-col align-h="start">
-                      <p class="recipe">{{monRecipes.name}}</p>
-                    </b-col>
-                  </b-row>
-                  </div>
+                <div class="event start-10 end-12 recipeCard">
+                  <b-icon icon="trash"></b-icon>
+                  <p class="recipe">{{monRecipes.name}}</p>
+
                 </div>
               </div>
             </div>
+          </div>
 <!---------------TISDAG----------->
             <div class="day">
               <div class="day-week">
@@ -83,15 +78,9 @@
               </div>
                <div class="daysRecipe"  v-if="tuesdayRecipes.length > 0">
                 <div class="events" v-for="tuesRecipes in tuesdayRecipes" v-bind:key="tuesRecipes._id">
-                  <div class="event start-10 end-12 recipeCard container">
-                    <b-row align-h="start">
-                      <b-col cols="1">
-                        <b-icon icon="trash"></b-icon>
-                      </b-col>
-                      <b-col>
-                        <p class="recipe">{{tuesRecipes.name}} </p>
-                      </b-col>
-                    </b-row>
+                  <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
+                    <p class="recipe">{{tuesRecipes.name}} </p>
                   </div>
                 </div>
               </div>
@@ -103,15 +92,9 @@
             </div>
              <div class="daysRecipe"  v-if="wednesdayRecipes.length > 0">
                 <div class="events" v-for="wedRecipes in wednesdayRecipes" v-bind:key="wedRecipes._id">
-                  <div class="event start-10 end-12 recipeCard container">
-                    <b-row align-h="start">
-                      <b-col cols="1">
-                        <b-icon icon="trash"></b-icon>
-                      </b-col>
-                      <b-col>
-                        <p class="recipe">{{wedRecipes.name}} </p>
-                      </b-col>
-                    </b-row>
+                  <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
+                    <p class="recipe">{{wedRecipes.name}} </p>
                   </div>
                 </div>
               </div>
@@ -123,15 +106,9 @@
             </div>
              <div class="daysRecipe"  v-if="thursdayRecipes.length > 0">
                 <div class="events" v-for="thursRecipes in thursdayRecipes" v-bind:key="thursRecipes._id">
-                  <div class="event start-10 end-12 recipeCard container">
-                    <b-row align-h="start">
-                      <b-col cols="1">
-                        <b-icon icon="trash"></b-icon>
-                      </b-col>
-                      <b-col>
-                        <p class="recipe">{{thursRecipes.name}} </p>
-                      </b-col>
-                    </b-row>
+                  <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
+                    <p class="recipe">{{thursRecipes.name}} </p>
                   </div>
                 </div>
               </div>
@@ -143,15 +120,8 @@
             </div>
             <div class="daysRecipe" v-if="fridayRecipes.length > 0">
               <div class="events" v-for="friRecipes in fridayRecipes" v-bind:key="friRecipes._id">
-                <div class="event start-10 end-12 recipeCard container">
-                  <b-row align-h="start">
-                    <b-col cols="1">
-                      <b-icon icon="trash"></b-icon>
-                    </b-col>
-                    <b-col>
-                      <p class="recipe">{{friRecipes.name}} </p>
-                    </b-col>
-                  </b-row>
+                <div class="event start-10 end-12 recipeCard">
+                  <p class="recipe">{{friRecipes.name}} </p>
                 </div>
               </div>
             </div>
@@ -163,15 +133,10 @@
             </div>
               <div class="daysRecipe" v-if="saturdayRecipes.length > 0">
                 <div class="events" v-for="satRecipes in saturdayRecipes" v-bind:key="satRecipes._id">
-                  <div class="event start-10 end-12 recipeCard container">
-                    <b-row align-h="start">
-                      <b-col cols="1">
-                        <b-icon icon="trash"></b-icon>
-                      </b-col>
-                      <b-col>
-                        <p class="recipe">{{satRecipes.name}} </p>
-                      </b-col>
-                    </b-row>
+                  <div class="event start-10 end-12 recipeCard">
+                    <b-icon icon="trash"></b-icon>
+                    <p class="recipe">{{satRecipes.name}} </p>
+
                   </div>
                 </div>
               </div>
@@ -183,15 +148,8 @@
             </div>
             <div class="daysRecipe"  v-if="sundayRecipes.length > 0">
                 <div class="events" v-for="sunRecipes in sundayRecipes" v-bind:key="sunRecipes._id">
-                  <div class="event start-10 end-12 recipeCard container">
-                    <b-row align-h="start">
-                      <b-col cols="1">
-                        <b-icon icon="trash"></b-icon>
-                      </b-col>
-                      <b-col>
-                        <p class="recipe">{{sunRecipes.name}} </p>
-                      </b-col>
-                    </b-row>
+                  <div class="event start-10 end-12 recipeCard">
+                    <p class="recipe">{{sunRecipes.name}} </p>
                   </div>
                 </div>
             </div>
@@ -489,10 +447,7 @@ label{
   .events {
     display: grid;
     border-radius: 5px;
-    //
-    padding: 1px;
-    margin-left: 2px;
-    margin-right: 2px;
+    padding: 5px;
   }
 
   .event {
@@ -506,10 +461,10 @@ label{
 
   .recipe {
     color: rgb(0, 0, 0);
-//    text-align: center;
+    text-align: center;
     font-weight: bold;
     margin-bottom: 1rem;
-    // text-align: center;
+    text-align: center;
     width: 100%;
     z-index: -10;
     }

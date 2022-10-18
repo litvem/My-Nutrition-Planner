@@ -150,11 +150,6 @@ router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {
     if(user.shoppinglists.length === 0){
       return res.status(404).json({message: 'Shoppinglist not found'})
     }
-    var checkShoppinglist =  user.shoppinglists.filter(shoppinglist => shoppinglist.week == req.body.week)
-
-    if(checkShoppinglist.length > 0){
-      res.status(404).json({message:"Shoppinglist already exist"});
-    }
     
     Shoppinglist.findByIdAndUpdate(req.params.shoplistId, req.body, { new: true })
     .then(shoppinglists =>{

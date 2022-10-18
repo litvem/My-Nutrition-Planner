@@ -10,7 +10,7 @@
 			"name": "Recipes Controller Test",
 			"item": [
 				{
-					"name": "Sign up  profile 1",
+					"name": "Sign up  profile 1 Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -504,7 +504,7 @@
 									"\r",
 									"pm.test(\"Correct user response\", function () {\r",
 									"    pm.expect(response.username).to.eql(\"HarryPotter\");\r",
-									"    pm.expect(response.userId).to.eql(profileID1);\r",
+									"    pm.expect(response.id).to.eql(profileID1);\r",
 									"    pm.expect(response.recipes).to.include(recipeId1);\r",
 									"});"
 								],
@@ -840,8 +840,6 @@
 									"    var response =  pm.response.json();\r",
 									"    pm.expect(response.recipeCreated.name).to.eql(\"AaRecipe4\");\r",
 									"    pm.expect(response.recipeCreated.category).to.eql(\"Snack\");\r",
-									"    pm.expect(response.recipeCreated.tag[0]).to.eql(\"bad2\"); // both work for identify String in array\r",
-									"    pm.expect(response.recipeCreated.tag).to.include(\"carbs\"); // both work for identify String in array\r",
 									"    pm.expect(response.recipeCreated.instruction).to.eql(\"Cooking instruction4\"); \r",
 									"});\r",
 									"\r",
@@ -904,7 +902,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{   \r\n    \"name\":\"AaRecipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"tag\":[\"bad2\",\"carbs\"],\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
+							"raw": "{   \r\n    \"name\":\"AaRecipe4\",\r\n    \"category\": \"Snack\",\r\n    \"picture\":\"\",\r\n    \"instruction\":\"Cooking instruction4\",\r\n    \"items\": [\r\n        {\r\n        \"itemId\": 1,    \r\n        \"item\":\"chili sauce\",\r\n        \"amount\":\"5\",\r\n        \"unit\":\"ml\"\r\n         },{\r\n        \"itemId\": 2,\r\n        \"item\":\"sallad\",\r\n        \"amount\":\"200\",\r\n        \"unit\":\"grams\"\r\n        }\r\n    ]\r\n    \r\n}"
 						},
 						"url": {
 							"raw": "{{host}}/api/profiles/:profileId/recipes",
