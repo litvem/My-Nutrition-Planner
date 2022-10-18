@@ -181,7 +181,7 @@ export default {
   }
   .form-body{
     flex-direction: row;
-    min-height: 100%;
+    min-height: 100vh;
   }
   .form-holder {
     position: relative;
@@ -229,10 +229,6 @@ export default {
       margin-bottom: 5px;
     }
     .edit-btn, .save-btn {
-/*     margin-top: 0.2em;
-    margin-bottom: 0.01em;
-    margin-right: 1em;
-    margin-left: 0.01em; */
     float: center;
     color: #fff;
     padding: 8px 16px;
@@ -307,29 +303,6 @@ export default {
   }
 
   .delete-btn {
-
-    // ALTERNATIVE ONE
-/*     float: center;
-    color: #fff;
-    padding: 8px 16px;
-    display: inline-block;
-    align-content: center;
-    border: 1;
-    border-radius: 10px;
-    border-color: rgb(255, 255, 255);
-    outline: 0;
-    box-shadow: 0px 4px 20px 0px #c35a5aa6;
-    background-image: linear-gradient(135deg, #bf270cf0 10%,#44a95d 50%, #bf270cf0 100%);
-    font-weight: bold;
-
-    &:hover {
-      color:rgba(9, 39, 25, 0.971);
-      box-shadow: 0px 4px 20px 0px rgb(138, 237, 170);
-      border-color: rgb(255, 255, 255);
-      background-image: linear-gradient(180deg, #0e0d0df0 10%,#959695 50%, #010101f0 100%); // change the color
-    } */
-
-    // ALLTERNATIVE 2
     background-image: linear-gradient(135deg, #0e0d0df0 10%,#959695 50%, #010101f0 100%); // change the color
     border: 2px solid currentColor;
     border-radius: 3rem;
@@ -343,11 +316,8 @@ export default {
     transition: .2s transform ease-in-out;
     will-change: transform;
     z-index: 0;
-
     &::after{
-   // background-image: linear-gradient(180deg, #0e0d0df0 10%,#959695 50%, #010101f0 100%);
-   // background-image: linear-gradient(135deg, #a60950 10%, #ef0101c8 100%);
-   background-image: linear-gradient(135deg, #bf270cf0 10%,#9a6003 50%, #bf270cf0 100%);
+    background-image: linear-gradient(135deg, #bf270cf0 10%,#9a6003 50%, #bf270cf0 100%);
     border-radius: 3rem;
     border-radius:rgb(255, 255, 255) ;
     content: '';
@@ -363,7 +333,6 @@ export default {
     will-change: transform;
     z-index: -1;
     }
-
     &:hover::after{
     transform: translate(0, 0);
     }
@@ -378,9 +347,13 @@ export default {
   }
 
   @media(max-width: 768px) {
+    .form-body{
+    flex-direction: row;
+    min-height: 97vh;
+  }
     .form-holder {
-      top: -5%;
-      right: 0%; // media remove
+      top: 5%;
+      right: 0%;
     }
     .form-holder .form-content{
 

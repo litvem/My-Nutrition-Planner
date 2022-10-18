@@ -1,42 +1,42 @@
 <template>
-  <div class = "Welcomeview sm">
-     <div class="animation">
+  <div class = "Welcomeview">
+      <div class="animation">
         <TextAnimation/>
-     </div>
-     <section>
-        <div class="contentBx sm">
-           <div class="welcome-text">
-               <h2>Looking for a place to store your favourite recipes? <br />
-               Make weekly shopping easier?<br />
-               Keep track of your meals and stay healthy?<br /><br/>
-               Then this is the right place for you!
-               </h2>
-               <hr />
-              </div>
-           </div>
-        <div class="loginBx sm">
-           <div class="login-form">
-              <h3>Login</h3>
-              <hr />
+      </div>
+      <section>
+        <div class="contentBx">
+          <div class="welcome-text">
+            <h2>Looking for a place to store your favourite recipes? <br />
+                Make weekly shopping easier?<br />
+                Keep track of your meals and stay healthy?<br /><br/>
+                Then this is the right place for you!
+            </h2>
+            <hr />
+          </div>
+        </div>
+        <div class="loginBx">
+        <div class="login-form">
+          <h3>Login</h3>
+          <hr />
+          <br>
+          <div class="inputs" @submit.prevent="handleSubmit">
+            <input type="text" v-model="username" placeholder="username" :class="{ 'is-invalid': submitted && $v.username.$error }">
+              <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
               <br>
-              <div class="inputs" @submit.prevent="handleSubmit">
-                <input type="text" v-model="username" placeholder="username" :class="{ 'is-invalid': submitted && $v.username.$error }">
-                <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
-                <br>
-                <input type="password" v-model="password" placeholder="password" :class="{ 'is-invalid': submitted && $v.password.$error }">
+              <input type="password" v-model="password" placeholder="password" :class="{ 'is-invalid': submitted && $v.password.$error }">
                 <div v-if="submitted && !$v.password.required" class="invalid-feedback">Password is required</div>
-              </div>
-              <br>
-              <button @click="handleSubmit">Login</button>
-              <div class="inputBx">
-                   <br>
-                   <p>Don't have an account?</p>
-                   <router-link class="link" :to="{ name: 'register' }">Register now</router-link>
-              </div>
-           </div>
-         </div>
-       </section>
-   </div>
+          </div>
+          <br>
+          <button @click="handleSubmit">Login</button>
+          <div class="inputBx">
+            <br>
+            <p>Don't have an account?</p>
+            <router-link class="link" :to="{ name: 'register' }">Register now</router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -160,7 +160,7 @@ section .loginBx .login-form{
 section .loginBx .login-form h3{
    color: #ffffff;
    font-weight: 600;
-   font-size: 30xp;
+   font-size: 30px;
    text-transform: uppercase;
    margin-top: 5%;
    border-bottom: 4px solid rgba(209, 1, 1, 0.956);
@@ -224,16 +224,22 @@ section .loginBx .login-form p {
 }
 
 @media(max-width: 768px){
+  .animation {
+    margin-left: 2%;
+    margin-top: 40%;
+  }
   section .contentBx{
     margin-top: 5%;
     margin-left: -2%;
     flex-direction: column;
+    height: 60%;
 }
   section .contentBx .welcome-text h2{
     font-size: 20px;
   }
   section .loginBx{
     margin-top: 5%;
+    height: 60%;
 }
 }
 
