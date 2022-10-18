@@ -78,6 +78,7 @@ export default {
       .then(response => {
         console.log(response.data)
         this.recipe = response.data
+        console.log(this.recipe.recipe[0]._id)
       })
       .catch(error => {
         console.log(error.message)
@@ -113,7 +114,8 @@ export default {
     },
 
     deleteRecipe() {
-      Api.delete('profiles/' + localStorage.id + '/recipes/' + this.$route.params.id, {
+      localStorage.setItem('recipeID', this.recipe.recipe[0]._id)
+      Api.delete('profiles/' + localStorage.id + '/recipes/' + localStorage.recipeID, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }

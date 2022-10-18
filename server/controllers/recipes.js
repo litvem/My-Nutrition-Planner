@@ -271,6 +271,7 @@ router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), funct
   })   
 });
 
+//
 // Delete specific
 router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
@@ -285,8 +286,8 @@ router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
       return res.status(404).json({message: 'Recipe not found'})
     }
     
-    var recipeID = req.params.recipeId;
-    Day.updateMany({recipes: {$elemMatch: { recipeID }}})
+    var recipeId = '' + req.params.recipeId;
+    Day.updateMany({recipes: {$elemMatch: { recipeId }}})
     .then( () => {
       user.days.recipes.pull({_id: req.params.recipeId});
     })
