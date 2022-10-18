@@ -1,0 +1,164 @@
+<!-- "days": [
+        {
+            "recipes": [
+                {
+                    "tag": [
+                        "bad",
+                        "fast"
+                    ],
+                    "_id": "634dc59fff7546cb1051ba2b",
+                    "name": "Recipe1",
+                    "category": "Lunch",
+                    "image": "http://localhost:3000/uploads/defaultRecipeImage.png-1664301312162.png",
+                    "imagePath": "uploads\\defaultRecipeImage.png-1664301312162.png",
+                    "instruction": "Cooking instruction4",
+                    "items": [
+                        {
+                            "_id": "634dc59fff7546cb1051ba2c",
+                            "itemId": 1,
+                            "item": "ketchup",
+                            "amount": 5,
+                            "unit": "ml"
+                        },
+                        {
+                            "_id": "634dc59fff7546cb1051ba2d",
+                            "itemId": 2,
+                            "item": "sallad",
+                            "amount": 200,
+                            "unit": "grams"
+                        }
+                    ],
+                    "__v": 0
+                },
+                {
+                    "tag": [
+                        "bad",
+                        "fast"
+                    ],
+                    "_id": "634dc61eff7546cb1051ba56",
+                    "name": "casuela de pollo y ensalada",
+                    "category": "Lunch",
+                    "image": "http://localhost:3000/uploads/defaultRecipeImage.png-1664301312162.png",
+                    "imagePath": "uploads\\defaultRecipeImage.png-1664301312162.png",
+                    "instruction": "Cooking instruction4",
+                    "items": [
+                        {
+                            "_id": "634dc61eff7546cb1051ba57",
+                            "itemId": 1,
+                            "item": "ketchup",
+                            "amount": 5,
+                            "unit": "ml"
+                        },
+                        {
+                            "_id": "634dc61eff7546cb1051ba58",
+                            "itemId": 2,
+                            "item": "sallad",
+                            "amount": 200,
+                            "unit": "grams"
+                        }
+                    ],
+                    "__v": 0
+                }
+            ],
+            "_id": "634dc5a1ff7546cb1051ba34",
+            "name": "Monday",
+            "week": 2,
+            "year": 2022,
+            "__v": 0
+        },
+        {
+            "name": "Tuesday"
+        },
+        {
+            "name": "Wednesday"
+        },
+        {
+            "name": "Thursday"
+        },
+        {
+            "recipes": [
+                {
+                    "tag": [
+                        "bad",
+                        "fast"
+                    ],
+                    "_id": "634dc59fff7546cb1051ba2b",
+                    "name": "Recipe1",
+                    "category": "Lunch",
+                    "image": "http://localhost:3000/uploads/defaultRecipeImage.png-1664301312162.png",
+                    "imagePath": "uploads\\defaultRecipeImage.png-1664301312162.png",
+                    "instruction": "Cooking instruction4",
+                    "items": [
+                        {
+                            "_id": "634dc59fff7546cb1051ba2c",
+                            "itemId": 1,
+                            "item": "ketchup",
+                            "amount": 5,
+                            "unit": "ml"
+                        },
+                        {
+                            "_id": "634dc59fff7546cb1051ba2d",
+                            "itemId": 2,
+                            "item": "sallad",
+                            "amount": 200,
+                            "unit": "grams"
+                        }
+                    ],
+                    "__v": 0
+                }
+            ],
+            "_id": "634dc5a3ff7546cb1051ba3a",
+            "name": "Friday",
+            "week": 2,
+            "year": 2022,
+            "__v": 0
+        },
+        {
+            "name": "Saturday"
+        },
+        {
+            "recipes": [
+                {
+                    "tag": [
+                        "bad",
+                        "fast"
+                    ],
+                    "_id": "634dc59fff7546cb1051ba2b",
+                    "name": "Recipe1",
+                    "category": "Lunch",
+                    "image": "http://localhost:3000/uploads/defaultRecipeImage.png-1664301312162.png",
+                    "imagePath": "uploads\\defaultRecipeImage.png-1664301312162.png",
+                    "instruction": "Cooking instruction4",
+                    "items": [
+                        {
+                            "_id": "634dc59fff7546cb1051ba2c",
+                            "itemId": 1,
+                            "item": "ketchup",
+                            "amount": 5,
+                            "unit": "ml"
+                        },
+                        {
+                            "_id": "634dc59fff7546cb1051ba2d",
+                            "itemId": 2,
+                            "item": "sallad",
+                            "amount": 200,
+                            "unit": "grams"
+                        }
+                    ],
+                    "__v": 0
+                }
+            ],
+            "_id": "634dc5a5ff7546cb1051ba40",
+            "name": "Sunday",
+            "week": 2,
+            "year": 2022,
+            "__v": 0
+        }
+    ],
+    "links": {
+        "rel": "self",
+        "type": "PATCH",
+        "url": "http://localhost:3000/api/profiles/634dc598ff7546cb1051ba27/days/undefined"
+    }
+}
+ -->
