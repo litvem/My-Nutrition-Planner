@@ -105,6 +105,7 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+      this.$router.go(0)
     },
     deleteSpecificSL(id) {
       Api.delete('/profiles/' + localStorage.id + '/shoppingLists/' + id, {
