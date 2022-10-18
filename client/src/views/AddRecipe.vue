@@ -16,8 +16,13 @@
 
       <h4>Add recipe image</h4>
       <div class="mb-3">
-        <label for="formFile" class="form-label">Select file</label>
-        <input class="form-control" type="file" id="formFile">
+        <label for="formFile" class="form-label" >Select file or provide a picture link</label>
+        <b-form enctype="multipart/form-data">
+          <input class="form-control" name='recipeImage' type="file" id="formFile"
+          @change="onFileSelected" >
+        </b-form>
+        <input type="text" name="recipePictureURL" class="form-control" placeholder="Type URL here" v-model="imageURL">
+
       </div>
 
       <div>
@@ -40,22 +45,10 @@
       <div class="row">
         <h4>Ingredients list</h4>
         <div class="card-body">
-          <div class="form-inline">
-              <b-form-input type="number" size="20" placeholder="Amount" v-model="firstAmount"></b-form-input>
-              <b-form-select class="form-select" aria-label="Unit" v-model="firstUnit" :id="key">
-                <option value="pcs">pcs</option>
-                <option value="grams">grams</option>
-                <option value="kg">kg</option>
-                <option value="ml">ml</option>
-                <option value="dl">dl</option>
-                <option value="l">l</option>
-              </b-form-select>
-              <b-form-input type="text" placeholder="Item" v-model="firstItem"></b-form-input>
-            </div>
-          <div v-for="key in count" :key="key">
+          <div v-for="(ingredient,index) in ingredientsList" :key="index">
             <div class="form-inline">
-              <b-form-input type="number" size="20" placeholder="Amount" v-model="amounts['amount'+key]" :id="key"></b-form-input>
-              <b-form-select class="form-select" aria-label="Unit" v-model="units['unit'+key]" :id="key">
+              <b-form-input type="number" size="20" placeholder="Amount" v-model="ingredient.amount"></b-form-input>
+              <b-form-select class="form-select" aria-label="Unit" v-model="ingredient.unit">
                 <option value="pcs">pcs</option>
                 <option value="grams">grams</option>
                 <option value="kg">kg</option>
@@ -63,7 +56,7 @@
                 <option value="dl">dl</option>
                 <option value="l">l</option>
               </b-form-select>
-              <b-form-input type="text" placeholder="Item" v-model="items['item'+key]" :id="key"></b-form-input>
+              <b-form-input type="text" placeholder="Item" v-model="ingredient.item"></b-form-input>
             </div>
           </div>
           <div class="d-flex justify-content-start">
@@ -94,7 +87,7 @@ export default {
   data() {
     return {
       message: '',
-      count: 1,
+      count: 0,
       selected: 'first',
       options: [
         { text: 'Breakfast', value: 'Breakfast' },
@@ -110,54 +103,100 @@ export default {
       firstUnit: '',
       firstItem: '',
       recipeName: '',
-      instructions: ''
+      instructions: '',
+
+      selectedFile: null,
+      ingredientsList: [{ amount: null, unit: '', item: '' }, { amount: null, unit: '', item: '' }],
+      editedIngredientsList: [],
+      headers: {},
+      imageURL: '',
+      fromData: null
     }
   },
   methods: {
+    onFileSelected(event) {
+      this.selectedFile = event.target.files[0]
+      this.formData = new FormData()
+      this.formData.append('recipeImage', this.selectedFile, this.selectedFile.name)
+
+      console.log(event)
+    },
     add: function () {
+      this.ingredientsList.push({ amount: null, unit: '', item: '' })
       this.count++
-      console.log(this.count)
     },
     remove: function () {
-      this.count--
+      if (this.ingredientsList.length > 1) {
+        this.ingredientsList.pop()
+        this.count--
+      } else {
+        alert('Warning: shopping list cannot have less than 1 item!')
+      }
     },
     save: function () {
-      const itemKey = Object.keys(this.items)
-      const unitKey = Object.keys(this.units)
-      const amKey = Object.keys(this.amounts)
+      // const itemKey = Object.keys(this.items)
+      // const unitKey = Object.keys(this.units)
+      // const amKey = Object.keys(this.amounts)
 
-      this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
+      // this.itemsObj.push({ amount: this.firstAmount, unit: this.firstUnit, item: this.firstItem })
 
-      console.log(this.itemsObj[0].amount + ' ' + this.itemsObj[0].unit + ' ' + this.itemsObj[0].item)
-      for (let i = 1; i <= this.count; i++) {
-        // check if user added input in row of input
-        if (this.amounts[amKey[i - 1]] !== undefined) {
-          this.itemsObj.push({ amount: this.amounts[amKey[i - 1]], unit: this.units[unitKey[i - 1]], item: this.items[itemKey[i - 1]] })
-          console.log('---for')
-          console.log(this.amounts[amKey[i - 1]], this.units[unitKey[i - 1]], this.items[itemKey[i - 1]])
+      // console.log(this.itemsObj[0].amount + ' ' + this.itemsObj[0].unit + ' ' + this.itemsObj[0].item)
+      // for (let i = 1; i <= this.count; i++) {
+      //   // check if user added input in row of input
+      //   if (this.amounts[amKey[i - 1]] !== undefined) {
+      //     this.itemsObj.push({ amount: this.amounts[amKey[i - 1]], unit: this.units[unitKey[i - 1]], item: this.items[itemKey[i - 1]] })
+      //     console.log('---for')
+      //     console.log(this.amounts[amKey[i - 1]], this.units[unitKey[i - 1]], this.items[itemKey[i - 1]])
+      //   }
+      //   console.log('---out')
+      // }
+
+      this.ingredientsList.forEach(item => {
+        if (item.amount !== null && item.unit !== '' && item.item !== '') {
+          this.editedIngredientsList.push(item)
         }
-        console.log('---out')
-      }
+      })
 
+      this.formHeaders = {
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
       Api.post('/profiles/' + localStorage.id + '/recipes', {
         name: this.recipeName,
         category: this.selected,
-        items: this.itemsObj,
+        items: this.editedIngredientsList,
+        image: this.imageURL,
         instruction: this.instructions
       },
       {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
-      }
-      ).catch(error => {
-        if (error) {
-          alert('Warning: Recipe was not created!' + error)
-        } else {
-          alert('Recipe was succesfully created!')
-          this.$router.push('/userHome')
+      }).then(response => {
+        console.log(response)
+        console.log(response.data.recipeCreated._id)
+
+        if (response.status === 200 || response.status === 201) {
+          if (this.formData !== null) {
+            Api.patch('/profiles/' + localStorage.id + '/recipes/' + response.data.recipeCreated._id, this.formData, {
+              headers: this.formHeaders
+            })
+              .then(response => {
+                console.log(response)
+              }).catch(error => {
+                console.log(error)
+              })
+          }
         }
       })
+        .catch(error => {
+          if (error) {
+            alert('Warning: Recipe was not created!' + error)
+          } else {
+            alert('Recipe was succesfully created!')
+            this.$router.push('/userHome')
+          }
+        })
     }
   }
 }

@@ -334,7 +334,7 @@ export default {
     font-size: 50px;
     font-weight: bold;
     text-align: left;
-    margin-top: 4%;
+    margin-top: 1%;
     margin-bottom: 2%;
     width: 100%;
     float: left;
