@@ -64,7 +64,7 @@
              <div class="daysRecipe"  v-if="mondayRecipes.length > 0">
               <div class="events" v-for="monRecipes in mondayRecipes" v-bind:key="monRecipes._id">
                 <div class="event start-10 end-12 recipeCard container">
-                  <b-row align-h="start" align-v="center">
+                  <b-row align-h="start">
                     <b-col cols="1">
                       <b-icon icon="trash"></b-icon>
                     </b-col>
