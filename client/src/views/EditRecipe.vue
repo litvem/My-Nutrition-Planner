@@ -160,10 +160,10 @@
     <!-- SAVE, CANCEL -->
         <b-row>
           <b-col>
-            <button type="submit" class="btn btn-success" @click="saveChanges()">Save changes</button>
+            <button type="submit" class="btn" id="save-btn" @click="saveChanges()">Save changes</button>
           </b-col>
           <b-col>
-            <button type="submit" class="btn btn-danger" @click="cancelEdit()">Cancel</button>
+            <button type="submit" class="btn" id="cancel-btn" @click="cancelEdit()">Cancel</button>
           </b-col>
         </b-row>
 
@@ -319,7 +319,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .EditRecipePage {
     background-image: url("../assets/edit-recipe-background.jpg");
     background-size: cover;
@@ -340,6 +340,9 @@ export default {
     float: left;
   }
 
+  h4 {
+    text-decoration: underline;
+  }
   .box-form{
     height: 100%;
     width: 100%;
@@ -347,7 +350,16 @@ export default {
     padding: 4%;
     padding-bottom: 1%;
     overflow: hidden;
+ }
 
+ .form-control {
+  border-radius: 8px;
+  display: inline-block;
+  border: 0;
+  outline: 0;
+  box-shadow: 0px 4px 10px 0px #ddc20f7c;
+  background-color: #f5eddbf1;
+  color: #281401;
  }
 
   img {
@@ -357,18 +369,94 @@ export default {
   }
 
   .edit-button {
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    border-radius: 10px;
+    margin-top: 0.2em;
+    margin-bottom: 0.01em;
+    margin-right: 1em;
+    margin-left: 0.01em;
+    float: center;
+    color: rgb(1, 17, 0);
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 50px;
     display: inline-block;
-    box-shadow: 0px 4px 10px 0px #a6fa94a6;
-    background-image: linear-gradient(135deg, #70e68ecc 10%, #2c780377 100%);
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #fce68c84;
+    background-image: linear-gradient(135deg, #fce8ae 10%, #a37d01cb 100%);
+      &:hover {
+      color: rgb(253, 253, 253);
+      text-decoration: underline;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #ffc800 10%, #453501 100%);
+      box-shadow: 0px 4px 10px 0px #ffe979;
+    }
+  }
+
+  #save-btn {
+    margin-top: 0.2em;
+    margin-bottom: 0.01em;
+    margin-right: 1em;
+    margin-left: 0.01em;
+    float: center;
+    color: rgb(1, 17, 0);
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #9bfc8c84;
+    background-image: linear-gradient(135deg, #bafcae 10%, #01a304cb 100%);
+      &:hover {
+      color: rgb(253, 253, 253);
+      text-decoration: underline;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #04ff00 10%, #01450d 100%);
+      box-shadow: 0px 4px 10px 0px #98ff79;
+    }
+  }
+
+  #cancel-btn {
+    margin-top: 0.2em;
+    margin-bottom: 0.01em;
+    margin-right: 1em;
+    margin-left: 0.01em;
+    float: center;
+    color: rgb(42, 2, 2);
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #ea4e4e84;
+    background-image: linear-gradient(135deg, #fa9191 10%, #a31401cb 100%);
+      &:hover {
+      color: rgb(253, 253, 253);
+      text-decoration: underline;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #ff0000 10%, #450901 100%);
+      box-shadow: 0px 4px 10px 0px #ff7979;
+    }
   }
 
 #category-card-disabled, #category-card {
-  background-color: #28281e96;
-  box-shadow: 1px 4px 4px 4px #fffffe3f;
+  box-shadow: 0px 4px 10px 0px #ddc20f7c;
+  color: #281401;
+}
+
+@media(max-width: 768px) {
+  #page-title {
+    padding-top: 10%;
+  }
+  #left {
+    min-height: 70vh;
+  }
+
+  .btn {
+    margin-top: 10%;
+    margin-bottom: 40%;
+  }
 }
 
 </style>
