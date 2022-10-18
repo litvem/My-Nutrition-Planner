@@ -3,7 +3,7 @@
     <div class="card">
       <img id="image" class="img" :src= "recipe.image" />
       <div class="content">
-        <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}   {{recipe.category}}</h5>
+        <h5 v-on:click="goToRecipePage()" v-bind="recipe">{{recipe.name}}</h5>
         <h6>Category: {{ recipe.category }}</h6>
       </div>
     </div>
