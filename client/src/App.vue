@@ -45,6 +45,11 @@ export default {
         })
         .catch(error => {
           console.log(error)
+          if (error.responseHttpStatus === 401) {
+            localStorage.removeItem('token')
+            localStorage.removeItem('id')
+            this.$router.go(0)
+          }
         })
     }
   }

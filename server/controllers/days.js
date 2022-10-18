@@ -139,6 +139,7 @@ router.get(specificDaysPath, checkAuth,function(req,res,next){
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
+    
     res.status(200).json({
         day: user.days,
       links: {
@@ -165,31 +166,26 @@ router.put(specificDaysPath,checkAuth, function (req, res, next) {
     if(user === null){
       return res.status(404).json({message: 'Not found'}); 
     }
+    var day = user.days.find(day => day._id == req.params.dayId)
+    if(day){
+      Day.findById(dayId)
+      .then(day =>{
+        day.name = req.body.name;
+        day.week = req.body.week;
+        day.year = req.body.year;
+        day.recipes = req.body.recipes;
+        day.save();
 
-    var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
-    if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
-    }
-
-/*     if(!req.body.name || !req.body.week || !req.body.year || !req.body.recipes ){
-      return res.status(400 ).json({message: ''}); 
-    } */
-  
-    Day.findById(dayId)
-    .then(day =>{
-      day.name = req.body.name;
-      day.week = req.body.week;
-      day.year = req.body.year;
-      day.recipes = req.body.recipes;
-      day.save();
-
-      return res.status(200).json({updatedDay: day});  
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+        return res.status(200).json({updatedDay: day});  
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
       });
-    });
+    }else{
+      return res.status(404).json({message: 'Day not found'})
+    }  
   }) 
 });
 
@@ -203,23 +199,23 @@ router.patch(specificDaysPath,checkAuth, function (req, res, next) {
     if(user.days.length === 0){
       return res.status(404).json({message: 'Day not found'})
     }
-
-    var checkDay =  user.days.filter(days => days.year==req.body.year && days.week == req.body.week && days.name == req.body.name)
-    if(checkDay.length > 0) {
-      return res.status(404).json({message: 'This day already exist'}); 
-    }
-
-    Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
-    .then(day =>{
-      return res.status(200).json({
-        updatedDay: day
-      });  
-    })
-    .catch(err => {
-      res.status(500).json({
-        error: err
+    var day = user.days.find(day => day._id == req.params.dayId)
+    if(day){
+      Day.findByIdAndUpdate(req.params.dayId, req.body, { new: true })
+      .then(day =>{
+        return res.status(200).json({
+          updatedDay: day
+        });  
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: err
+        });
       });
-    });
+
+    }else {
+      return res.status(404).json({message: 'Day not found'})
+    }
   }) 
 });
 
