@@ -286,8 +286,8 @@ router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
       return res.status(404).json({message: 'Recipe not found'})
     }
     
-    var recipeId = '' + req.params.recipeId;
-    Day.updateMany({recipes: {$elemMatch: { recipeId }}})
+    var recipeID = req.params.recipeId;
+    Day.updateMany({recipes: {$elemMatch: { recipeID }}})
     .then( () => {
       user.days.recipes.pull({_id: req.params.recipeId});
     })
@@ -338,6 +338,7 @@ router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
     });
   }) 
 });
+
 
 //Delete all the recipes
 router.delete(recipesPath, checkAuth, function(req, res, next) {
