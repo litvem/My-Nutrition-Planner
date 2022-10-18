@@ -8,7 +8,6 @@ var recipeSchema = new Schema({
       },
       image:{type: String},
       imagePath: {type: String},
-      tag: {type:[String]}, 
       instruction: {type:String},
       items:{ type: 
             [{

@@ -55,22 +55,23 @@ router.get(shoppinglistsPath, checkAuth, function(req,res,next){
       return res.status(404).json({
         message: "User not found"
       });
-    }else if(user.shoppinglists.length === 0){
+    }
+    if(user.shoppinglists.length === 0){
       return res.status(404).json({
         message: "Shoppinglist not found"
       });
-    }else{
-      // sorting descending order - change x and y to get ascending order
-      var sortedShopList = user.shoppinglists.sort((x,y) => {return  y.week - x.week})
-      return res.status(200).json({
-        shoppinglists: sortedShopList,
-        link: {
-         rel: "Shoppinglist",
-         type: "POST",
-         url: 'http://localhost:3000/api/profiles/'+ user._id + '/shoppinglist'
-       }
-     });
     }
+
+    // sorting descending order - change x and y to get ascending order
+    var sortedShopList = user.shoppinglists.sort((x,y) => {return  y.week - x.week})
+    return res.status(200).json({
+      shoppinglists: sortedShopList,
+      link: {
+        rel: "Shoppinglist",
+        type: "POST",
+        url: 'http://localhost:3000/api/profiles/'+ user._id + '/shoppinglist'
+      }
+    });
   })
   .catch(err => {
     res.status(500).json({
@@ -119,6 +120,11 @@ router.put(specificShoppinglistsPath, checkAuth, function (req, res, next) {
     if(user.shoppinglists.length === 0){
       return res.status(404).json({message: 'Shoppinglist not found'})
     }
+    var checkShoppinglist =  user.shoppinglists.filter(shoppinglist => shoppinglist.week == req.body.week)
+
+    if(checkShoppinglist.length > 0){
+      res.status(404).json({message:"Shoppinglist already exist"});
+    }
 
     Shoppinglist.findByIdAndUpdate(req.params.shoplistId, req.body, { new: true })
     .then(shoppinglists =>{
@@ -144,7 +150,7 @@ router.patch(specificShoppinglistsPath, checkAuth, function (req, res, next) {
     if(user.shoppinglists.length === 0){
       return res.status(404).json({message: 'Shoppinglist not found'})
     }
-
+    
     Shoppinglist.findByIdAndUpdate(req.params.shoplistId, req.body, { new: true })
     .then(shoppinglists =>{
       return res.status(200).json({

@@ -95,7 +95,8 @@ export default {
     goToWeeklyPlan(index) {
       localStorage.week = this.plans[index].week
       localStorage.year = this.plans[index].year
-      this.$router.push('/weeklyCalendar')
+      this.$router.push(`/weeklyCalendar/${this.plans[index].year}/${this.plans[index].week}`)
+
       this.$router.go()
     },
     savePlan() {
