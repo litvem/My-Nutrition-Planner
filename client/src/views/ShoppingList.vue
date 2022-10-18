@@ -8,10 +8,10 @@
         </b-col>
       </b-row>
         <div class="d-flex justify-content-center">
-          <b-button variant="success" class="menu-button" v-on:click="goToAddShoppingList()">
+          <b-button variant="success" class="menu-button" id="addList" v-on:click="goToAddShoppingList()">
             <b-icon icon="plus-circle"></b-icon> Add List</b-button>
           <br>
-          <b-button variant="danger" class="menu-button" v-on:click="deleteShoppingLists()">
+          <b-button variant="danger" class="menu-button" id="deleteList" v-on:click="deleteShoppingLists()">
             <b-icon icon="trash"></b-icon>Delete All</b-button>
         </div>
       <br>
@@ -26,7 +26,7 @@
           </b-col>
           <b-col cols="3">
             <b-button-group>
-              <b-button variant="outline-primary" v-on:click="goToEditSL(shoppinglist._id)">
+              <b-button variant="outline-warning" v-on:click="goToEditSL(shoppinglist._id)">
                 <b-icon icon="pencil-square"></b-icon> Edit
               </b-button>
               <b-button variant="outline-danger" v-on:click="deleteSpecificSL(shoppinglist._id)">
@@ -120,7 +120,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .SLPage {
     background-image: url("../assets/shopping-lists-background.jpg");
     background-size: cover;
@@ -134,7 +134,7 @@ export default {
     color: #fff;
     font-size: 50px;
     font-weight: bold;
-    margin-top: 10%;
+    margin-top: 20%;
     margin-bottom: 2%;
     width: 100%;
     text-align: center;
@@ -175,5 +175,53 @@ export default {
     .menu-button {
       margin: 10px;
     }
+
+    #addList {
+    margin-top: 0.2em;
+    margin-bottom: 0.01em;
+    margin-right: 1em;
+    margin-left: 0.01em;
+    float: center;
+    color: rgb(1, 17, 0);
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #9bfc8c84;
+    background-image: linear-gradient(135deg, #bafcae 10%, #01a304cb 100%);
+      &:hover {
+      color: rgb(253, 253, 253);
+      text-decoration: underline;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #04ff00 10%, #01450d 100%);
+      box-shadow: 0px 4px 10px 0px #98ff79;
+    }
+  }
+
+  #deleteList {
+    margin-top: 0.2em;
+    margin-bottom: 0.01em;
+    margin-right: 1em;
+    margin-left: 0.01em;
+    float: center;
+    color: rgb(42, 2, 2);
+    font-size: 16px;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #ea4e4e84;
+    background-image: linear-gradient(135deg, #fa9191 10%, #a31401cb 100%);
+      &:hover {
+      color: rgb(253, 253, 253);
+      text-decoration: underline;
+      font-weight: bold;
+      background-image: linear-gradient(135deg, #ff0000 10%, #450901 100%);
+      box-shadow: 0px 4px 10px 0px #ff7979;
+    }
+  }
 
 </style>
