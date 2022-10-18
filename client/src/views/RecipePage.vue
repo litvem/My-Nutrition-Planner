@@ -71,9 +71,9 @@ export default {
       }
     })
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         this.recipe = response.data
-        console.log(this.recipe.recipe[0]._id)
+        // console.log(this.recipe.recipe[0]._id)
       })
       .catch(error => {
         console.log(error.message)
@@ -85,7 +85,8 @@ export default {
       year: '',
       day: '',
       weekNumber: '',
-      existingDay: null
+      existingDay: null,
+      emptyRecipeArray: []
     }
   },
   methods: {
@@ -98,12 +99,20 @@ export default {
         .then(response => {
           const weekCal = response.data.days
           console.log(weekCal)
+          // console.log('---')
+          // console.log(this.existingDay)
+          // console.log('----')
           for (const day of weekCal) {
             if (day.name === this.day) {
               this.existingDay = day
+              console.log(this.existingDay._id)
+              if (typeof day.recipes === 'undefined') {
+                console.log('day recipe array is empty')
+                this.existingDay.recipes = this.emptyRecipeArray
+              }
             }
           }
-          console.log(this.existingDay)
+          // console.log(this.existingDay)
         })
         .catch(error => {
           console.error(error)
@@ -111,13 +120,15 @@ export default {
     },
     addToDay() {
       this.getWeekCal()
+      console.log('----')
 
       if (this.existingDay === null) {
+        console.log('newDay')
         Api.post('/profiles/' + localStorage.id + '/days', {
           year: this.year,
           name: this.day,
           week: this.weekNumber,
-          recipes: this.recipe
+          recipes: this.recipe.recipe[0]._id
         },
         {
           headers: {
@@ -129,33 +140,39 @@ export default {
           } else if (response.status === 404) {
             alert('Warning: Recipe was not added to plan!')
           }
-          console.log(this.existingDay.recipes.lenght)
+          console.log('post')
+          // console.log(this.existingDay.recipes.length)
         }).catch(error => {
           console.error(error)
         })
-      } else if (this.existingDay && this.existingDay.recipes.lenght === 5) {
+      } else if (this.existingDay !== '' && this.existingDay.recipes.length >= 5) {
         alert('Warning: This day has already 5 recipes')
       } else {
         this.existingDay.recipes.push(this.recipe.recipe[0]._id)
+        console.log(this.existingDay)
+        console.log(this.existingDay._id)
 
-        Api.patch('/profiles/' + localStorage.id + '/days/' + this.existingDay._id, {
-          recipes: this.existingDay.recipes
-        },
-        {
-          headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-          }
-        })
-          .then(response => {
-            if (response.status === 201) {
-              alert('Recipe was added to plan in week ' + this.weekNumber)
-            } else if (response.status === 404) {
-              alert('Warning: Recipe was not added to plan!')
-            }
-          })
-          .catch(error => {
-            console.error(error)
-          })
+        // Api.patch('/profiles/' + localStorage.id + '/days/' + this.existingDay._id, {
+        //   year: this.year,
+        //   name: this.day,
+        //   week: this.weekNumber,
+        //   recipes: this.existingDay.recipes
+        // },
+        // {
+        //   headers: {
+        //     Authorization: 'Bearer ' + localStorage.getItem('token')
+        //   }
+        // })
+        //   .then(response => {
+        //     if (response.status === 201) {
+        //       alert('Recipe was added to plan in week ' + this.weekNumber)
+        //     } else if (response.status === 404) {
+        //       alert('Warning: Recipe was not added to plan!')
+        //     }
+        //   })
+        //   .catch(error => {
+        //     console.error(error)
+        //   })
       }
     },
     editRecipe() {
