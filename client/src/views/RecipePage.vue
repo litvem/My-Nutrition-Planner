@@ -18,7 +18,7 @@
         </div>
         <div class="instructions-text">
           <h4>Instructions</h4>
-          <p :recipe="recipe">{{recipe.recipe[0].instruction}}</p>
+          <p :recipe="recipe">{{recipe[0].instruction}}</p>
         </div>
         <div class="buttons">
           <b-button v-b-toggle.collapse-1 class="submit-button">Add to plan</b-button>
@@ -73,6 +73,7 @@ export default {
       .then(response => {
         console.log(response.data)
         this.recipe = response.data.recipe
+        console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe[0].name + ' ' + this.recipe[0].items + ' ' + this.recipe[0].instruction + ' ' + this.recipe[0].category)
       })
       .catch(error => {
         console.log(error.message)
