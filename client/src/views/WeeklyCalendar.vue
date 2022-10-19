@@ -209,6 +209,9 @@ export default {
         this.fridayRecipes = this.days[4].recipes
         this.saturdayRecipes = this.days[5].recipes
         this.sundayRecipes = this.days[6].recipes
+
+        this.week = this.$route.params.week
+        this.year = this.$route.params.year
       })
       .then(() => {
         const weekDays = this.days
@@ -228,6 +231,7 @@ export default {
       if (this.week < 1 || this.week > 52) {
         this.weekOutsideOfRange = true
       } else {
+        console.log(this.week + ' ' + this.year)
         Api.patch('/profiles/' + localStorage.id + '/days', {
           year: this.$route.params.year,
           week: this.week,
@@ -239,10 +243,11 @@ export default {
           }
         })
           .then(response => {
-            if (response.data.status === 200) {
+            if (response.status === 200) {
+              console.log('success')
               this.editWeek = false
               this.editYear = false
-              this.$router.push(`/weeklyCalendar/${this.$route.params.year}/${this.week}`)
+              this.$router.push(`/weeklyCalendar/${this.year}/${this.week}`)
             }
           })
           .catch(error => {
@@ -272,10 +277,10 @@ export default {
         .then(response => {
           console.log(' edited ' + this.currentWeek)
           console.log(' edited ' + this.currentWeek)
-          if (response.data.status === 200) {
+          if (response.status === 200) {
             this.editWeek = false
             this.editYear = false
-            this.$router.push(`/weeklyCalendar/${this.year}/${this.$route.params.week}`)
+            this.$router.push(`/weeklyCalendar/${this.year}/${this.week}`)
           }
         })
         .catch(error => {
