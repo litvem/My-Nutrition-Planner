@@ -6,8 +6,8 @@ var cors = require('cors');
 var history = require('connect-history-api-fallback');
 
 // Variables
-//var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://emma:sunshine1990@cluster0.yt6treo.mongodb.net/?retryWrites=true&w=majority';
-var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myNutritionPlanner';
+var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://emma:sunshine1990@cluster0.yt6treo.mongodb.net/?retryWrites=true&w=majority';
+//var mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/myNutritionPlanner';
 var port = process.env.PORT || 3000;
 
 var usersController = require('./controllers/users');
