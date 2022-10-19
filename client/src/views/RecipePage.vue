@@ -49,7 +49,7 @@
                   required >
                 </b-form-input>
               </b-form-group>
-              <b-button type="submit" class="submit-button" v-on:click="addToDay">Submit</b-button>
+              <b-button type="submit" class="submit-button" v-on:click="addToDay()">Submit</b-button>
             </b-card>
           </b-collapse>
         </div>
@@ -89,21 +89,83 @@ export default {
   },
   methods: {
     addToDay() {
-      Api.post('/profiles/' + localStorage.id + '/days', {
-        year: this.year,
-        name: this.day,
-        week: this.weekNumber,
-        recipes: this.recipe.recipe[0]
-      },
-      {
+      Api.get('/profiles/' + localStorage.id + '/days?week=' + this.weekNumber + '&year=' + this.year, {
         headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
         }
-      }).catch(error => {
-        alert('Warning: Recipe not added to day ' + error)
       })
-      console.log(this.weekNumber + ' ' + this.day + ' ' + this.recipe[0].name + ' ' + this.recipe[0].items + ' ' + this.recipe[0].instruction + ' ' + this.recipe[0].category)
-      this.$router.go()
+        .then(response => {
+          const weekCal = response.data.days
+          console.log(weekCal)
+          // console.log('---')
+          // console.log(this.existingDay)
+          // console.log('----')
+          for (const day of weekCal) {
+            if (day.name === this.day) {
+              this.existingDay = day
+              console.log(this.existingDay._id)
+            }
+          }
+          // console.log(this.existingDay)
+        })
+        .catch(error => {
+          console.error(error)
+        })
+        .then(() => {
+          if (this.existingDay._id === 'none') {
+            console.log('newDay')
+            const recipeArrayDay = [this.$route.params.id]
+
+            Api.post('/profiles/' + localStorage.id + '/days', {
+              year: this.year,
+              name: this.day,
+              week: this.weekNumber,
+              recipes: recipeArrayDay
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+              }
+            }).then(response => {
+              if (response.status === 201) {
+                alert('Recipe was added to plan in week ' + this.weekNumber)
+              } else if (response.status === 404) {
+                alert('Warning: Recipe was not added to plan!')
+              }
+              console.log('post')
+              // console.log(this.existingDay.recipes.length)
+            }).catch(error => {
+              console.error(error)
+            })
+          } else {
+            this.existingDay.recipes.push(this.$route.params.id)
+            console.log('patch')
+            console.log(this.existingDay)
+            console.log(this.existingDay._id)
+
+            Api.patch('/profiles/' + localStorage.id + '/days/' + this.existingDay._id, {
+              year: this.year,
+              name: this.day,
+              week: this.weekNumber,
+              recipes: this.existingDay.recipes
+            },
+            {
+              headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+              }
+            })
+              .then(response => {
+                if (response.status === 201) {
+                  alert('Recipe was added to plan in week ' + this.weekNumber)
+                } else if (response.status === 404) {
+                  alert('Warning: Recipe was not added to plan!')
+                }
+              })
+              .catch(error => {
+                console.error(error)
+              })
+          }
+        })
     },
     editRecipe() {
       this.$router.push(`/editRecipe/${this.$route.params.id}`)

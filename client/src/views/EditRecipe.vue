@@ -42,7 +42,7 @@
         </div>
       </div>
       <div v-else>
-       <img :src="recipe.recipe[0].image">
+        <img :src="recipe.recipe[0].image">
       </div>
     </b-row>
     <br>
@@ -72,7 +72,7 @@
         </div>
         <div v-else >
           <b-card id="category-card-disabled">
-           <b-form-group v-slot="{ ariaDescribedby }">
+            <b-form-group v-slot="{ ariaDescribedby }">
               <b-form-radio-group
               v-model="selected"
               :options="disabledOptions"
@@ -137,10 +137,10 @@
       <br>
       <b-row>
         <b-col>
-         <h4>Instructions</h4>
+          <h4>Instructions</h4>
         </b-col>
         <b-col>
-         <b-button id="edit-instructions" class="edit-button" type="submit"  @click="toggleInstructions">Edit</b-button>
+          <b-button id="edit-instructions" class="edit-button" type="submit"  @click="toggleInstructions">Edit</b-button>
         </b-col>
       </b-row>
       <br>
@@ -310,7 +310,7 @@ export default {
     },
     toggleIngredients() {
       this.editIngredients = true
-      document.getElementById('edit-instructions').disabled = true
+      document.getElementById('edit-ing').disabled = true
     }
 
   }
@@ -350,9 +350,9 @@ export default {
     padding: 4%;
     padding-bottom: 1%;
     overflow: hidden;
- }
+  }
 
- .form-control {
+  .form-control {
   border-radius: 8px;
   display: inline-block;
   border: 0;
@@ -360,7 +360,7 @@ export default {
   box-shadow: 0px 4px 10px 0px #ddc20f7c;
   background-color: #f5eddbf1;
   color: #281401;
- }
+  }
 
   img {
     max-width: 350px;

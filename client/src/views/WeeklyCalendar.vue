@@ -46,12 +46,6 @@
             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
               Select between current or next year.
           </div>
-      <!--alert if weekly calendar already exists-->
-          <div class="alert alert-warning d-flex align-items-center" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0"
-          @dismiss-count-down="countDownChanged"  role="alert" v-if="weekCalExist">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-              Weekly plan for selected week already exists.
-          </div>
         </div>
       </div>
       <div class="calendar sm">
@@ -60,11 +54,11 @@
           <div class="day" >
             <div class="day-week">
               <p class="dayName ">Mon</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(0)><b-icon  icon="trash"></b-icon></button>
             </div>
              <div class="daysRecipe"  v-if="mondayRecipes.length > 0">
               <div class="events" v-for="monRecipes in mondayRecipes" v-bind:key="monRecipes._id">
                 <div class="event start-10 end-12 recipeCard">
-                  <b-icon icon="trash"></b-icon>
                   <p class="recipe">{{monRecipes.name}}</p>
 
                 </div>
@@ -75,11 +69,11 @@
             <div class="day">
               <div class="day-week">
                 <p class="dayName">Tues</p>
+                <button  class="btn delete-btn btn-sm" @click=removeDay(1)><b-icon  icon="trash"></b-icon></button>
               </div>
                <div class="daysRecipe"  v-if="tuesdayRecipes.length > 0">
                 <div class="events" v-for="tuesRecipes in tuesdayRecipes" v-bind:key="tuesRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
-                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{tuesRecipes.name}} </p>
                   </div>
                 </div>
@@ -89,11 +83,12 @@
           <div class="day">
             <div class="day-week">
               <p class="dayName">Wed</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(2)><b-icon  icon="trash"></b-icon></button>
             </div>
              <div class="daysRecipe"  v-if="wednesdayRecipes.length > 0">
                 <div class="events" v-for="wedRecipes in wednesdayRecipes" v-bind:key="wedRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
-                    <b-icon icon="trash"></b-icon>
+
                     <p class="recipe">{{wedRecipes.name}} </p>
                   </div>
                 </div>
@@ -103,11 +98,12 @@
           <div class="day">
             <div class="day-week">
               <p class="dayName">Thurs</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(3)><b-icon  icon="trash"></b-icon></button>
             </div>
              <div class="daysRecipe"  v-if="thursdayRecipes.length > 0">
                 <div class="events" v-for="thursRecipes in thursdayRecipes" v-bind:key="thursRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
-                    <b-icon icon="trash"></b-icon>
+
                     <p class="recipe">{{thursRecipes.name}} </p>
                   </div>
                 </div>
@@ -117,6 +113,7 @@
           <div class="day">
             <div class="day-week">
               <p class="dayName">Fri</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(4)><b-icon  icon="trash"></b-icon></button>
             </div>
             <div class="daysRecipe" v-if="fridayRecipes.length > 0">
               <div class="events" v-for="friRecipes in fridayRecipes" v-bind:key="friRecipes._id">
@@ -130,11 +127,11 @@
           <div class="day">
             <div class="day-week">
               <p class="dayName">Sat</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(5)><b-icon  icon="trash"></b-icon></button>
             </div>
               <div class="daysRecipe" v-if="saturdayRecipes.length > 0">
                 <div class="events" v-for="satRecipes in saturdayRecipes" v-bind:key="satRecipes._id">
                   <div class="event start-10 end-12 recipeCard">
-                    <b-icon icon="trash"></b-icon>
                     <p class="recipe">{{satRecipes.name}} </p>
 
                   </div>
@@ -145,6 +142,7 @@
           <div class="day">
             <div class="day-week">
               <p class="dayName">Sun</p>
+              <button  class="btn delete-btn btn-sm" @click=removeDay(6)><b-icon  icon="trash"></b-icon></button>
             </div>
             <div class="daysRecipe"  v-if="sundayRecipes.length > 0">
                 <div class="events" v-for="sunRecipes in sundayRecipes" v-bind:key="sunRecipes._id">
@@ -159,10 +157,6 @@
       </div>
     </div>
   </div>
-              <!-- testing if it works
-              <div class="loginAgain" v-if="!user">
-              <h1> Please login again</h1>
-            </div> -->
 </template>
 
 <script>
@@ -180,7 +174,7 @@ export default {
       weekCalExist: false,
       dissmissSecs: 3,
       dismissCountDown: 0,
-      days: [],
+      days: [], // contains all days
       week: '',
       year: '',
       mondayRecipes: [],
@@ -210,18 +204,9 @@ export default {
         this.saturdayRecipes = this.days[5].recipes
         this.sundayRecipes = this.days[6].recipes
       })
-      .then(() => {
-        const weekDays = this.days
-        for (const day of weekDays) {
-          if (day._id !== 'none') {
-            this.daysID.push(day._id)
-          }
-        }
-      })
       .catch(error => {
         console.error(error)
       })
-      // }
   },
   methods: {
     changeWeek() {
@@ -242,7 +227,6 @@ export default {
             if (response.data.status === 200) {
               this.editWeek = false
               this.editYear = false
-              this.$router.push(`/weeklyCalendar/${this.$route.params.year}/${this.week}`)
             }
           })
           .catch(error => {
@@ -251,6 +235,8 @@ export default {
               this.weekCalExist = true
             }
           })
+        this.$router.push(`/weeklyCalendar/${this.$route.params.year}/${this.week}`)
+        this.$router.go(0)
       }
     },
     changeYear() {
@@ -270,20 +256,17 @@ export default {
         }
       })
         .then(response => {
-          console.log(' edited ' + this.currentWeek)
-          console.log(' edited ' + this.currentWeek)
           if (response.data.status === 200) {
             this.editWeek = false
             this.editYear = false
-            this.$router.push(`/weeklyCalendar/${this.year}/${this.$route.params.week}`)
+            this.$router.go(0)
           }
         })
         .catch(error => {
           console.error(error)
-          if (error.response.status === 409) {
-            this.weekCalExist = true
-          }
         })
+      this.$router.push(`/weeklyCalendar/${this.year}/${this.$route.params.week}`)
+      this.$router.go(0)
     },
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown
@@ -292,6 +275,22 @@ export default {
       this.dismissCountDown = this.dissmissSecs
       this.weekCalExist = false
       this.$router.go(0)
+    },
+    removeDay(index) {
+      console.log(index)
+      Api.delete('/profiles/' + localStorage.id + '/days/' + this.days[index]._id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      })
+        .then(response => {
+          console.log(response)
+          this.$router.push(`/weeklyCalendar/${this.$route.params.year}/${this.$route.params.week}`)
+          this.$router.go()
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   }
 }
@@ -397,6 +396,10 @@ label{
   box-shadow: 0px 4px 20px 0px #a6fa94a6;
   background-image: linear-gradient(135deg, #4fc96e 10%, #036920c8 100%);
   }
+  .days{
+    width: 80%;
+    font-size: 10px;
+  }
   .cancel-btn {
     float: center;
     color: #fff;
@@ -410,7 +413,10 @@ label{
     background-image: linear-gradient(135deg, #d25f5f 10%, #d60404c8 100%);
   }
 }
-
+.delete-btn{
+    color: #ffffff;
+    font-size: large;
+}
 .alert{
   margin-left: 3%;
   margin-right: 65%;
@@ -458,7 +464,9 @@ label{
     margin-top:5%;
     background: rgba(254, 254, 254, 0.38);
 }
-
+    #icon{
+        color:red
+    }
   .recipe {
     color: rgb(0, 0, 0);
     text-align: center;

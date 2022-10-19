@@ -10,7 +10,7 @@
               <!-- username field-->
               <div id="userNameInput" class="username col-sm-12 d-flex flex-row mt-2 mb-2 align-items-center gap-2">
                 <input class="form-control" type="text" v-if="!editUsername" :disabled="!editUsername" :class="{view: !editUsername}" :value="user.username">
-                <input type="text" v-if="editUsername" v-model="username" id="username" name="username" class="form-control" :class="{ 'is-invalid': submitted && $v.username.$error }" />
+                <input type="text" v-if="editUsername" v-model="username" id="username" name="username" class="form-control" />
                 <div v-if="submitted && !$v.username.required" class="invalid-feedback">Username is required</div>
               <!-- editbutton-->
                 <button class="btn edit-btn btn-sm" @click="editUsername = !editUsername" v-if="!editUsername">Edit</button> <!-- <i class="bi bi-pencil-square"></i>  -->
@@ -60,9 +60,15 @@
             </div>
 
             <div class="delete-box d-flex mt-10 mb-2 align-items-center gap-2 justify-content-md-end"  v-if="user">
-                <button class="btn delete-btn btn-sm"><b-icon icon="trash"></b-icon>&nbsp;&nbsp;&nbsp;Delete account</button> <!-- <i class="bi bi-trash3-fill"></i>-->
+                <button @click="deleteUSer" class="btn delete-btn btn-sm"><b-icon icon="trash"></b-icon>&nbsp;&nbsp;&nbsp;Delete account</button> <!-- <i class="bi bi-trash3-fill"></i>-->
                 <!-- This one is working tho <button class="btn btn-link"><i class="fas fa-user"></i> Log In</button> -->
             </div>
+<!--             <b-alert id="passwordChanged-alert" :show="dismissCountDown" variant="success" @dismissed="dismissCountDown=0" @dismiss-count-down="countDownChanged" v-if="passwordValid">
+                  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                  </svg>
+                  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#check-circle-fill"/></svg>
+                  <h5> User has been deleted.</h5>
+            </b-alert> -->
           </div>
         </div>
       </div>
@@ -157,6 +163,26 @@ export default {
     showAlert() {
       this.dismissCountDown = this.dissmissSecs
       this.$router.go(0)
+    },
+    deleteUSer() {
+      Api.delete('/profiles/' + localStorage.id,
+        {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.getItem('token')
+          }
+        })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          this.message = error
+        })
+      this.handleDelete()
+    },
+    handleDelete() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('id')
+      return this.$router.go(this.$router.push('/'))
     }
   }
 }

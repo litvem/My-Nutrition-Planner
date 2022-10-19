@@ -1,6 +1,6 @@
 <template>
    <section>
-    <h1>
+    <h1 class="animation md">
        <span>M</span>
        <span>Y</span>
        <span>N</span>
@@ -27,9 +27,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 section {
- height: 100vh;
+ height: 100%;
+ flex-direction: none;
 }
 
 h1 {
@@ -37,7 +38,7 @@ h1 {
  margin: 0;
  padding:0;
  position: absolute;
- top: -17%;
+ top: -20%;
  left: 40%;
  font-weight: 600;
  transform: translate(-50%);
@@ -127,13 +128,31 @@ animation-delay: 4s;
 }
 
 @media(max-width: 768px){
-  section {
-  height: 80vh;
-  }
-  h1 {
+   h1 {
     top:-18%;
     margin-left: 8%;
-    font-size: 2.0em;
+    font-size: xx-large;
    }
 }
+
+@media(max-width: 610px){
+  h1 {
+    font-size: 1.7em;
+   }
+}
+@media(max-width: 512px){
+  h1 {
+    top:-16%;
+    margin-left: 8%;
+    font-size: 1.5em;
+   }
+}
+@media(max-width: 447px){
+  h1 {
+    top:-10%;
+    margin-left: 8%;
+    font-size: 1.2em;
+   }
+}
+
 </style>

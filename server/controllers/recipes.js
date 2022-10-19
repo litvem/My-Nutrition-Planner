@@ -64,7 +64,7 @@ router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, 
         name: req.body.name,
         category: req.body.category,
         image: `${basePath}${fileName}`,
-        imagePath: req.file.path,
+        imagePath: req.file.path, 
         instruction: req.body.instruction,
         items:req.body.items
       });
@@ -82,6 +82,29 @@ router.post(recipesPath, checkAuth, upload.single('recipeImage'), function(req, 
 
       user.recipes.push(recipe);
       user.save();
+      } else if (req.body.image){
+        var recipe = new Recipe({
+          name: req.body.name,
+          category: req.body.category,
+          image: req.body.image,
+          imagePath: req.body.image,
+          instruction: req.body.instruction,
+          items:req.body.items
+        });
+    
+        recipe.save()
+        
+        res.status(201).json({ 
+          recipeCreated: recipe,
+          links: {
+            rel: "self",
+            type: "GET",
+            url: 'http://localhost:3000/api/profiles/'+ user._id + '/recipes/'+ recipe._id 
+          }
+        });
+    
+        user.recipes.push(recipe);
+        user.save();
       } else {
         var recipe = new Recipe({
           name: req.body.name,
@@ -248,6 +271,7 @@ router.patch(specificRecipesPath, checkAuth, upload.single('recipeImage'), funct
   })   
 });
 
+//
 // Delete specific
 router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
   User.findOne({_id:req.params.profileId})
@@ -314,6 +338,7 @@ router.delete(specificRecipesPath, checkAuth, function(req, res, next) {
     });
   }) 
 });
+
 
 //Delete all the recipes
 router.delete(recipesPath, checkAuth, function(req, res, next) {

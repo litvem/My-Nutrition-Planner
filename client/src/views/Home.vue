@@ -213,7 +213,7 @@ section .loginBx .login-form p {
     margin-top: 29%;
     margin-left: 10%;
     z-index: 1;
-}
+  }
   section .contentBx .welcome-text h2{
     font-size: 25px;
   }
@@ -226,8 +226,41 @@ section .loginBx .login-form p {
 @media(max-width: 768px){
   .animation {
     margin-left: 2%;
-    margin-top: 40%;
+    margin-top: 10%;
   }
+  section {
+   position: flex;
+    width: 80%;
+    height: 60%;
+    display: flex;
+    margin-top: 29%;
+    margin-left: 10%;
+    z-index: 1;
+    flex-direction: column;
+    section .contentBx{
+    top: 10%;
+    background-color:rgba(30, 30, 31, 0.486);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: -10%;
+    flex-direction: column
+}
+    .loginBx {
+    margin-top: 5%;
+    width: initial;
+   }
+  }
+  .Welcomeview {
+    background-image: url(http://localhost:8080/img/foodbackground.48af1242.jpg);
+    background-size: cover;
+    /* width: 100%; */
+    min-height: 125vh;
+    /* margin: auto; */
+    position: absolute;
+    background-attachment: fixed;
+   }
   section .contentBx{
     margin-top: 5%;
     margin-left: -2%;
@@ -236,11 +269,16 @@ section .loginBx .login-form p {
 }
   section .contentBx .welcome-text h2{
     font-size: 20px;
-  }
+}
   section .loginBx{
     margin-top: 5%;
-    height: 60%;
-}
-}
+    width: initial;
+  }
 
+}
+@media(max-width: 447px){
+  h2 {
+    font-size: 20px;
+   }
+}
 </style>
