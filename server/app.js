@@ -7,7 +7,7 @@ var history = require('connect-history-api-fallback');
 
 
 // Variables
-var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://emma:sunshine1990@cluster0.lzxhlgc.mongodb.net/myNutritionPlanner?retryWrites=true&w=majority';
+var mongoURI = process.env.MONGODB_URI || 'mongodb+srv://emma:sunshine1990@cluster0.yt6treo.mongodb.net/?retryWrites=true&w=majority';
 var port = process.env.PORT || 3000;
 
 var usersController = require('./controllers/users');
