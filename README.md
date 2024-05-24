@@ -37,10 +37,10 @@ You can also use alternative tools if you know how to configure them (e.g., Fire
 
 ```bash
 # Clone repository
-git clone git@git.ita.chalmers.se:courses/dit341/group-00-web.git
+git clone git@github.com:litvem/My_Nutrition_Planner.git
 
 # Change into the directory
-cd group-00-web
+cd My_Nutrition_Planner
 
 # Setup backend
 cd server && npm install
